@@ -1,0 +1,63 @@
+# CI ROOT Stage
+parameters:
+- name: envId
+  type: string
+  default: DEV
+- name: fileLocation
+  type: string
+- name: fileName
+  type: string
+- name: applicationName
+  type: string
+- name: msixVersion
+  type: string
+- name: msixImageSize
+  type: number
+- name: msixApplicationUNCPath
+  type: string
+
+stages:
+- stage: CI_${{parameters.envId}}
+  displayName: CI_${{parameters.envId}}
+
+  jobs:
+
+  - job: CreateImage
+    displayName: CreateImage
+    pool:
+      vmImage: windows-latest
+    steps:
+    # Application configuration process
+    - template: ./appConfigSteps.yaml
+      parameters:
+        fileLocation: ${{ parameters.fileLocation }}
+        fileName: ${{ parameters.fileName }}
+        msixVersion: ${{ parameters.msixVersion }}
+        publisher: $(publisher)
+        publisherDisplayName: $(publisherDisplayName)
+        applicationName: ${{ parameters.applicationName }}
+        applicationDisplayName: $(applicationDisplayName)
+        applicationDescription: $(applicationDescription)
+        applicationExecutable: $(applicationExecutable)
+
+    # MSIX configuration process
+    - template: ./msixConfigSteps.yaml
+      parameters:
+        applicationName: ${{ parameters.applicationName}}
+        # applicationEntryPoint: ABS-Anwendung/bin/syncier-demo-app.exe
+        # applicationWorkingDirectory: ABS-Anwendung/bin/
+        # applicationProcessExecutable: syncier-demo-app
+        # applicationProcessFileRedirectionFixupBase: ABS-Anwendung/bin/
+        # applicationProcessFileRedirectionFixupPatterns: 
+        # - syncier.config
+        # - .*\\.log
+    # MSIX packaging process
+    - template: ./msixPackagingSteps.yaml
+      parameters:
+        CertificateName: $(CertificateName)
+        CertificatePasswordVariable: $(CertificatePasswordVariable) # From variable group
+        imageMetadataFile: src/image_metadata.xml
+        msixVersion: ${{ parameters.msixVersion }}
+        msixApplicationUNCPath: ${{ parameters.msixApplicationUNCPath }}\${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+        msixImageSize: ${{ parameters.msixImageSize }}
+        applicationName: ${{ parameters.applicationName}}

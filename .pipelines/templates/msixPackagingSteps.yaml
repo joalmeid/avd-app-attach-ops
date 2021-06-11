@@ -1,0 +1,85 @@
+# MSIX Packaging Steps Template
+
+parameters:
+  - name: CertificateName
+    type: string
+    default: certificate-name.pfx
+  - name: CertificatePasswordVariable
+    type: string
+    default: CertificatePassword
+  - name: imageMetadataFile
+    type: string
+    default: src/image_metadata.xml
+  - name: msixApplicationUNCPath
+    type: string
+    default: \\fileshare.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx
+  - name: msixVersion
+    type: string
+    default: 0.0.0.0
+  - name: workingFolder
+    type: string
+    default: AppConfigured
+  - name: applicationName
+    type: string
+    default: app
+  - name: msixImageSize
+    type: number
+    default: 100
+
+steps:
+- task: MsixPackaging@1
+  displayName: 'PACKAGING Msix'
+  inputs:
+    outputPath: MSIX
+    buildSolution: false
+    inputDirectory: ${{ parameters.workingFolder }}
+    generateBundle: false
+    updateAppVersion: true
+    manifestFile: ${{ parameters.workingFolder }}\appxmanifest.xml
+    appVersion: ${{ parameters.msixVersion }}
+
+- task: MsixSigning@1
+  displayName: 'SIGNING Msix package'
+  inputs:
+    package: 'MSIX.msix'
+    certificate: ${{ parameters.CertificateName }}
+    passwordVariable: ${{ parameters.CertificatePasswordVariable }}
+
+#BUILD VHD
+- task: MsixAppAttach@1
+  displayName: 'CREATE Image'
+  inputs:
+    package: 'MSIX.msix'
+    vhdxOutputPath: ${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+    vhdxSize: ${{ parameters.msixImageSize}}
+
+- publish: ${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+  displayName: ARTIFACT Msix AppAttach Image
+  artifact: Image
+
+- task: PowerShell@2
+  displayName: UPDATE Image Metadata
+  inputs:
+    targetType: inline
+    script: |
+      [xml]$appxmanifest = get-content "${{ parameters.workingFolder }}/appxmanifest.xml"
+      [xml]$manifest= get-content "${{ parameters.imageMetadataFile }}"
+      $manifest.MsixImage.Properties.PackageIdentityName = $appxmanifest.Package.Identity.Name
+      $manifest.MsixImage.Properties.Version = "${{ parameters.msixVersion }}"
+      $manifest.MsixImage.Properties.ImageArtifactLocation = "$(System.CollectionUri)/$(System.TeamProject)/_build/results?buildId=$(Build.BuildID)&view=artifacts&pathAsName=true&type=publishedArtifacts"
+      $manifest.MsixImage.Properties.ImageMsixAppAttachLocation = "${{ parameters.msixApplicationUNCPath }}"
+      $manifest.save("${{ parameters.imageMetadataFile }}")
+
+      Write-Host "##[debug] Pubishing AVD Msix Package:"
+      Write-Host "##[debug] `tImage Metadata File: ${{ parameters.imageMetadataFile }}"
+      Write-Host "##[debug] `tImage Package Type: $($manifest.MsixImage.Properties.Type)"
+      Write-Host "##[debug] `tImage Package Identity Name: $($manifest.MsixImage.Properties.PackageIdentityName)"
+      Write-Host "##[debug] `tImage Version: $($manifest.MsixImage.Properties.Version)"
+      Write-Host "##[debug] `tImage Artifact Location: $($manifest.MsixImage.Properties.ImageArtifactLocation)"
+      Write-Host "##[debug] `tImage Msix AppAttach Location: $($manifest.MsixImage.Properties.ImageMsixAppAttachLocation)"
+
+# Store metadata.xml as Pipeline Artifact   
+- publish: ${{ parameters.imageMetadataFile }}
+  displayName: ARTIFACT Image Metadata
+  artifact: Metadata
+

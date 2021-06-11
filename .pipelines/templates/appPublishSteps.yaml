@@ -1,0 +1,63 @@
+# PUBLISH MSIX AppAttach App in AVD
+parameters:
+  - name: msixVersion
+    type: string
+    default: 0.0.0.0
+  - name: azureSubscription
+    type: string
+  - name: resourceGroup
+    type: string
+    default: dev-rg
+  - name: hostPoolName
+    type: string
+    default: dev-avd
+  - name: msixApplicationUNCPath
+    type: string
+    default: \\fileshare.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx
+  - name: applicationName
+    type: string
+    default: app
+  - name: applicationGroupName
+    type: string
+    default: dev-ag
+
+steps:
+
+# Install Certs to AVD Session Hosts 
+- task: PowerShell@2
+  displayName: INSTALL Certificate in AVD Session Hosts (TO BE DISCUSSED)
+  inputs:
+    targetType: inline
+    #workingDirectory: # Optional
+    script: Write-Host "Install Certs to AVD Session Hosts"
+
+# Register MSIX AppAttach to AVD as inactive
+- task: AzurePowerShell@5
+  displayName: 'CREATE AVD Msix Package'
+  name: createMsixPackage
+  inputs:
+    azureSubscription: ${{parameters.azureSubscription}}
+    scriptType: inlineScript
+    azurePowerShellVersion: latestVersion
+    pwsh: false
+    inline: |
+      Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+      Install-Module -Name Az.DesktopVirtualization -Force -Verbose -Scope CurrentUser
+      Write-Host "##[debug] Pubishing AVD Msix Package:"
+      Write-Host "##[debug] `tWVD Resource Group: ${{ parameters.resourceGroup }}"
+      Write-Host "##[debug] `tWVD Host Pool Name: ${{ parameters.hostPoolName }}"
+      Write-Host "##[debug] `tMsix Application UNC Path: ${{ parameters.msixApplicationUNCPath }}"
+      Write-Host "##[debug] `tApplication Display Name: ${{ parameters.applicationName }}"
+      #Write-Host "##[debug] `tApplication Group Name: ${{ parameters.applicationGroupName }}"
+
+      $objPackage = Expand-AzWvdMsixImage -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }} -Uri ${{ parameters.msixApplicationUNCPath }}
+      Write-Host "##[debug] `tPackage Full Name: $($objPackage.PackageFullName)"
+      # ADD AS INACTIVE
+      New-AzWvdMsixPackage -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }} -PackageAlias $objPackage.PackageAlias -DisplayName ${{ parameters.applicationName }} -ImagePath ${{ parameters.msixApplicationUNCPath }} -IsActive:$false
+      # Create Variable with Package Full Name 
+      Write-Host "##vso[task.setvariable variable=msixPackageFullName;isOutput=true]$($objPackage.PackageFullName)"
+      # ADD TO APP GROUP
+      #Get-AzWvdApplicationGroup -ResourceGroupName ${{ parameters.resourceGroup }}
+      # SET ACTIVE
+      #New-AzWvdApplication -ResourceGroupName ${{ parameters.resourceGroup }} -Name ${{ parameters.applicationName }} -ApplicationType MsixApplication -ApplicationGroupName ${{ parameters.applicationGroupName }} -MsixPackageFamilyName $obj.PackageFamilyName -CommandLineSetting 0
+      

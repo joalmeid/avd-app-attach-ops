@@ -1,0 +1,38 @@
+# Manual approval for activating MSIX Packages in AVD infrastructure
+parameters:
+- name: azureSubscription
+  type: string
+- name: resourceGroup
+  type: string
+- name: hostPoolName
+  type: string
+- name: registrationType
+  type: string
+  default: -IsRegularRegistration:$False 
+  values:
+  - '-IsRegularRegistration' #Regular (Log on blocking)
+  - '-IsRegularRegistration:$False' #Delayed (On-Demand).
+- name: applicationFullName
+  type: string
+- name: applicationName
+  type: string
+
+steps:
+- task: AzurePowerShell@5
+  displayName: 'ACTIVATE Msix Package'
+  inputs:
+    azureSubscription: ${{parameters.azureSubscription}}
+    scriptType: inlineScript
+    azurePowerShellVersion: latestVersion
+    pwsh: true
+    inline: |
+      #Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+      #Install-Module -Name Az.DesktopVirtualization -Force -Verbose -Scope CurrentUser
+      Write-Host "##[debug] Pubishing AVD Msix Package:"
+      Write-Host "##[debug] `tAVD Resource Group: ${{ parameters.resourceGroup }}"
+      Write-Host "##[debug] `tAVD Host Pool Name: ${{ parameters.hostPoolName }}"
+      Write-Host "##[debug] `tApplication Registration Type: ${{ parameters.registrationType }}"
+      Write-Host "##[debug] `tApplication Full Name: ${{ parameters.applicationFullName }}"
+      Write-Host "##[debug] `tApplication Display Name: ${{ parameters.applicationName }}"
+
+      Update-AzWvdMsixPackage -displayName ${{ parameters.applicationName }} -FullName ${{ parameters.applicationFullName }} ${{ parameters.registrationType }} -IsActive:$True -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }}

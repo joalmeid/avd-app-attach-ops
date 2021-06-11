@@ -1,0 +1,78 @@
+# Image Publish Steps Template
+# Requires $(VMAdminUsername), $(VMAdminPassword) from a variable group called
+
+parameters:
+  - name: msixVersion
+    type: string
+  - name: azureSubscription
+    type: string
+  - name: storageAccount
+    type: string
+  - name: resourceGroup
+    type: string
+  - name: imageMetadataFile
+    type: string
+    default: image_metadata.xml
+  - name: applicationName
+    type: string
+    default: app
+  - name: msixApplicationUNCPath
+    type: string
+    default: \\fileshare.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx
+
+steps:
+# GET VHDX
+- download: current
+  displayName: 'GET Image Artifact'
+  artifact: Image
+  patterns: '*.VHDX'
+
+- download: current
+  displayName: 'GET Metadata Artifact'
+  artifact: Metadata
+  patterns: '*.xml'
+
+- task: PowerShell@2
+  displayName: 'READ imageMetadata'
+  inputs:
+    targetType: inline
+    script: |
+      [xml]$manifest= get-content "$(Pipeline.Workspace)\Metadata\${{ parameters.imageMetadataFile }}"
+      Write-Host "##[debug] `tImage Package Type: $($manifest.MsixImage.Properties.Type)"
+      Write-Host "##[debug] `tImage Package Identity Name: $($manifest.MsixImage.Properties.PackageIdentityName)"
+      Write-Host "##[debug] `tImage Version: $($manifest.MsixImage.Properties.Version)"
+      Write-Host "##[debug] `tImage Artifact Location: $($manifest.MsixImage.Properties.ImageArtifactLocation)"
+      Write-Host "##[debug] `tImage Msix AppAttach Location: $($manifest.MsixImage.Properties.ImageMsixAppAttachLocation)"
+
+# Copy MSIX App Attach image to AVD file share
+- task: AzureFileCopy@4
+  displayName: 'COPY Msix Image to Fileshare'
+  inputs:
+    sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+    azureSubscription: ${{ parameters.azureSubscription }}
+    destination: azureVMs
+    storage: ${{ parameters.storageAccount }}
+    resourceGroup: ${{ parameters.resourceGroup }}
+    vmsAdminUserName: $(VMAdminUsername)
+    vmsAdminPassword: $(VMAdminPassword)
+    TargetPath: 'c:\\Syncier\MSIX'
+    enableCopyPrerequisites: true
+    #copyFilesInParallel: true # Optional
+    cleanTargetBeforeCopy: false # Optional
+    skipCACheck: true 
+    TestCertificate: true
+    #sasTokenTimeOutInMinutes: # Optional
+
+
+# Windows machine file copy
+# works for self-hosted agent in the V-Net to the file share 
+# - task: WindowsMachineFileCopy@2
+#   inputs:
+#     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+#     machineNames: 'absee-fileshare'
+#     adminUserName: $(VMAdminUsername)
+#     adminPassword: $(VMAdminPassword)
+#     targetPath: 'Syncier'
+#     #cleanTargetBeforeCopy: false # Optional
+#     #copyFilesInParallel: true # Optional
+#     #additionalArguments: # Optional

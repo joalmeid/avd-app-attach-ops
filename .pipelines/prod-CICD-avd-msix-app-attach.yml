@@ -1,0 +1,62 @@
+# DEV MSIX AppAttach Multi-stage pipeline (CI & CD)
+# Requires resources: Storage, AVD Session Pool, Variable group named Secrets with containing the CertificatePassword variable
+# Required variables to set: fileLocation, fileName, applicationName, version, msixAppAttachUNCPath
+
+trigger:
+- none
+
+parameters:
+- name: fileLocation # The SAC file location path. Expected to be reachacble through http/https protocol for direct download.
+  displayName: Configured App Path
+  type: string
+  default: https://wvdsdevstrg.blob.core.windows.net/syncier-sac
+- name: fileName # The SAC file name for a particular release
+  displayName: Configured App File Name
+  type: string
+  default: syncier-abscs-configured.zip
+- name: applicationName # The application name to be used in the AVD deployment
+  displayName: Application Name
+  default: SyncierConfigSuite
+- name: version # The application version (semantic version is recommended) to be used in the AVD deployment
+  displayName: Application Version
+  type: string
+- name: msixImageSize # The maximum MSIX image size to be used in the VHD/CIM image format. Must be enough to include full application and its dependencies.
+  displayName: MSIX Maximum Image Size
+  type: number
+  default: 1024
+- name: msixAppAttachUNCPath # The UNC share to be used to place the MSIX App Attach image. It will be used during the app registration in AVD.
+  displayName: MSIX App Attach Path
+  type: string
+  default: \\absee-fileshare.jdaloc.onmicrosoft.com\SYNCIER\msix
+- name: envId # The environment ID.
+  displayName: Environment
+  type: string
+  default: PROD
+  values:
+  - DEV
+  - QA
+  - PROD
+
+variables:
+#- group: Secrets # Secret variable group
+- group: common-msix-appattach-vg # Secret variable group
+- group: ${{parameters.envId}}-msix-appattach-vg
+
+stages:
+
+- template: templates/CI-msix-stage.yaml
+  parameters: 
+    envId: ${{ parameters.envId }}
+    fileLocation: ${{ parameters.fileLocation }}
+    fileName: ${{ parameters.fileName }}
+    applicationName: ${{ parameters.applicationName }}
+    msixVersion: ${{ parameters.version }}
+    msixImageSize: ${{ parameters.msixImageSize }}
+    msixApplicationUNCPath: ${{ parameters.msixAppAttachUNCPath }}\${{ parameters.applicationName}}-msix-image-${{ parameters.version }}.vhdx
+
+- template: templates/CD-msix-stage.yaml
+  parameters: 
+    envId: ${{ parameters.envId }}
+    applicationName: ${{ parameters.applicationName }}
+    msixVersion: ${{ parameters.version }}
+    msixApplicationUNCPath: ${{ parameters.msixAppAttachUNCPath }}\${{ parameters.applicationName}}-msix-image-${{ parameters.version }}.vhdx
