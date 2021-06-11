@@ -1,0 +1,32 @@
+{
+  "applications": [
+    {
+      "id": "APP_ID_NAME",
+      "executable": "APP_EXECUTABLE_PATH",
+      "workingDirectory": "APP_EXECUTABLE_WORK_DIR"
+    }
+  ],
+  "processes": [
+    {
+      "executable": "APP_EXECUTABLE",
+      "fixups": [
+        {
+          "dll": "FileRedirectionFixup.dll",
+          "config": {
+            "redirectedPaths": {
+              "packageRelative": [
+                {
+                  "base": "FILE_REDIRECTION_BASE",
+                  "patterns": [
+                    "*.config",
+                    ".*\\.log"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
