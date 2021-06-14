@@ -3,6 +3,36 @@ set -x
 
 . ./dev-env.sh
 
+# Setup Azure DevOps project with Variable Groups, Service Connection(s)/Endpoint and Creating Pipeline (pointing to yaml)
+
+# Azure Devops Service Connection
+sed -i -e "s/\[subscriptionId\]/$SUBSCRIPTION_ID/g" ./azure-devops-service-endpoint-template.json
+sed -i -e "s/\[subscriptionName\]/$SUBSCRIPTION_NAME/g" ./azure-devops-service-endpoint-template.json
+sed -i -e "s/\[sc-name\]/$ADO_SC_NAME/g" ./azure-devops-service-endpoint-template.json
+sed -i -e "s/\[tenantId\]/$TENANT_ID/g" ./azure-devops-service-endpoint-template.json
+az devops service-endpoint create \
+  --service-endpoint-configuration ./azure-devops-service-endpoint-template.json \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT
+
+# Azure Devops Pipeline
+az pipelines create \
+  --name AVD-DEV-ABS-CS \
+  --branch Main \
+  --description 'AVD-DEV-ABS-CS pipeline'\
+  --repository MSIXPipelinePattern \
+  --repository-type tfsgit \
+  --skip-first-run true \
+  --yaml-path '/.pipelines/env-CICD-avd-msix-app-attach.yml' \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT
+
+az pipelines list \
+  --name 'AVD*' \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT
+
+
 # Application specific variable group
 ## Create APP variable group
 az pipelines variable-group create \
@@ -40,7 +70,7 @@ az pipelines variable-group create \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
 
-#get DEV variable group ID
+## Get DEV variable group ID
 DEVVariableGroupID=$(az pipelines variable-group list \
   --detect true \
   --group-name 'DEV*' \
@@ -48,7 +78,7 @@ DEVVariableGroupID=$(az pipelines variable-group list \
   --project ABSEE \
   --query '[].id'\
   -o tsv)
-#Create secrets in DEV variable group
+## Create secrets in DEV variable group
 az pipelines variable-group variable create \
   --group-id $DEVVariableGroupID \
   --name VMAdminPassword \
@@ -66,7 +96,7 @@ az pipelines variable-group create \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
 
-#get QA variable group ID
+## Get QA variable group ID
 QAVariableGroupID=$(az pipelines variable-group list \
   --detect true \
   --group-name 'QA*' \
@@ -74,7 +104,7 @@ QAVariableGroupID=$(az pipelines variable-group list \
   --project ABSEE \
   --query '[].id'\
   -o tsv)
-#Create secrets in QA variable group
+## Create secrets in QA variable group
 az pipelines variable-group variable create \
   --group-id $QAVariableGroupID \
   --name VMAdminPassword \
@@ -92,7 +122,7 @@ az pipelines variable-group create \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
 
-#get PROD variable group ID
+## Get PROD variable group ID
 PRODVariableGroupID=$(az pipelines variable-group list \
   --detect true \
   --group-name 'PROD*' \
@@ -100,7 +130,7 @@ PRODVariableGroupID=$(az pipelines variable-group list \
   --project ABSEE \
   --query '[].id'\
   -o tsv)
-#Create secrets in PROD variable group
+## Create secrets in PROD variable group
 az pipelines variable-group variable create \
   --group-id $PRODVariableGroupID \
   --name VMAdminPassword \

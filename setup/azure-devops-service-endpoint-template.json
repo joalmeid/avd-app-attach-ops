@@ -1,0 +1,32 @@
+{
+  "data": {
+    "creationMode": "Automatic",
+    "environment": "AzureCloud",
+    "managementGroupId": "",
+    "managementGroupName": "",
+    "mlWorkspaceLocation": "",
+    "mlWorkspaceName": "",
+    "oboAuthorization": "",
+    "resourceGroupName": "",
+    "resourceId": "",
+    "scopeLevel": "Subscription",
+    "subscriptionId": "[subscriptionId]",
+    "subscriptionName": "[subscriptionName]"
+  },
+  "description": "",
+  "groupScopeId": null,
+  "isReady": false,
+  "isShared": false,
+  "name": "[sc-name]",
+  "authorization": {
+    "parameters": {
+      "authenticationType": "spnKey",
+      "tenantId": "[tenantId]"
+    },
+    "scheme": "ServicePrincipal"
+  },
+  "owner": "Library",
+  "readersGroup": null,
+  "type": "azurerm",
+  "url": "https://management.azure.com/"
+}
