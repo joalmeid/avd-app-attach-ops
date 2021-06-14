@@ -1,0 +1,16 @@
+# MSIX Config Steps
+
+steps:
+# MAKEPRI: GENERATE PRICONFIG.XML and create the pri files
+- task: PowerShell@2
+  displayName: 'RUN PriConfig'
+  inputs:
+    targetType: inline
+    workingDirectory: AppConfigured
+    script: |
+      $appWorkingFolder=(Get-Location).Path
+      $appMsixSourceFolderName="."
+      ## MakePri: Generate Config for Resources package 
+      & "..\src\Tools\windowskit\x64\makepri.exe" createconfig /cf ".\$appMsixSourceFolderName\priconfig.xml" /dq en-US /o
+      ## MakePri: Create the resources.pri file(s)
+      & "..\src\Tools\windowskit\x64\makepri.exe" new /pr ".\$appMsixSourceFolderName" /cf ".\$appMsixSourceFolderName\priconfig.xml" /of ".\$appMsixSourceFolderName\resources.pri" /mn ".\$appMsixSourceFolderName\appxmanifest.xml" /o

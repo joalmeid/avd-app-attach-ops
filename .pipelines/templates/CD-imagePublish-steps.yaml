@@ -44,9 +44,10 @@ steps:
       Write-Host "##[debug] `tImage Artifact Location: $($manifest.MsixImage.Properties.ImageArtifactLocation)"
       Write-Host "##[debug] `tImage Msix AppAttach Location: $($manifest.MsixImage.Properties.ImageMsixAppAttachLocation)"
 
-# Copy MSIX App Attach image to AVD file share
+# Copy MSIX App Attach image to AVD file share (Azure VM)
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-file-copy?view=azure-devops
 - task: AzureFileCopy@4
-  displayName: 'COPY Msix Image to Fileshare'
+  displayName: 'COPY Msix Image to Fileshare (Azure VM)'
   inputs:
     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
     azureSubscription: ${{ parameters.azureSubscription }}
@@ -57,22 +58,10 @@ steps:
     vmsAdminPassword: $(VMAdminPassword)
     TargetPath: 'c:\\Syncier\MSIX'
     enableCopyPrerequisites: true
+    #machineNames: # Optional. Must be used if there are more VMs in the referenced Resource Group.
     #copyFilesInParallel: true # Optional
     cleanTargetBeforeCopy: false # Optional
     skipCACheck: true 
     TestCertificate: true
     #sasTokenTimeOutInMinutes: # Optional
 
-
-# Windows machine file copy
-# works for self-hosted agent in the V-Net to the file share 
-# - task: WindowsMachineFileCopy@2
-#   inputs:
-#     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
-#     machineNames: 'absee-fileshare'
-#     adminUserName: $(VMAdminUsername)
-#     adminPassword: $(VMAdminPassword)
-#     targetPath: 'Syncier'
-#     #cleanTargetBeforeCopy: false # Optional
-#     #copyFilesInParallel: true # Optional
-#     #additionalArguments: # Optional

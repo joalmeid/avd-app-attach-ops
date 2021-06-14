@@ -23,8 +23,8 @@ parameters:
     type: string
     default: app
   - name: msixImageSize
-    type: number
-    default: 100
+    type: string
+    default: '100'
 
 steps:
 - task: MsixPackaging@1

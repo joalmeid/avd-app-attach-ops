@@ -17,19 +17,8 @@ parameters:
   - name: applicationName
     type: string
     default: app
-  - name: applicationGroupName
-    type: string
-    default: dev-ag
 
 steps:
-
-# Install Certs to AVD Session Hosts 
-- task: PowerShell@2
-  displayName: INSTALL Certificate in AVD Session Hosts (TO BE DISCUSSED)
-  inputs:
-    targetType: inline
-    #workingDirectory: # Optional
-    script: Write-Host "Install Certs to AVD Session Hosts"
 
 # Register MSIX AppAttach to AVD as inactive
 - task: AzurePowerShell@5
@@ -44,11 +33,10 @@ steps:
       Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
       Install-Module -Name Az.DesktopVirtualization -Force -Verbose -Scope CurrentUser
       Write-Host "##[debug] Pubishing AVD Msix Package:"
-      Write-Host "##[debug] `tWVD Resource Group: ${{ parameters.resourceGroup }}"
-      Write-Host "##[debug] `tWVD Host Pool Name: ${{ parameters.hostPoolName }}"
+      Write-Host "##[debug] `tAVD Resource Group: ${{ parameters.resourceGroup }}"
+      Write-Host "##[debug] `tAVD Host Pool Name: ${{ parameters.hostPoolName }}"
       Write-Host "##[debug] `tMsix Application UNC Path: ${{ parameters.msixApplicationUNCPath }}"
       Write-Host "##[debug] `tApplication Display Name: ${{ parameters.applicationName }}"
-      #Write-Host "##[debug] `tApplication Group Name: ${{ parameters.applicationGroupName }}"
 
       $objPackage = Expand-AzWvdMsixImage -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }} -Uri ${{ parameters.msixApplicationUNCPath }}
       Write-Host "##[debug] `tPackage Full Name: $($objPackage.PackageFullName)"
@@ -56,8 +44,4 @@ steps:
       New-AzWvdMsixPackage -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }} -PackageAlias $objPackage.PackageAlias -DisplayName ${{ parameters.applicationName }} -ImagePath ${{ parameters.msixApplicationUNCPath }} -IsActive:$false
       # Create Variable with Package Full Name 
       Write-Host "##vso[task.setvariable variable=msixPackageFullName;isOutput=true]$($objPackage.PackageFullName)"
-      # ADD TO APP GROUP
-      #Get-AzWvdApplicationGroup -ResourceGroupName ${{ parameters.resourceGroup }}
-      # SET ACTIVE
-      #New-AzWvdApplication -ResourceGroupName ${{ parameters.resourceGroup }} -Name ${{ parameters.applicationName }} -ApplicationType MsixApplication -ApplicationGroupName ${{ parameters.applicationGroupName }} -MsixPackageFamilyName $obj.PackageFamilyName -CommandLineSetting 0
       

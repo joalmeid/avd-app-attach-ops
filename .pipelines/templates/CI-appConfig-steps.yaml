@@ -50,6 +50,7 @@ steps:
     targetFolder: AppConfigured
     flattenFolders: false # Optional
 
+# Currently the PSF fixups are not being used. Set enabled to true, in order to use it.
 - task: CopyFiles@2
   displayName: COPY Psf artifacts
   enabled: false

@@ -1,8 +1,5 @@
 # CD ROOT Stage 
 parameters:
-- name: envId
-  type: string
-  default: DEV
 - name: applicationName
   type: string
 - name: msixVersion
@@ -11,26 +8,20 @@ parameters:
   type: string
 
 stages:
-- stage: CD_${{parameters.envId}}
-  displayName: CD_${{parameters.envId}}
-  variables:
-  - group: ${{parameters.envId}}-msix-appattach-vg
-
+- stage: CD
+  displayName: CD
   jobs:
-
   - deployment: PublishImage
     displayName: PublishImage
     pool:
       vmImage: windows-latest
-    environment: ${{parameters.envId}}
-    variables:
-    - group: ${{parameters.envId}}-msix-appattach-vg
+    environment: 'MSIX_AppAttach_Dev'
     strategy:
       runOnce:
         deploy:
           steps:
           # Image (VHDX) publishing process
-          - template: ./imagePublishSteps.yaml
+          - template: ./CD-imagePublish-steps.yaml
             parameters:
               azureSubscription: $(azureSubscription)
               resourceGroup: $(resourceGroup)
@@ -40,7 +31,8 @@ stages:
               msixApplicationUNCPath: ${{ parameters.msixApplicationUNCPath }}
 
           # App (AVD MSIX Appattach) publishing process
-          - template: ./appPublishSteps.yaml
+          # Output the variable 'msixPackageFullName'
+          - template: ./CD-appPublish-steps.yaml
             parameters:
               azureSubscription: $(azureSubscription)
               resourceGroup: $(resourceGroup)
@@ -52,7 +44,6 @@ stages:
   # Manual intervention Job for Release evaluation
   - job: waitForValidation
     displayName: Wait for external validation
-    condition: ne('${{ parameters.envId }}', 'DEV')
     dependsOn: PublishImage
     pool: server
     timeoutInMinutes: 4320 # job times out in 3 days
@@ -60,10 +51,7 @@ stages:
     - task: ManualValidation@0
       timeoutInMinutes: 1440 # task times out in 1 day
       inputs:
-        notifyUsers: |
-          joalmeid@microsoft.com
-          cbinder@microsoft.com
-          abscs_dl@syncier-example.com
+        notifyUsers: $(notifyManualValidationEmails)
         instructions: 'MSIX package has been registered and currently inactive. Make sure this package exists in any application group so it can be activated and made available to end-users.'
         onTimeout: 'resume'
 
@@ -77,10 +65,10 @@ stages:
       msixPackageFullName: $[ dependencies.PublishImage.outputs['PublishImage.createMsixPackage.msixPackageFullName'] ]
     steps:
 
-    - template: ./appAVDApprovalActiveSteps.yaml
+    - template: ./CD-appAVDApprovalActive-steps.yaml
       parameters:
-        azureSubscription: WVD-INTERNAL-AZURE
-        resourceGroup: absee-dev-rg
-        hostPoolName: syncier-dev-wvd
+        azureSubscription: $(azureSubscription)
+        resourceGroup: $(resourceGroup)
+        hostPoolName: $(hostPoolName)
         applicationFullName: $(msixPackageFullName)
         applicationName: ${{ parameters.applicationName}}

@@ -1,0 +1,114 @@
+# root MSIX AppAttach Multi-stage pipeline (CI & CD)
+# Requires resources: Storage, AVD Session Pool, Variable group named Secrets with containing the CertificatePassword variable
+# Required variables to set: fileName, applicationName, version, fileLocation, msixAppAttachUNCPath
+
+trigger:
+- none
+
+parameters:
+- name: fileLocation # The SAC file location path. Expected to be reachacble through http/https protocol for direct download.
+  displayName: Configured App Path
+  type: string
+  default: https://wvdsdevstrg.blob.core.windows.net/app-input
+- name: fileName # The input zip file name for a particular release
+  displayName: Configured App File Name
+  type: string
+  default: appbin.zip
+- name: applicationName # The application name to be used in the AVD deployment
+  displayName: Application Name
+  default: SimpleApp
+- name: version # The application version (semantic version is recommended) to be used in the AVD deployment
+  displayName: Application Version
+  type: string
+- name: msixImageSize # The maximum MSIX image size to be used in the VHD/CIM image format. Must be enough to include full application and its dependencies.
+  displayName: MSIX Maximum Image Size
+  type: number
+  default: 1024
+- name: msixAppAttachUNCPath # The UNC share to be used to place the MSIX App Attach image. It will be used during the app registration in AVD.
+  displayName: MSIX App Attach Path
+  type: string
+  default: \\msix-fileshare.mydomain.onmicrosoft.com\application\releases
+
+variables:
+# Application specific variable group
+- group: APP-msix-appattach-vg 
+# The application name to be used in the AVD deployment
+# - name: applicationName
+#   value: SyncierConfigSuite
+# The application display name to be used in the MSIX package to be deployed in the AVD environment.
+# - name: applicationDisplayName
+#   value: Syncier Config Suite
+# The application description to be used in the MSIX package to be deployed in the AVD environment.
+# - name: applicationDescription 
+#   value: SyncierConfigSuite
+# The application full executable path in the in the MSIX package. Corresponds to the main application entrypoint.
+# - name: applicationExecutable 
+#   value: GGRLSUITE\bin\abs_configuration_suite.exe
+# The MSIX Package certificate publisher. Typically follows the syntax "CN=Contoso Software, O=Contoso Corporation, C=US".
+# - name: publisher 
+#   value: CN=syncier
+# The MSIX Package certificate publisher display name.
+# - name: publisherDisplayName 
+#   value: SyncierConfigSuite
+# The maximum MSIX image size to be used in the VHD/CIM image format. Must be enough to include full application and its dependencies.
+# - name: msixImageSize 
+#   value: 1024
+# The certificate file name to sign the MSIX Package.
+# - name: CertificateName 
+#   value: configsuite-sscert-msix.pfx # syncier-sscert-msix.pfx
+# The Name of the variable [CertificatePassword] referencing the secure variable containing the password used by MsixSigning@1
+# - name: CertificatePasswordVariable 
+#   value: CertificatePassword
+# The certificate password
+# - name: CertificatePassword 
+#   value: *******
+
+## Environment specific variables
+- group: DEV-msix-appattach-vg
+# The name of a Service Connection of type Azure Resource Manager in the Azure Devops organization. It will provide access to storage accounts, Virtual Machines, AVD or any other azure resource.
+# - name: azureSubscription
+#   value: WVD-INTERNAL-AZURE
+# The resource group where the Azure Virtual Desktop resource are created (session pool, application groups and/or workspace).
+# - name: resourceGroup 
+#   value: absee-dev-rg
+# The storage account where the CI_App_base will be copied from and used by the AzureCopyTask@4
+# - name: storageAccount 
+#   value: wvdsdevstrg
+# The session host pool resource name in the Azure Virtual Desktop infrastructure.
+# - name: hostPoolName 
+#   value: syncier-dev-wvd
+# Name of the Azure VM Admin User
+# - name: VMAdminUsername
+#   value: ******
+# Password of the Azure VM Admin User]
+# - name: VMAdminPassword
+#   value: ******
+
+
+# Secrets variable group (if you chose to bind to Keyvault)
+#- group: Secrets-msix-appattach-vg 
+
+# NOtificationUsers for Manual Intervention use a multiline field, not supported by Variable Groups
+# Alternative is to use Environment Validation or use pipeline variables (implemented here)
+- name: notifyManualValidationEmails
+  value: |
+    joalmeid@microsoft.com
+    cbinder@microsoft.com
+    abscs_dl@syncier-example.com
+
+stages:
+
+- template: templates/CI-msix-stage.yaml
+  parameters: 
+    fileLocation: ${{ parameters.fileLocation }}
+    fileName: ${{ parameters.fileName }}
+    applicationName: $(applicationName)
+    msixVersion: ${{ parameters.version }}
+    msixImageSize:  ($(msixImageSize))
+    msixApplicationUNCPath: ${{ parameters.msixAppAttachUNCPath }}\$(applicationName)-msix-image-${{ parameters.version }}.vhdx
+
+- template: templates/CD-msix-stage.yaml
+  parameters: 
+    applicationName: $(applicationName)
+    msixVersion: ${{ parameters.version }}
+    msixApplicationUNCPath: ${{ parameters.msixAppAttachUNCPath }}\$(applicationName)-msix-image-${{ parameters.version }}.vhdx
