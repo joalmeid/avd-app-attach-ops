@@ -9,25 +9,19 @@ parameters:
 - name: fileLocation # The SAC file location path. Expected to be reachacble through http/https protocol for direct download.
   displayName: Configured App Path
   type: string
-  default: https://wvdsdevstrg.blob.core.windows.net/app-input
-- name: fileName # The input zip file name for a particular release
+  default: https://wvdsdevstrg.blob.core.windows.net/syncier-sac
+- name: fileName # The SAC file name for a particular release
   displayName: Configured App File Name
   type: string
-  default: appbin.zip
-- name: applicationName # The application name to be used in the AVD deployment
-  displayName: Application Name
-  default: SimpleApp
+  default: syncier-abscs-configured.zip
 - name: version # The application version (semantic version is recommended) to be used in the AVD deployment
   displayName: Application Version
   type: string
-- name: msixImageSize # The maximum MSIX image size to be used in the VHD/CIM image format. Must be enough to include full application and its dependencies.
-  displayName: MSIX Maximum Image Size
-  type: number
-  default: 1024
+  default: "0.0.3.0"
 - name: msixAppAttachUNCPath # The UNC share to be used to place the MSIX App Attach image. It will be used during the app registration in AVD.
   displayName: MSIX App Attach Path
   type: string
-  default: \\msix-fileshare.mydomain.onmicrosoft.com\application\releases
+  default: \\absee-fileshare.jdaloc.onmicrosoft.com\SYNCIER\msix
 
 variables:
 # Application specific variable group
