@@ -18,7 +18,7 @@ parameters:
     default: app
   - name: msixApplicationUNCPath
     type: string
-    default: \\fileshare.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx
+    default: \\fileshare.domain.onmicrosoft.com\avd-apps\app-msix-image-0.0.0.0.vhdx
 
 steps:
 # GET VHDX
@@ -56,12 +56,9 @@ steps:
     resourceGroup: ${{ parameters.resourceGroup }}
     vmsAdminUserName: $(VMAdminUsername)
     vmsAdminPassword: $(VMAdminPassword)
-    TargetPath: 'c:\\Syncier\MSIX'
+    TargetPath: 'c:\\Contoso\MSIX'
     enableCopyPrerequisites: true
-    #machineNames: # Optional. Must be used if there are more VMs in the referenced Resource Group.
-    #copyFilesInParallel: true # Optional
     cleanTargetBeforeCopy: false # Optional
     skipCACheck: true 
     TestCertificate: true
-    #sasTokenTimeOutInMinutes: # Optional
 

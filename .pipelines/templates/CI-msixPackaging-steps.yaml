@@ -9,7 +9,7 @@ parameters:
     default: CertificatePassword
   - name: imageMetadataFile
     type: string
-    default: src/image_metadata.xml
+    default: msix-appattach/image_metadata.xml
   - name: msixApplicationUNCPath
     type: string
     default: \\fileshare.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx

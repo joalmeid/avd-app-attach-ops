@@ -45,7 +45,7 @@ stages:
       parameters:
         CertificateName: $(CertificateName)
         CertificatePasswordVariable: $(CertificatePasswordVariable) # From variable group
-        imageMetadataFile: src/image_metadata.xml
+        imageMetadataFile: msix-appattach/image_metadata.xml
         msixVersion: ${{ parameters.msixVersion }}
         msixApplicationUNCPath: ${{ parameters.msixApplicationUNCPath }}\${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
         msixImageSize: ${{ parameters.msixImageSize }}
