@@ -31,3 +31,4 @@ export AVD_FILE_SHARE_NAME=avd-unc
 export AAD_WVG_GRP=avd-user-group
 export ADO_ORGANIZATION=https://dev.azure.com/xxxxx/
 export ADO_PROJECT=xxxxx
+export ADO_SC_NAME=xxxxx

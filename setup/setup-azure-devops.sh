@@ -37,7 +37,7 @@ az pipelines list \
 ## Create APP variable group
 az pipelines variable-group create \
   --name 'APP-msix-appattach-vg' \
-  --variables applicationDescription=SyncierConfigSuite applicationDisplayName='Syncier Config Suite' applicationExecutable=GGRLSUITE\\bin\\abs_configuration_suite.exe applicationName=SyncierConfigSuite CertificateName=configsuite-sscert-msix.pfx CertificatePasswordVariable=CertificatePassword msixImageSize=1024 publisher=CN=syncier publisherDisplayName=SyncierConfigSuite \
+  --variables applicationDescription=SimpleApp applicationDisplayName='Simple App' applicationExecutable=simple-app.exe applicationName=SimpleApp CertificateName=configsuite-sscert-msix.pfx CertificatePasswordVariable=CertificatePassword msixImageSize=1024 publisher=CN=Contoso publisherDisplayName=Contoso \
   --authorize true \
   --description 'Application specific variable group for AVD and MSIX Appattach automation' \
   --org $ADO_ORGANIZATION \
@@ -47,8 +47,8 @@ az pipelines variable-group create \
 AppVariableGroupID=$(az pipelines variable-group list \
   --detect true \
   --group-name 'APP*' \
-  --org https://dev.azure.com/xcbinder/ \
-  --project ABSEE \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT \
   --query '[].id'\
   -o tsv)
 ## Create secrets in APP variable group
@@ -56,7 +56,7 @@ az pipelines variable-group variable create \
   --group-id $AppVariableGroupID \
   --name CertificatePassword1 \
   --secret true \
-  --value Q1w2e3r4t5y6. \
+  --value $VM_ADMIN_PASSWD \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
 
@@ -64,7 +64,7 @@ az pipelines variable-group variable create \
 ## Create DEV variable group
 az pipelines variable-group create \
   --name 'DEV-msix-appattach-vg' \
-  --variables applicationGroupName=syncier-absee-ag azureSubscription=WVD-INTERNAL-AZURE hostPoolName=syncier-dev-wvd resourceGroup=absee-dev-rg storageAccount=wvdsdevstrg VMAdminUsername=absee \
+  --variables applicationGroupName=$DEV_AG_NAME azureSubscription=$ADO_SC_NAME hostPoolName=$DEV_HPOOL_NAME resourceGroup=$DEV_RG storageAccount=$AVD_STRG_NAME VMAdminUsername=$VM_ADMIN \
   --authorize true \
   --description 'MSIX Appattach Package specific environment variables' \
   --org $ADO_ORGANIZATION \
@@ -74,8 +74,8 @@ az pipelines variable-group create \
 DEVVariableGroupID=$(az pipelines variable-group list \
   --detect true \
   --group-name 'DEV*' \
-  --org https://dev.azure.com/xcbinder/ \
-  --project ABSEE \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT \
   --query '[].id'\
   -o tsv)
 ## Create secrets in DEV variable group
@@ -83,14 +83,14 @@ az pipelines variable-group variable create \
   --group-id $DEVVariableGroupID \
   --name VMAdminPassword \
   --secret true \
-  --value Q1w2e3r4t5y6. \
+  --value $VM_ADMIN_PASSWD \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
 
 ## Create QA variable group
 az pipelines variable-group create \
   --name 'QA-msix-appattach-vg' \
-  --variables applicationGroupName=syncier-absee-ag azureSubscription=WVD-INTERNAL-AZURE hostPoolName=syncier-dev-wvd resourceGroup=absee-dev-rg storageAccount=wvdsdevstrg VMAdminUsername=absee \
+  --variables applicationGroupName=$DEV_AG_NAME azureSubscription=$ADO_SC_NAME hostPoolName=$DEV_HPOOL_NAME resourceGroup=$DEV_RG storageAccount=$AVD_STRG_NAME VMAdminUsername=$VM_ADMIN \
   --authorize true \
   --description 'MSIX Appattach Package specific environment variables' \
   --org $ADO_ORGANIZATION \
@@ -100,8 +100,8 @@ az pipelines variable-group create \
 QAVariableGroupID=$(az pipelines variable-group list \
   --detect true \
   --group-name 'QA*' \
-  --org https://dev.azure.com/xcbinder/ \
-  --project ABSEE \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT \
   --query '[].id'\
   -o tsv)
 ## Create secrets in QA variable group
@@ -109,14 +109,14 @@ az pipelines variable-group variable create \
   --group-id $QAVariableGroupID \
   --name VMAdminPassword \
   --secret true \
-  --value Q1w2e3r4t5y6. \
+  --value $VM_ADMIN_PASSWD \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
 
 ## Create PROD variable group
 az pipelines variable-group create \
   --name 'PROD-msix-appattach-vg' \
-  --variables applicationGroupName=syncier-absee-ag azureSubscription=WVD-INTERNAL-AZURE hostPoolName=syncier-dev-wvd resourceGroup=absee-dev-rg storageAccount=wvdsdevstrg VMAdminUsername=absee \
+  --variables applicationGroupName=$DEV_AG_NAME azureSubscription=$ADO_SC_NAME hostPoolName=$DEV_HPOOL_NAME resourceGroup=$DEV_RG storageAccount=$AVD_STRG_NAME VMAdminUsername=$VM_ADMIN \
   --authorize true \
   --description 'MSIX Appattach Package specific environment variables' \
   --org $ADO_ORGANIZATION \
@@ -126,8 +126,8 @@ az pipelines variable-group create \
 PRODVariableGroupID=$(az pipelines variable-group list \
   --detect true \
   --group-name 'PROD*' \
-  --org https://dev.azure.com/xcbinder/ \
-  --project ABSEE \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT \
   --query '[].id'\
   -o tsv)
 ## Create secrets in PROD variable group
@@ -135,6 +135,6 @@ az pipelines variable-group variable create \
   --group-id $PRODVariableGroupID \
   --name VMAdminPassword \
   --secret true \
-  --value Q1w2e3r4t5y6. \
+  --value $VM_ADMIN_PASSWD \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
