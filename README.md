@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Azure Virtual Desktop introduced lately the MSIX App Attach feature, which allows Ops teams effiently to deploy MSIX packages to the AVD infrastructure. The AVD MSIX App Attach starter ADO pipeline has the goal to provide a workflow automation to upgrade an MSIX Package to a new version using MSIX App Attach. Using ADO piplines will provide Ops teams traceability and operational relaibility to manage MSIX packages in AVD. We intentialy keept the process simple so that you can adopt it easily to your specific needs.
+Azure Virtual Desktop (AVD) introduced lately the [MSIX App Attach](https://docs.microsoft.com/en-us/azure/virtual-desktop/what-is-app-attach) feature, which allows Ops teams effiently to deploy MSIX packages to the AVD infrastructure. The AVD MSIX App Attach starter ADO pipeline has the goal to provide a workflow automation to upgrade an MSIX Package to a new version using MSIX App Attach. Using ADO piplines will provide Ops teams traceability and operational relaibility to manage MSIX packages in AVD. We intentialy keept the process simple so that you can adopt it easily to your specific needs.
 
 From a process perspective there are two main scenarios:
 1. The Team is owning the code and is building the Application as well as packaging the MSIX in an automated way before deploying to AVD.
@@ -33,9 +33,10 @@ The following graphic is showing the pipeline process structured by the CI stage
 ### YAML template structure
 
 todo > chris
+![YAML tempalte structure](doc/images/yaml_template_structure.jpg)
 
 - Image_Artifact_Location > link > Chris
-- Rollout Orchestration multiple environments > link > Joao
+- [Rollout Orchestration multiple environments](doc/images/multiple-environments.md) > Joao
 
 ## Prerequirements
 
@@ -45,6 +46,7 @@ todo > chris
   * Session Host Pool
   * Workspace
   * Application Group
+* Azure Active Directory Domain Services (AADDS)
 * Azure Storage Account Gen2
   * Create Blob container to place application input file (zip)
 * Azure Virtual Machine (fileshare)
@@ -55,42 +57,56 @@ Recommended IaC : [ARM Template to Create and provision new Windows Virtual Desk
 
 Once you have all the requirements checked, there will be a an Azure Virtual Desktop infrastructure already setup. This infrastructure also includes some additional Azure resources, hence being a full cloud native setup.
 
-This section helps getting started with the automation, focusing on the devops tasks you need to run in order to deploy a demo enterprise scale application using [MSIX App Attach](https://docs.microsoft.com/en-us/azure/virtual-desktop/what-is-app-attach) feature.
+In order to quickly start, let's configure the Azure DevOps project:
 
-As a generic set of steps you must:
+> Remember: Endgoal is to run the pipline and deploy the sample application to your AVD infrastructure.
 
->**NOTE:** All the steps are scripted in bash, using `az cli`. <ins>You can review/change all the variables in `/setup/dev-env.sh` and execute `/setup/setup-azure-devops.sh`.</ins>
+**1. Open a bash with `az cli` installed;**
+**2. Review/change all the variables in `/setup/dev-env.sh`;**
+**3. execute `/setup/setup-azure-devops.sh`.**
 
-* In your recently created Azure DevOps project
-  * Create the `Variable Groups` used by the pipelines;
-  * Create `Service Connection(s)` to your Azure Subscription(s);
-  * Create a `pipeline` in Azure Pipelines (pointing to yaml in `./pipelines/env-CICD-avd-msix-app-attach.yml`);
+  >  This script will execute the following tasks:
+  >
+  >  - Create the `Variable Groups` used by the pipelines;
+  >  - Create `Service Connection(s)` to your Azure Subscription(s);
+  >  - Create a `pipeline` in Azure Pipelines (pointing to yaml in `./pipelines/env-CICD-avd-msix-app-attach.yml`);
 
+**4. Copy the `/application/appbin.zip` to a reachable blob container in the Blob storage account.**
 
-* The pipeline is expecting an app zip file in a Blob Storage;
-  * Copy the `/application/appbin.zip` to a reachable blob container in the Blob storage account.
+  > The pipeline is expecting an app zip file in a Blob Storage.
 
 ## Configure the Environments
 
-For simplicity purpose, this pipeline does not leverage leverage [Multi-stage pipelines](https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/multi-stage-pipelines-experience?view=azure-devops). This could be easilly extended and/or maintaing seperate pipelines per environment (ex: **DEV**, **QA**, **PROD**).
+This YAML pipeline uses [Deployment Jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops) ence environments will be used and automatically created. This initial pipeline can be considered a **DEV** environment pipeline, where we already have specific [variable groups](#configure-the-variable-group) created.
 
-This initial pipeline can be considered a **DEV** environment pipeline, where we already have specific variable groups created.
+### Rollout Orchestration multiple environments
+
+Many enterprises require rollouts to be orchestrated trough several environments before reaching production. This is already implemented and can be easilly configured (ex: **DEV**, **QA**, **PROD**). For a more detailed information on multiple environments check the article [Rollout Orchestration multiple environments](doc/images/multiple-environments.md).
 
 ## Configure the Variable Group
 
 In your Azure Devops project, go to **Azure Pipelines > Library**. You should have a total of 4 variable groups already created:
 
-* `APP-msix-appattach-vg` : This is an application specific variable group. It should contain information to be used during the MSIX packaging steps.
-* `DEV-msix-appattach-vg` : This is an environment (DEV) specific variable group. Contains information about the environment, namelly azure service connection, AVD Session pool name and others. Should be simillar to other environment variable groups.
-* `QA-msix-appattach-vg` : This is an environment (QA) specific variable group.
-* `PROD-msix-appattach-vg` : This is an environment (PROD) specific variable group.
+- `APP-msix-appattach-vg` : This is an application specific variable group. It should contain information to be used during the MSIX packaging steps.
+- `DEV-msix-appattach-vg` : This is an environment (DEV) specific variable group. Contains information about the environment, namelly azure service connection, AVD Session pool name and others. Should be simillar to other environment variable groups.
+- `QA-msix-appattach-vg` : This is an environment (QA) specific variable group.
+- `PROD-msix-appattach-vg` : This is an environment (PROD) specific variable group.
 
-Currently we're only referencing `APP-msix-appattach-vg` and `DEV-msix-appattach-vg` in our pipeline. It is necessary to review the variable values according to you application and Azure Virtual Desktop infrastructure.
+<ins>Currently we're only referencing `APP-msix-appattach-vg` and `DEV-msix-appattach-vg` in our pipeline.</ins> Its necessary a review on the variable values according to your Azure Virtual Desktop infrastructure.
 
-* Review variable values in `APP-msix-appattach-vg`;
-* Review variable values in `DEV-msix-appattach-vg`.
+**5. Review variable values in `APP-msix-appattach-vg`;**
+**6. Review variable values in `DEV-msix-appattach-vg`.**
 
 ## Configure and run the CI/CD pipeline
+
+Now you're aready to run the pipeline using a Windows based Hosted Agent. The pipeline accepts parameters that must match you environment.
+
+**7. Run the created pipeline (default name shoud be `env-CICD-AVD-msix-app-attach`);**
+**8. Fill all the parameters accordingly to your environment;**
+
+![Pipeline parameters](doc/images/pipeline-parameters.jpg)
+
+> **NOTE:** you can directly change and commit the main YAML pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` and change the parameters default values.
 
 ## References
 
