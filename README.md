@@ -42,7 +42,8 @@ todo > chris
 
 * Azure Subscription
 * Azure DevOps project
-* Azure Virtual Desktop environment
+* Azure Virtual Desktop environment 
+  * [Requirements](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#requirements)
   * Session Host Pool
   * Workspace
   * Application Group
@@ -50,6 +51,8 @@ todo > chris
 * Azure Storage Account Gen2
   * Create Blob container to place application input file (zip)
 * Azure Virtual Machine (fileshare)
+* [Remote Desktop clients](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#supported-remote-desktop-clients)
+* bash shell
 
 Recommended IaC : [ARM Template to Create and provision new Windows Virtual Desktop hostpool](https://github.com/Azure/RDS-Templates/tree/master/ARM-wvd-templates)
 
@@ -117,3 +120,5 @@ Now you're aready to run the pipeline using a Windows based Hosted Agent. The pi
 * [Enterprise-scale support for the Windows Virtual Desktop construction set](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/wvd/enterprise-scale-landing-zone)
 * [Azure Virtual Desktop QuickStart](https://techcommunity.microsoft.com/t5/azure-virtual-desktop/introducing-the-windows-virtual-desktop-quickstart/m-p/1589347)
 * [Building a Windows 10 Enterprise Multi Session Master Image with the Azure Image Builder DevOps Task](https://techcommunity.microsoft.com/t5/azure-virtual-desktop/building-a-windows-10-enterprise-multi-session-master-image-with/m-p/1503913)
+* [Azure Virtual Desktop](https://docs.microsoft.com/en-us/azure/virtual-desktop/faq)
+* [MSIX app attach FAQ](https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach-faq)
