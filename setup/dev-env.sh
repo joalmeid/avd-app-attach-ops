@@ -32,3 +32,4 @@ export AAD_WVG_GRP=avd-user-group
 export ADO_ORGANIZATION=https://dev.azure.com/xxxxx/
 export ADO_PROJECT=xxxxx
 export ADO_SC_NAME=xxxxx
+export ADO_PIPELINE_NAME=env-CICD-AVD-msix-app-attach

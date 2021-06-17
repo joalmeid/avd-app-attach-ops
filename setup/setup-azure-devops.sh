@@ -17,21 +17,15 @@ az devops service-endpoint create \
 
 # Azure Devops Pipeline
 az pipelines create \
-  --name AVD-DEV-ABS-CS \
+  --name $ADO_PIPELINE_NAME \
   --branch Main \
-  --description 'AVD-DEV-ABS-CS pipeline'\
-  --repository MSIXPipelinePattern \
+  --description 'MSIX App Attach CI/CD pipeline'\
+  --repository $ADO_PROJECT \
   --repository-type tfsgit \
   --skip-first-run true \
   --yaml-path '/.pipelines/env-CICD-avd-msix-app-attach.yml' \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
-
-az pipelines list \
-  --name 'AVD*' \
-  --org $ADO_ORGANIZATION \
-  --project $ADO_PROJECT
-
 
 # Application specific variable group
 ## Create APP variable group
