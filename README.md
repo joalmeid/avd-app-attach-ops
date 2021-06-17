@@ -85,17 +85,20 @@ Many enterprises require rollouts to be orchestrated trough several environments
 
 ## Configure the Variable Group
 
-In your Azure Devops project, go to **Azure Pipelines > Library**. You should have a total of 4 variable groups already created:
+In your Azure Devops project, go to **Azure Pipelines > Library**. You should have a total of 2 variable groups already created:
 
 - `APP-msix-appattach-vg` : This is an application specific variable group. It should contain information to be used during the MSIX packaging steps.
 - `DEV-msix-appattach-vg` : This is an environment (DEV) specific variable group. Contains information about the environment, namelly azure service connection, AVD Session pool name and others. Should be simillar to other environment variable groups.
-- `QA-msix-appattach-vg` : This is an environment (QA) specific variable group.
-- `PROD-msix-appattach-vg` : This is an environment (PROD) specific variable group.
 
-<ins>Currently we're only referencing `APP-msix-appattach-vg` and `DEV-msix-appattach-vg` in our pipeline.</ins> Its necessary a review on the variable values according to your Azure Virtual Desktop infrastructure.
+> **NOTE:** For more information about parameters, variable groups or secure files, check the [Library Management](/doc/images/library-management.md) document.
+
 
 **5. Review variable values in `APP-msix-appattach-vg`;**
 **6. Review variable values in `DEV-msix-appattach-vg`.**
+
+## Configure the Secure file
+
+**7. Create a new secure file in the Azure Devops project;**
 
 ## Configure and run the CI/CD pipeline
 
