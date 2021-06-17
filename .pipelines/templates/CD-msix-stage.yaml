@@ -1,5 +1,8 @@
 # CD ROOT Stage 
 parameters:
+- name: envId
+  type: string
+  default: DEV
 - name: applicationName
   type: string
 - name: msixVersion
@@ -15,7 +18,7 @@ stages:
     displayName: PublishImage
     pool:
       vmImage: windows-latest
-    environment: 'MSIX_AppAttach_Dev'
+    environment: ${{parameters.envId}}
     strategy:
       runOnce:
         deploy:
