@@ -55,10 +55,13 @@ Currently we're only referencing `APP-msix-appattach-vg` and `DEV-msix-appattach
 * Review variable values in `APP-msix-appattach-vg`;
 * Review variable values in `DEV-msix-appattach-vg`.
 
-## Configure and run the CI pipeline
+## Configure and run the CI/CD pipeline
 
-## Configure and run the CD pipeline
+
 
 ## References
 
+* [What are the top methods to deploy a Windows Virtual Desktop Host Pool](https://cloudblogs.microsoft.com/industry-blog/en-gb/cross-industry/2020/03/17/what-are-the-top-methods-to-deploy-a-windows-virtual-desktop-host-pool/)
 * [Enterprise-scale support for the Windows Virtual Desktop construction set](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/wvd/enterprise-scale-landing-zone)
+* [Azure Virtual Desktop QuickStart](https://techcommunity.microsoft.com/t5/azure-virtual-desktop/introducing-the-windows-virtual-desktop-quickstart/m-p/1589347)
+* [Building a Windows 10 Enterprise Multi Session Master Image with the Azure Image Builder DevOps Task](https://techcommunity.microsoft.com/t5/azure-virtual-desktop/building-a-windows-10-enterprise-multi-session-master-image-with/m-p/1503913)
