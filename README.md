@@ -105,6 +105,9 @@ In your Azure Devops project, go to **Azure Pipelines > Library**. You should ha
 
 **7. Create a new secure file in the Azure Devops project;**
 
+  > Add the sample self-signed certificate available in `/msix-appattach/msix_certs/sscert.pfx` as a secure file;
+  > You can read how to do it in [Use secure files](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops).
+
 ## Configure and run the CI/CD pipeline
 
 Now you're aready to run the pipeline using a Windows based Hosted Agent. The pipeline accepts parameters that must match you environment.
