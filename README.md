@@ -65,7 +65,9 @@ In order to quickly start, let's configure the Azure DevOps project:
 > Remember: Endgoal is to run the pipline and deploy the sample application to your AVD infrastructure.
 
 **1. Open a bash with `az cli` installed;**
+
 **2. Review/change all the variables in `/setup/dev-env.sh`;**
+
 **3. execute `/setup/setup-azure-devops.sh`.**
 
   >  This script will execute the following tasks:
@@ -95,8 +97,8 @@ In your Azure Devops project, go to **Azure Pipelines > Library**. You should ha
 
 > **NOTE:** For more information about parameters, variable groups or secure files, check the [Library Management](/doc/images/library-management.md) document.
 
-
 **5. Review variable values in `APP-msix-appattach-vg`;**
+
 **6. Review variable values in `DEV-msix-appattach-vg`.**
 
 ## Configure the Secure file
@@ -107,12 +109,30 @@ In your Azure Devops project, go to **Azure Pipelines > Library**. You should ha
 
 Now you're aready to run the pipeline using a Windows based Hosted Agent. The pipeline accepts parameters that must match you environment.
 
-**7. Run the created pipeline (default name shoud be `env-CICD-AVD-msix-app-attach`);**
-**8. Fill all the parameters accordingly to your environment;**
+**8. Run the created pipeline (default name shoud be `env-CICD-AVD-msix-app-attach`);**
+
+**9. Fill all the parameters accordingly to your environment;**
 
 ![Pipeline parameters](doc/images/pipeline-parameters.jpg)
 
-> **NOTE:** you can directly change and commit the main YAML pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` and change the parameters default values.
+  > **NOTE:** you can directly change and commit the main YAML pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` and change the parameters default values.
+
+**9. Once the pipeline is successfully executed, check your AVD environment;**
+
+  >  Check your MSIX Pachages in the AVD resource
+
+![Pipeline parameters](doc/images/pipeline-parameters.jpg)
+
+**10. Add the new app in an existing Application Group with respective assingments;**
+
+  > Go to your AVD Host pool resource and open `Application Groups` and select a application group;
+  > Click in `Applications (manage)` and add a new Application;
+  > Specify recently deployed `MSIX Package` and optionally fulfill the `Display Name` and `Description`
+  > Documentation is available in article [Manage app groups with the Azure portal](https://docs.microsoft.com/en-us/azure/virtual-desktop/manage-app-groups).
+
+![AVD Application Group](doc/images/avd_app_group.jpg)
+
+**11. Sign-in into one of the session hosts and run the deployed application;**
 
 ## References
 
