@@ -2,13 +2,13 @@
 
 ## Introduction
 
-Azure Virtual Desktop (AVD) introduced lately the [MSIX App Attach](https://docs.microsoft.com/en-us/azure/virtual-desktop/what-is-app-attach) feature, which allows Ops teams effiently to deploy MSIX packages to the AVD infrastructure. The AVD MSIX App Attach starter ADO pipeline has the goal to provide a workflow automation to upgrade an MSIX Package to a new version using MSIX App Attach. Using ADO piplines will provide Ops teams traceability and operational relaibility to manage MSIX packages in AVD. We intentialy keept the process simple so that you can adopt it easily to your specific needs.
+[Fast forward -  jump directly to the *Getting started* section](#getting-started)
 
-From a process perspective there are two main scenarios:
-1. The Team is owning the code and is building the Application as well as packaging the MSIX in an automated way before deploying to AVD.
-2. The Team is getting App binaries and will need to create the MSIX package before deploying to AVD.
+Azure Virtual Desktop (AVD) introduced lately the [MSIX App Attach](https://docs.microsoft.com/en-us/azure/virtual-desktop/what-is-app-attach) feature, which allows Ops teams effiently to deploy MSIX packages to the AVD infrastructure. The AVD MSIX App Attach starter ADO pipeline has the goal to provide a workflow automation to create and upgrade an MSIX Package to a new version using MSIX App Attach. Using ADO piplines will provide Ops teams traceability and operational relaibility to manage MSIX packages in AVD. We intentialy keept the process simple so that you can adopt it easily to your specific needs.
 
-The starter pipeline implements the second scenario. The pipeline could be easly adopted for the first scenario as well by changing the CI stage of the pipeline to work with your existing automation.
+The pipeline will support out of the box the scenario where the team is getting App binaries for the Application.  They need to be packaged in an MSIX package and deployed to AVD.
+
+If the the Team is owning the code and is building the Application as well as packaging the MSIX in an automated way before deploying to AVD. The pipeline could be easly adopted for this scenario by changing the CI stage of the pipeline to integrate with your existing automation.
 
 The following graphic is showing an overview of the key components involved by the second scenario. The pipeline implemets a CI and CD stage. The CI stage is getting the App binaries from a Azure Blob. The CD stage deploys the image to the MSIX _AppAttach_File_share (1) and depolys it to the AVD infrastructure (2):
 
