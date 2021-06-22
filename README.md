@@ -36,7 +36,9 @@ The pipeline is using yaml templates to structure the workflow. The following ov
 
 ![YAML tempalte structure](doc/images/yaml_template_structure.jpg)
 
-- [Understand Image_Artifact_Location] (doc/images/image-artifact-location.md) 
+Use the following links to learn more details about used patterns:
+
+- [Understand the concept Image_Artifact_Location](doc/images/image-artifact-location.md) 
 - [Rollout Orchestration multiple environments](doc/images/multiple-environments.md)
 
 ## Prerequirements
