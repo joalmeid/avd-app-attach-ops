@@ -43,19 +43,22 @@ Use the following links to learn more details about used patterns:
 
 ## Prerequirements
 
-* Azure Subscription
-* Azure DevOps project
-* Azure Virtual Desktop environment 
+As this project fosters a full MSIX Appattach CI/CD pipeline to Azure Virtual Desktop, there is a set of requirements which are out of scope. However, we present a list of requirements and specific notes are provided:
+
+* **Azure Subscription** : An Azure Subscription is required to host all related AVD related resources;
+* **Azure DevOps project** : An Azure DevOps project is required using Azure Repos and Azure Pipelines;
+* **Azure Virtual Desktop environment** :
   * [Requirements](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#requirements)
-  * Session Host Pool
+  * Session Host Pool : Recommended IaC : [ARM Template to Create and provision new Windows Virtual Desktop hostpool](https://github.com/Azure/RDS-Templates/tree/master/ARM-wvd-templates)
+
   * Workspace
   * Application Group
-* Azure Active Directory Domain Services (AADDS)
-* Azure Storage Account Gen2
+* **Azure Active Directory Domain Services (AADDS)** :
+* **Azure Storage Account Gen2** :
   * Create Blob container to place application input file (zip)
-* Azure Virtual Machine (fileshare)
+* **Azure Virtual Machine (fileshare)**:
 * [Remote Desktop clients](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#supported-remote-desktop-clients)
-* bash shell
+* **Bash shell** :  (ex: WSLv2) with Azure CLI installed
 
 Recommended IaC : [ARM Template to Create and provision new Windows Virtual Desktop hostpool](https://github.com/Azure/RDS-Templates/tree/master/ARM-wvd-templates)
 
