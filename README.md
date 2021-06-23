@@ -48,25 +48,43 @@ As this project fosters a full MSIX Appattach CI/CD pipeline to Azure Virtual De
 * **Azure Subscription** : An Azure Subscription is required to host all related AVD related resources;
 * **Azure DevOps project** : An Azure DevOps project is required using Azure Repos and Azure Pipelines;
 * **Azure Virtual Desktop environment** :
-  * [Requirements](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#requirements)
-  * Session Host Pool : Recommended IaC : [ARM Template to Create and provision new Windows Virtual Desktop hostpool](https://github.com/Azure/RDS-Templates/tree/master/ARM-wvd-templates)
-
-  * Workspace
-  * Application Group
+  * There are a set of [Requirements](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#requirements) for the AVD environment
+  * Session Host Pool : There is [tutorial](https://docs.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-azure-marketplace) in AVD documentation.
+    * Alternatively, you can also recur to the [AVD ARM based Infrastructure as Code](https://github.com/Azure/RDS-Templates/tree/master/ARM-wvd-templates)
+  * Application Group: There is [tutorial](https://docs.microsoft.com/en-us/azure/virtual-desktop/manage-app-groups) in AVD documentation.
 * **Azure Active Directory Domain Services (AADDS)** :
 * **Azure Storage Account Gen2** :
-  * Create Blob container to place application input file (zip)
-* **Azure Virtual Machine (fileshare)**:
-* [Remote Desktop clients](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#supported-remote-desktop-clients)
-* **Bash shell** :  (ex: WSLv2) with Azure CLI installed
-
-Recommended IaC : [ARM Template to Create and provision new Windows Virtual Desktop hostpool](https://github.com/Azure/RDS-Templates/tree/master/ARM-wvd-templates)
+  * Create Blob container to place application input file (zip). Documentation is available [here](https://docs.microsoft.com/en-us/azure/storage/blobs/.storage-quickstart-blobs-portal)
+* **Azure Virtual Machine (fileshare)** : For using the MSIX App Attach feature, a UNC file share is required. In this setup, a common Virtual Machine is set up. Documentation is available [here](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal).
+* **Remote Desktop clients** : Several clients are supported for different OSs and devices. Download the one that suits you, by checking the options [here](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#supported-remote-desktop-clients).
+* **Bash shell** : Having a bash shell (ex:WSL2) in order to run provided `.sh` scripts. The Azure CLI is requried to be installed.
 
 ## Getting Started
 
 Once you have all the requirements checked, there will be a an Azure Virtual Desktop infrastructure already setup. This infrastructure also includes some additional Azure resources, hence being a full cloud native setup.
 
-In order to quickly start, let's configure the Azure DevOps project to run the pipline and deploy the sample application to your AVD infrastructure.
+<img src="doc/images/variable_groups_schematic.jpg" alt="Pipeline used Libraries">
+
+1. If you're familiar with Azure Devops you may prefer to do some of the steps manually. The following tasks are required in order to run this pipeline:
+
+    - Create an Azure Devops project pointing to the repo;
+    - Create azure Service connection;
+    - Create Azure Devops pipeline pointing to yaml
+    - Create Application Variable Group (review and update Variables including secrets)
+    - Create Environment Variable Group (review and update Variables including secrets)
+    - Create Secure File (certificate)
+
+2. We've also automated part of the initial setup. In order to quickly start, let's configure the Azure DevOps project to run the pipline and deploy the sample application to your AVD infrastructure.
+
+    - Create Azure Devops project pointing to the repo (manual)
+    - Review and update bash variables in `/setup/dev-env.sh` (manual)
+    - Run the `/setup/setup-azure-devops.sh`
+    - Update secrets in Variable Groups (manual)
+    - Create Secure File (certificate) (manual)
+
+Let us help you wit a complete walkthrough:
+
+### Setup Azure Devops
 
 **1. Open a bash with `az cli` installed;**
 
@@ -80,19 +98,7 @@ In order to quickly start, let's configure the Azure DevOps project to run the p
   >  - Create `Service Connection(s)` to your Azure Subscription(s);
   >  - Create a `pipeline` in Azure Pipelines (pointing to yaml in `./pipelines/env-CICD-avd-msix-app-attach.yml`);
 
-**4. Copy the `/application/appbin.zip` to a reachable blob container in the Blob storage account.**
-
-  > The pipeline is expecting an app zip file in a Blob Storage.
-
-## Configure the Environments
-
-This YAML pipeline uses [Deployment Jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops) ence environments will be used and automatically created. This initial pipeline can be considered a **DEV** environment pipeline, where we already have specific [variable groups](#configure-the-variable-group) created.
-
-### Rollout Orchestration multiple environments
-
-Many enterprises require rollouts to be orchestrated trough several environments before reaching production. This is already implemented and can be easilly configured (ex: **DEV**, **QA**, **PROD**). For a more detailed information on multiple environments check the article [Rollout Orchestration multiple environments](doc/images/multiple-environments.md).
-
-## Configure the Variable Group
+### Configure the Variable Groups
 
 In your Azure Devops project, go to **Azure Pipelines > Library**. You should have a total of 2 variable groups already created:
 
@@ -101,18 +107,22 @@ In your Azure Devops project, go to **Azure Pipelines > Library**. You should ha
 
 > **NOTE:** For more information about parameters, variable groups or secure files, check the [Library Management](/doc/images/library-management.md) document.
 
-**5. Review variable values in `APP-msix-appattach-vg`;**
+**4. Review variable values in `APP-msix-appattach-vg`;**
 
-**6. Review variable values in `DEV-msix-appattach-vg`.**
+**5. Review variable values in `DEV-msix-appattach-vg`.**
 
-## Configure the Secure file
+### Configure the Secure file
 
-**7. Create a new secure file in the Azure Devops project;**
+**6. Create a new secure file in the Azure Devops project;**
 
   > Add the sample self-signed certificate available in `/msix-appattach/msix_certs/sscert.pfx` as a secure file;
   > You can read how to do it in [Use secure files](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops).
 
-## Configure and run the CI/CD pipeline
+### Configure and run the CI/CD pipeline
+
+The pipeline is expecting an app zip file in a Blob Storage.
+
+**7. Copy the `/application/appbin.zip` to a reachable blob container in the Blob storage account.**
 
 Now you're aready to run the pipeline using a Windows based Hosted Agent. The pipeline accepts parameters that must match you environment.
 
@@ -140,6 +150,15 @@ Now you're aready to run the pipeline using a Windows based Hosted Agent. The pi
 In this image we see an example with the `GoogleChrome` app registered in an application group.
 
 **11. Sign-in into one of the session hosts and run the deployed application;**
+
+
+## Pipeline Environments
+
+This YAML pipeline uses [Deployment Jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops) ence environments will be used and automatically created. This initial pipeline can be considered a **DEV** environment pipeline, where we already have specific [variable groups](#configure-the-variable-group) created.
+
+## Rollout Orchestration multiple environments
+
+Many enterprises require rollouts to be orchestrated trough several environments before reaching production. This is already implemented and can be easilly configured (ex: **DEV**, **QA**, **PROD**). For a more detailed information on multiple environments check the article [Rollout Orchestration multiple environments](doc/images/multiple-environments.md).
 
 ## References
 
