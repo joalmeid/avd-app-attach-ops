@@ -4,8 +4,6 @@ This repo includes a single pipeline `/.pipelines/env-CICD-avd-msix-app-attach.y
 
 In order to support multiple environments (ex: **DEV**, **QA**, **PROD**) there are several ways to implement it. Accordinngly to each organization requirements the best method is determined.
 
-In this scenario, we're focusing on enterprises looking to deploy legacy applications in a modern Azure Virtual Desktop infrastructure. It can happen that even the source code of the application is not available, which determines the method used to build the MSIX package (in CI).
-
 However these enterprises, still manage multiple environment, hence it is critical to support several environments in this process.
 Aiming for simplicity in this process, a way to support multiple environments is:
 
@@ -33,7 +31,7 @@ Aiming for simplicity in this process, a way to support multiple environments is
 
 In a multi environment setup, the variable group usage becomes trivial. In each environment specific YAML pipeline, it is recommended to link the pipeline by referencing an environment specific variable group.
 
-<img src="variable_groups_multiple_environments.jpg" alt="Variable Groups in Multiple Environments">
+<img src="images/variable_groups_multiple_environments.jpg" alt="Variable Groups in Multiple Environments">
 
 In this diagram, we can understand that each pipeline will use its own set of variable groups. For *environment specific* configuration it is possible to provide specific values to each seperate variable group. Each pipeline will execute in its own environment.
 Additionally, the *Application Specific* variable groups are shared, making sure the same values are used across environments. Same happens to *parameters* and respective default values, as they can be customized by environment.

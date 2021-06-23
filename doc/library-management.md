@@ -22,7 +22,7 @@ The pipeline allows to set parameters for each execution. The elected parameters
 
 In the pipeline a set of configurable assets are provided. The pipeline allows one to customize *parameters*, *environment specific* variables and *application specific* variables.
 
-<img src="variable_groups_schematic.jpg" alt="Pipeline variable groups">
+<img src="images/variable_groups_schematic.jpg" alt="Pipeline variable groups">
 
 Here are the complete set of variables used in the pipeline:
 
