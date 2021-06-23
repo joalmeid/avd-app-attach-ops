@@ -31,7 +31,7 @@ az pipelines create \
 ## Create APP variable group
 az pipelines variable-group create \
   --name 'APP-msix-appattach-vg' \
-  --variables applicationDescription=SimpleApp applicationDisplayName='Simple App' applicationExecutable=simple-app.exe applicationName=SimpleApp CertificateName=configsuite-sscert-msix.pfx CertificatePasswordVariable=CertificatePassword msixImageSize=1024 publisher=CN=Contoso publisherDisplayName=Contoso \
+  --variables applicationDescription=SimpleApp applicationDisplayName='Simple App' applicationExecutable=simple-app.exe applicationName=SimpleApp CertificateName=$CERTIFICATE_NAME CertificatePasswordVariable=CertificatePassword msixImageSize=100 publisher=CN=Contoso publisherDisplayName=Contoso \
   --authorize true \
   --description 'Application specific variable group for AVD and MSIX Appattach automation' \
   --org $ADO_ORGANIZATION \
