@@ -151,6 +151,11 @@ In this image we see an example with the `GoogleChrome` app registered in an app
 
 **11. Sign-in into one of the session hosts and run the deployed application;**
 
+## MSIX App Attach and Azure Virtual Desktop
+
+One of the current ways to distribute software into an Azure Virtual Dektop infrastructure is MSIX app attach. This feature offers Application delivery options to an organization, leveraging MSIX, a new packaging format for all Windows Apps, including legacy ones.
+
+You can real all details in MSIX Packaging, AVD App Attach images and related topics in the following article: [MSIX App Attach Automation](doc/msix-appattach-automation.md)
 
 ## Pipeline Environments
 
