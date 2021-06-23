@@ -12,8 +12,8 @@ the ```Image_metadata.xml``` to get in CD the correct image location.
 ![Image_Artificat_Location_Extended](doc/images/../../image_artifact_location_ext.jpg)
 
 To adopt this scenario you have to update the CI stage in ```CI-msixPackaging-steps.yaml```:
-1) replace the publish task  ```artifact:Image``` with a task to store on Azure Blob
+1) replace the publish task  ```displayName: ARTIFACT Msix AppAttach Image``` with a task to store on Azure Blob like the AzureFileCopy task
 2) change the task ```displayName: UPDATE Image Metadata``` to store the correct ```MsixImage.Properties.ImageArtifactLocation``` returned by 1)
 
-In the CD stage in ```CD-imagePublish-steps.yaml``` :
-1) replace the download task ```artifact: Image``` with a task to read from Azure Blob. Make sure you save it in the host at ```$(Pipeline.Workspace)/Image/``` 
+Update the CD stage in ```CD-imagePublish-steps.yaml``` :
+1) replace the download task ```displayName: GET Image Artifact``` with a task to read from Azure Blob. Make sure you save the image on the hosted agent at ```$(Pipeline.Workspace)/Image/``` 
