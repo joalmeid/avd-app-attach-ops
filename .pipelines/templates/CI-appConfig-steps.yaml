@@ -38,13 +38,6 @@ steps:
     targetFolder: AppConfigured
     flattenFolders: false
 
-- task: CopyFiles@2
-  displayName: COPY Msix Certificates
-  inputs:
-    sourceFolder: msix-appattach/msix_certs
-    targetFolder: AppConfigured
-    flattenFolders: false
-
 - task: PowerShell@2
   displayName: UPDATE appmanifest
   inputs:
