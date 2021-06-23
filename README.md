@@ -63,9 +63,7 @@ Recommended IaC : [ARM Template to Create and provision new Windows Virtual Desk
 
 Once you have all the requirements checked, there will be a an Azure Virtual Desktop infrastructure already setup. This infrastructure also includes some additional Azure resources, hence being a full cloud native setup.
 
-In order to quickly start, let's configure the Azure DevOps project:
-
-> Remember: Endgoal is to run the pipline and deploy the sample application to your AVD infrastructure.
+In order to quickly start, let's configure the Azure DevOps project to run the pipline and deploy the sample application to your AVD infrastructure.
 
 **1. Open a bash with `az cli` installed;**
 

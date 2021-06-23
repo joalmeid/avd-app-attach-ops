@@ -1,6 +1,6 @@
 # Image_Artifact_Location
 
-The pipeline is using a CI- and CD-stage. The CI stage is building the image and CD stage takes care of the deployment. The starter pipeline CI is using ADO Artifacts to store the created image. CD is pulling the image from the ADO artifacts. We also added an ```Image_metadata.xml``` to store meta information about the image as well. This way all pipeline executions will have the created assets available in the report for full traceability. This concept also provides an easy way to change to an external storage in case you do not want to use ADO artifacts - see extended scenario.
+The pipeline is using a CI- and CD-stage. The CI stage is building the image and CD stage takes care of the deployment. The starter pipeline CI is using ADO Artifacts to store the created image. CD is pulling the image from ADO artifacts. We also added an ```Image_metadata.xml``` to store meta information about the image as well. This way all pipeline executions will have the created assets available in the report for full traceability. This concept also provides an easy way to change to an external storage in case you do not want to use ADO artifacts - see extended scenario for details.
 
 ![Image_Artificat_Location](doc/images/../../image_artifact_location.jpg)
 
