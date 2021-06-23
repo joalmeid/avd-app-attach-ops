@@ -1,10 +1,8 @@
 # Library Management
 
-## Secure files
+In the pipeline a set of configurable data are provided. The pipeline allows one to customize **parameters**, **secure files** and **variable groups**, wich are devided into *environment specific* variables and *application specific* variables.
 
-In order to sign the MSIX package created, the pipeline leverages the task [MsixSigning](https://docs.microsoft.com/en-us/windows/msix/desktop/msix-packaging-extension?tabs=yaml#msix-package-signing). This signing task allows signing using a certificate. In the implemented pipeline, the certificate comes from the [Secure Files library](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files).
-
-> This task also supports providing the certificate as an encoded string. For example after fetching it with the [Azure Key Vault task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-key-vault).
+<img src="images/variable_groups_simple.jpg" alt="Pipeline variable groups">
 
 ## Parameters
 
@@ -17,12 +15,7 @@ The pipeline allows to set parameters for each execution. The elected parameters
 | **version** | Application version (semantic version is recommended) to be used in the AVD deployment |
 | **msixAppAttachUNCPath** |The UNC share to be used to place the MSIX App Attach image. It will be used during the app registration in AVD |
 
-
 ## Variable Groups
-
-In the pipeline a set of configurable assets are provided. The pipeline allows one to customize *parameters*, *environment specific* variables and *application specific* variables.
-
-<img src="images/variable_groups_schematic.jpg" alt="Pipeline variable groups">
 
 Here are the complete set of variables used in the pipeline:
 
@@ -53,4 +46,8 @@ Here are the complete set of variables used in the pipeline:
 | **VMAdminUsername** | Name of the Azure VM Admin User |
 | **VMAdminPassword** | Password of the Azure VM Admin User |
 
+## Secure files
 
+In order to sign the MSIX package created, the pipeline leverages the task [MsixSigning](https://docs.microsoft.com/en-us/windows/msix/desktop/msix-packaging-extension?tabs=yaml#msix-package-signing). This signing task allows signing using a certificate. In the implemented pipeline, the certificate comes from the [Secure Files library](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files).
+
+> This task also supports providing the certificate as an encoded string. For example after fetching it with the [Azure Key Vault task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-key-vault).
