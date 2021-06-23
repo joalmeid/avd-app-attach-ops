@@ -48,9 +48,9 @@ AppVariableGroupID=$(az pipelines variable-group list \
 ## Create secrets in APP variable group
 az pipelines variable-group variable create \
   --group-id $AppVariableGroupID \
-  --name CertificatePassword1 \
+  --name CertificatePassword \
   --secret true \
-  --value $VM_ADMIN_PASSWD \
+  --value $CERTIFICATE_PASSWD \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
 
