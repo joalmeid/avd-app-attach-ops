@@ -78,7 +78,7 @@ Once you have all the requirements checked, there will be a an Azure Virtual Des
 2. We've also automated part of the initial setup. In order to quickly start, let's configure the Azure DevOps project to run the pipline and deploy the sample application to your AVD infrastructure.
 
     - Create Azure Devops project pointing to the repo (manual)
-    - Review and update bash variables in `/setup/dev-env.sh` (manual)
+    - Review and update bash variables in `/setup/devops-env.sh` (manual)
     - Run the `/setup/setup-azure-devops.sh`
     - Update secrets in Variable Groups (manual)
     - Create Secure File (certificate) (manual)
@@ -89,7 +89,7 @@ Let us help you wit a complete walkthrough:
 
 **1. Open a bash with `az cli` installed;**
 
-**2. Review/change all the variables in `/setup/dev-env.sh`;**
+**2. Review/change all the variables in `/setup/devops-env.sh`;**
 
 **3. execute `/setup/setup-azure-devops.sh`.**
 

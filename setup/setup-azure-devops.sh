@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-. ./dev-env.sh
+. ./devops-env.sh
 
 # Setup Azure DevOps project with Variable Groups, Service Connection(s)/Endpoint and Creating Pipeline (pointing to yaml)
 
