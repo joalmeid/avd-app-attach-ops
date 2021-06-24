@@ -40,6 +40,7 @@ Use the following links to learn more details about used patterns:
 
 - [Understand the concept Image_Artifact_Location](doc/images/image-artifact-location.md) 
 - [Rollout Orchestration multiple environments](doc/images/multiple-environments.md)
+- [MSIX App Attach Automation](doc/msix-appattach-automation.md)
 
 ## Prerequirements
 
