@@ -41,7 +41,7 @@ Use the following links to learn more details about used patterns and customizat
 Pipeline workflow
 - [Understand the concept Image_Artifact_Location](doc/image-artifact-location.md) : Image_Artifact_Location is a storage location used by the pipeline for the images. Learn how to customize the behavior.
 - [Rollout Orchestration multiple environments](doc/multiple-environments.md) : Many enterprises require rollouts to be orchestrated trough several environments before reaching production. Learn how the pipeline is supporting this requirement.
-- [Parallel Beta testing in a single AVD environment](doc/beta_test_env.md) : How to support Beta App Users in parallel within a single AVD environment.
+- [Parallel Beta testing in a single AVD environment](doc/beta-test-env.md) : How to support Beta App Users in parallel within a single AVD environment.
 
 MSIX packaging, Image creation and MSIX App Attach
 - [MSIX App Attach Automation](doc/msix-appattach-automation.md) : Learn about the MSIX packaging, image creation and publishing process by the pipline and where to customize if needed.
