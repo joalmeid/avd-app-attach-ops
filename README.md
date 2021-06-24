@@ -36,11 +36,16 @@ The pipeline is using yaml templates to structure the workflow. The following ov
 
 ![YAML tempalte structure](doc/images/yaml_template_structure.jpg)
 
-Use the following links to learn more details about used patterns:
+Use the following links to learn more details about used patterns and customization :
 
-- [Understand the concept Image_Artifact_Location](doc/images/image-artifact-location.md) 
-- [Rollout Orchestration multiple environments](doc/images/multiple-environments.md)
-- [MSIX App Attach Automation](doc/msix-appattach-automation.md)
+Pipeline workflow
+- [Understand the concept Image_Artifact_Location](doc/image-artifact-location.md) : Image_Artifact_Location is a storage location used by the pipeline for the images. Learn how to customize the behavior.
+- [Rollout Orchestration multiple environments](doc/multiple-environments.md) : Many enterprises require rollouts to be orchestrated trough several environments before reaching production. Learn how the pipeline is supporting this requirement.
+- [Parallel Beta testing in a single AVD environment](doc/beta-test-env.md) : How to support Beta App Users in parallel within a single AVD environment.
+
+MSIX packaging, Image creation and MSIX App Attach
+- [MSIX App Attach Automation](doc/msix-appattach-automation.md) : Learn about the MSIX packaging, image creation and publishing process by the pipline and where to customize if needed.
+- [Package Support Framework](doc/psf.md) : Your legacy App is not MSIX compatible and you do not have access to code? Learn about the Package Support Framework and how it could be used in the pipeline to overcome legacy limitations by using PSF configuration.
 
 ## Prerequirements
 
@@ -148,23 +153,9 @@ Now you're aready to run the pipeline using a Windows based Hosted Agent. The pi
 
 ![AVD Application Group](doc/images/avd_app_group.jpg)
 
-In this image we see an example with the `GoogleChrome` app registered in an application group.
+In this image we see an example with the `DemoApp` app registered in an application group.
 
-**11. Sign-in into one of the session hosts and run the deployed application;**
-
-## MSIX App Attach and Azure Virtual Desktop
-
-One of the current ways to distribute software into an Azure Virtual Dektop infrastructure is MSIX app attach. This feature offers Application delivery options to an organization, leveraging MSIX, a new packaging format for all Windows Apps, including legacy ones.
-
-You can real all details in MSIX Packaging, AVD App Attach images and related topics in the following article: [MSIX App Attach Automation](doc/msix-appattach-automation.md)
-
-## Pipeline Environments
-
-This YAML pipeline uses [Deployment Jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops) ence environments will be used and automatically created. This initial pipeline can be considered a **DEV** environment pipeline, where we already have specific [variable groups](#configure-the-variable-group) created.
-
-## Rollout Orchestration multiple environments
-
-Many enterprises require rollouts to be orchestrated trough several environments before reaching production. This is already implemented and can be easilly configured (ex: **DEV**, **QA**, **PROD**). For a more detailed information on multiple environments check the article [Rollout Orchestration multiple environments](doc/images/multiple-environments.md).
+**11. Sign-in into one of the session hosts and run the deployed application**
 
 ## References
 
