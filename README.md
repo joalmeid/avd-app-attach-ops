@@ -46,14 +46,14 @@ Use the following links to learn more details about used patterns:
 
 As this project fosters a full MSIX Appattach CI/CD pipeline to Azure Virtual Desktop, there is a set of requirements which are out of scope. However, we present a list of requirements and specific notes are provided:
 
-* **Azure Subscription** : An Azure Subscription is required to host all related AVD related resources;
+* **Azure Subscription** : An Azure subscription, parented to one Azure AD tenant, that will contain a virtual network that either contains or is connected to the Azure AD DS (AADDS) instance;
 * **Azure DevOps project** : An Azure DevOps project is required using Azure Repos and Azure Pipelines;
 * **Azure Virtual Desktop environment** :
   * There are a set of [Requirements](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#requirements) for the AVD environment
   * Session Host Pool : There is [tutorial](https://docs.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-azure-marketplace) in AVD documentation.
     * Alternatively, you can also recur to the [AVD ARM based Infrastructure as Code](https://github.com/Azure/RDS-Templates/tree/master/ARM-wvd-templates)
   * Application Group: There is [tutorial](https://docs.microsoft.com/en-us/azure/virtual-desktop/manage-app-groups) in AVD documentation.
-* **Azure Active Directory Domain Services (AADDS)** :
+* **Azure Active Directory** : Azure Active Directory Domain Services (AADDS) instance in the same Azure AD tenant.
 * **Azure Storage Account Gen2** :
   * Create Blob container to place application input file (zip). Documentation is available [here](https://docs.microsoft.com/en-us/azure/storage/blobs/.storage-quickstart-blobs-portal)
 * **Azure Virtual Machine (fileshare)** : For using the MSIX App Attach feature, a UNC file share is required. In this setup, a common Virtual Machine is set up. Documentation is available [here](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal).
