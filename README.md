@@ -153,9 +153,9 @@ Now you're aready to run the pipeline using a Windows based Hosted Agent. The pi
 
 ![AVD Application Group](doc/images/avd_app_group.jpg)
 
-In this image we see an example with the `GoogleChrome` app registered in an application group.
+In this image we see an example with the `DemoApp` app registered in an application group.
 
-**11. Sign-in into one of the session hosts and run the deployed application;**
+**11. Sign-in into one of the session hosts and run the deployed application**
 
 ## References
 
