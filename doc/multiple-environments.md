@@ -1,10 +1,11 @@
 # Rollout Orchestration multiple environments
 
-This repo includes a single pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` executing both a Continuous Integration (CI) stage and a Continuous Delivery (CD) stage to a single **environment**. The default name used is `DEV`.
+This repo includes a single pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` executing both a Continuous Integration (CI) stage and a Continuous Delivery (CD) stage to a single **environment**. The default **environment** name used is `DEV`.
+The pipeline uses [Deployment Jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops) hence ADO environments will be used and automatically created as configured.
 
 <img src="images/variable_groups_multiple_environments.jpg" alt="Multiple Environments with Variable Groups">
 
-Organizations, tyically manage multiple environment (ex: **DEV**, **QA**, **PROD**) and the pipeline implementation could take several diferent ways - it would depend on the business requirements.
+Organizations, tyically manage multiple environment (ex: **DEV**, **QA**, **PROD**) and the pipeline implementation could take several different ways - it would depend on the business requirements.
 
 With this pipeline and while aiming for simplicity a way to support multiple environments is:
 
