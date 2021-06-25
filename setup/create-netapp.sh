@@ -30,10 +30,10 @@ AAD_DNS=$(az ad ds show -n $DOMAIN_ADMIN -g $DEV_RG --query "replicaSets[0].doma
 az netappfiles account ad add \
   -g $DEV_RG \
   --dns $AAD_DNS \
-  --domain jdaloc.onmicrosoft.com \
+  --domain $DEV_DOMAIN_NAME \
   --smb-server-name $AND_SMB_SHARE_NAME \
-  --username aadadmin \
-  --password Japu692522 \
+  --username $DOMAIN_ADMIN \
+  --password $DOMAIN_ADMIN_PASSWD \
   --account-name $ANF_ACCOUNT_NAME \
   --organizational-unit "OU=AADDC Computers" 
 
