@@ -55,7 +55,8 @@ MSIX packaging, Image creation and MSIX App Attach
 As this project fosters a full MSIX Appattach CI/CD pipeline to Azure Virtual Desktop, there is a set of requirements which are out of scope. However, we present a list of requirements and specific notes are provided:
 
 * **Azure Subscription** : An Azure subscription, parented to one Azure AD tenant, that will contain a virtual network that either contains or is connected to the Azure AD DS (AADDS) instance;
-* **Azure DevOps project** : An Azure DevOps project is required using Azure Repos and Azure Pipelines;
+* **Azure DevOps project** : An Azure DevOps project is required using Azure Repos and Azure Pipelines
+* **Azure DevOps tasks** : MSIX Packaging task, which can be installed from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=MSIX.msix-ci-automation-task) 
 * **Azure Virtual Desktop environment** :
   * There are a set of [Requirements](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#requirements) for the AVD environment
   * Session Host Pool : There is [tutorial](https://docs.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-azure-marketplace) in AVD documentation.
