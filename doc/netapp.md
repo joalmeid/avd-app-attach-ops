@@ -4,6 +4,8 @@ In the context of MSIX App Attach feature in Azure Virtual Desktop (AVD), the lo
 
 Azure NetApp Files is a high-performance, metered file storage service from Azure. It supports several workload types and is highly available by default. It also offers service and performance levels as well as snapshot capabilities. Specifically for Azure Virtual Desktop, it is recommended for extremely large scale deployments, providing up to 450,000 IOPS and sub-millisecond latency.
 
+![MSIX_App_Attach_File_share](doc/images/../../images/msix_app_attach_file_share.jpg)
+
 > [FSLogix](https://docs.microsoft.com/en-us/fslogix/overview), another roaming profile technology can also beneficiate from Azure NetApp Files. You can check additional documentation in the article [Create a profile container with Azure NetApp Files and AD DS](https://docs.microsoft.com/en-us/azure/virtual-desktop/create-fslogix-profile-container).
 
 # Setting up Azure NetApp Files for MSIX App Attach
@@ -45,9 +47,9 @@ We've automated the Azure NetApp Files setup. By using Azure CLI and the `netapp
   >  - Create a new volume
   >  - Verify connection to Azure NetApp Files Share
 
-**4. Upload MSIX Image to Azure NetApp Files Share;**
+**4. Upload MSIX Image to Azure NetApp Files Share**
 
-**5. Configure the Azure Devops pipeline to publish to the Azure NetApp Files Share;**
+**5. Configure the Azure Devops pipeline to publish to the Azure NetApp Files Share**
 
 ## References
 
