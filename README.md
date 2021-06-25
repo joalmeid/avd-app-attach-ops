@@ -65,7 +65,7 @@ As this project fosters a full MSIX Appattach CI/CD pipeline to Azure Virtual De
 * **Azure Active Directory** : Azure Active Directory Domain Services (AADDS) instance in the same Azure AD tenant.
 * **Azure Storage Account Gen2** :
   * Create Blob container to place application input file (zip). Documentation is available [here](https://docs.microsoft.com/en-us/azure/storage/blobs/.storage-quickstart-blobs-portal)
-* **Azure Virtual Machine (fileshare)** : For using the MSIX App Attach feature, a UNC file share is required. In this setup, a common Virtual Machine is set up. Documentation is available [here](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal).
+* **Azure Virtual Machine (MSIX_AppAttach_File_share)** : For using the MSIX App Attach feature, a UNC file share is required. In this setup, a common Virtual Machine is set up. Documentation is available [here](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal).
 * **Remote Desktop clients** : Several clients are supported for different OSs and devices. Download the one that suits you, by checking the options [here](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#supported-remote-desktop-clients).
 * **Bash shell** : Having a bash shell (ex:WSL2) in order to run provided `.sh` scripts. The Azure CLI is requried to be installed.
 
