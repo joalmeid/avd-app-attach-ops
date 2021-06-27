@@ -76,10 +76,10 @@ variables:
 #   value: ******
 # The UNC Server FQDN used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixApplicationUNCShareName
 # - name: msixApplicationUNCServer
-#   value: absee-fileshare.jdaloc.onmicrosoft.com
+#   value: fileshare.domain.onmicrosoft.com
 # The UNC Share name used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixApplicationUNCShareName
 # - name: msixApplicationUNCShareName
-#   value: SYNCIER\msix
+#   value: avdmsix
 
 # Secrets variable group (if you chose to bind to Keyvault)
 #- group: Secrets-msix-appattach-vg 

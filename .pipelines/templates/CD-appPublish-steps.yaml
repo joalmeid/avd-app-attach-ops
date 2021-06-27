@@ -13,7 +13,7 @@ parameters:
     default: dev-avd
   - name: msixApplicationUNCPath
     type: string
-    default: \\fileshare.domain.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx
+    default: \\fileshare.domain.onmicrosoft.com\avdmsix\app-msix-image-0.0.0.0.vhdx
   - name: msixImageFileName
     type: string
   - name: applicationName

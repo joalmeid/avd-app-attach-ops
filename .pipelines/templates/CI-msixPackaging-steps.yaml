@@ -12,7 +12,7 @@ parameters:
     default: msix-appattach/image_metadata.xml
   - name: msixApplicationUNCPath
     type: string
-    default: \\fileshare.domain.onmicrosoft.com\avd-apps
+    default: \\fileshare.domain.onmicrosoft.com\avdmsix
   - name: msixImageFileName
     type: string
     default: app-msix-image-0.0.0.0.vhdx
