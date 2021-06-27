@@ -12,7 +12,10 @@ parameters:
     default: msix-appattach/image_metadata.xml
   - name: msixApplicationUNCPath
     type: string
-    default: \\fileshare.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx
+    default: \\fileshare.domain.onmicrosoft.com\avd-apps
+  - name: msixImageFileName
+    type: string
+    default: app-msix-image-0.0.0.0.vhdx
   - name: msixVersion
     type: string
     default: 0.0.0.0
@@ -50,10 +53,10 @@ steps:
   displayName: 'CREATE Image'
   inputs:
     package: 'MSIX.msix'
-    vhdxOutputPath: ${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+    vhdxOutputPath: ${{ parameters.msixImageFileName}}
     vhdxSize: ${{ parameters.msixImageSize}}
 
-- publish: ${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+- publish: ${{ parameters.msixImageFileName}}
   displayName: ARTIFACT Msix AppAttach Image
   artifact: Image
 
@@ -67,10 +70,10 @@ steps:
       $manifest.MsixImage.Properties.PackageIdentityName = $appxmanifest.Package.Identity.Name
       $manifest.MsixImage.Properties.Version = "${{ parameters.msixVersion }}"
       $manifest.MsixImage.Properties.ImageArtifactLocation = "$(System.CollectionUri)/$(System.TeamProject)/_build/results?buildId=$(Build.BuildID)&view=artifacts&pathAsName=true&type=publishedArtifacts"
-      $manifest.MsixImage.Properties.ImageMsixAppAttachLocation = "${{ parameters.msixApplicationUNCPath }}"
+      $manifest.MsixImage.Properties.ImageMsixAppAttachLocation = "${{ parameters.msixApplicationUNCPath }}\${{ parameters.msixImageFileName }}"
       $manifest.save("${{ parameters.imageMetadataFile }}")
 
-      Write-Host "##[debug] Pubishing AVD Msix Package:"
+      Write-Host "##[debug] Publishing AVD Msix Package:"
       Write-Host "##[debug] `tImage Metadata File: ${{ parameters.imageMetadataFile }}"
       Write-Host "##[debug] `tImage Package Type: $($manifest.MsixImage.Properties.Type)"
       Write-Host "##[debug] `tImage Package Identity Name: $($manifest.MsixImage.Properties.PackageIdentityName)"

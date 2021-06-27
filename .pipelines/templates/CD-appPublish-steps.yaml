@@ -13,7 +13,9 @@ parameters:
     default: dev-avd
   - name: msixApplicationUNCPath
     type: string
-    default: \\fileshare.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx
+    default: \\fileshare.domain.onmicrosoft.com\app-msix-image-0.0.0.0.vhdx
+  - name: msixImageFileName
+    type: string
   - name: applicationName
     type: string
     default: app
@@ -36,12 +38,14 @@ steps:
       Write-Host "##[debug] `tAVD Resource Group: ${{ parameters.resourceGroup }}"
       Write-Host "##[debug] `tAVD Host Pool Name: ${{ parameters.hostPoolName }}"
       Write-Host "##[debug] `tMsix Application UNC Path: ${{ parameters.msixApplicationUNCPath }}"
+      Write-Host "##[debug] `tMsix Application UNC FileName: ${{ parameters.msixImageFileName }}"
+      Write-Host "##[debug] `tMsix App Attach image complete Path: ${{ parameters.msixApplicationUNCPath }}\${{ parameters.msixImageFileName }}"
       Write-Host "##[debug] `tApplication Display Name: ${{ parameters.applicationName }}"
 
-      $objPackage = Expand-AzWvdMsixImage -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }} -Uri ${{ parameters.msixApplicationUNCPath }}
+      $objPackage = Expand-AzWvdMsixImage -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }} -Uri ${{ parameters.msixApplicationUNCPath }}\${{ parameters.msixImageFileName }}
       Write-Host "##[debug] `tPackage Full Name: $($objPackage.PackageFullName)"
       # ADD AS INACTIVE
-      New-AzWvdMsixPackage -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }} -PackageAlias $objPackage.PackageAlias -DisplayName ${{ parameters.applicationName }} -ImagePath ${{ parameters.msixApplicationUNCPath }} -IsActive:$false
+      New-AzWvdMsixPackage -HostPoolName ${{ parameters.hostPoolName }} -ResourceGroupName ${{ parameters.resourceGroup }} -IsActive:$false -PackageAlias $objPackage.PackageAlias -DisplayName ${{ parameters.applicationName }} -ImagePath ${{ parameters.msixApplicationUNCPath }}\${{ parameters.msixImageFileName }} 
       # Create Variable with Package Full Name 
       Write-Host "##vso[task.setvariable variable=msixPackageFullName;isOutput=true]$($objPackage.PackageFullName)"
       

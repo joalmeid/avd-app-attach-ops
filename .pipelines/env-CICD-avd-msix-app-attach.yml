@@ -1,6 +1,7 @@
 # root MSIX AppAttach Multi-stage pipeline (CI & CD)
 # Requires resources: Storage, AVD Session Pool, Variable group named Secrets with containing the CertificatePassword variable
-# Required variables to set: fileName, applicationName, version, fileLocation, msixAppAttachUNCPath
+# Required parameters to set: fileLocation, fileName, version
+# Required variables (or variable group): msixAppAttachUNCLocalPath, msixApplicationUNCServer, msixApplicationUNCShareName, UserUsername, UserPassword
 
 trigger:
 - none
@@ -10,7 +11,7 @@ parameters:
   displayName: Configured App Path
   type: string
   default: https://inputstorage.blob.core.windows.net/releases
-- name: fileName # The SAC file name for a particular app release
+- name: fileName # The app file name for a particular app release
   displayName: Configured App File Name
   type: string
   default: appbin.zip
@@ -18,10 +19,6 @@ parameters:
   displayName: Application Version
   type: string
   default: "0.0.0.0"
-- name: msixAppAttachUNCPath # The UNC share to be used to place the MSIX App Attach image. It will be used during the app registration in AVD.
-  displayName: MSIX App Attach Path
-  type: string
-  default: \\fileshare.domain.onmicrosoft.com\avd-apps
 
 variables:
 # Application specific variable group
@@ -71,13 +68,18 @@ variables:
 # The session host pool resource name in the Azure Virtual Desktop infrastructure.
 # - name: hostPoolName 
 #   value: <azure virtual desktop session host pool name>
-# Name of the Azure VM Admin User
-# - name: VMAdminUsername
+# Name of the Azure VM admin/domain User
+# - name: UserUsername
 #   value: ******
-# Password of the Azure VM Admin User]
-# - name: VMAdminPassword
+# Password of the Azure VM/domain User
+# - name: UserPassword
 #   value: ******
-
+# The UNC Server FQDN used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixApplicationUNCShareName
+# - name: msixApplicationUNCServer
+#   value: absee-fileshare.jdaloc.onmicrosoft.com
+# The UNC Share name used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixApplicationUNCShareName
+# - name: msixApplicationUNCShareName
+#   value: SYNCIER\msix
 
 # Secrets variable group (if you chose to bind to Keyvault)
 #- group: Secrets-msix-appattach-vg 
@@ -98,10 +100,14 @@ stages:
     applicationName: $(applicationName)
     msixVersion: ${{ parameters.version }}
     msixImageSize:  ($(msixImageSize))
-    msixApplicationUNCPath: ${{ parameters.msixAppAttachUNCPath }}\$(applicationName)-msix-image-${{ parameters.version }}.vhdx
+    msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx
+    msixApplicationUNCPath: '\\$(msixApplicationUNCServer)\$(msixApplicationUNCShareName)'
 
 - template: templates/CD-msix-stage.yaml
   parameters: 
     applicationName: $(applicationName)
     msixVersion: ${{ parameters.version }}
-    msixApplicationUNCPath: ${{ parameters.msixAppAttachUNCPath }}\$(applicationName)-msix-image-${{ parameters.version }}.vhdx
+    msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx
+    msixApplicationUNCServer: $(msixApplicationUNCServer)
+    msixApplicationUNCShareName: $(msixApplicationUNCShareName)
+
