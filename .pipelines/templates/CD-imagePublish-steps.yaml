@@ -23,7 +23,7 @@ parameters:
     type: string
   - name: msixAppAttachUNCServer
     type: string
-  - name: msixApplicationUNCShareName
+  - name: msixAppAttachShareName
     type: string
 
 steps:
@@ -77,5 +77,5 @@ steps:
 #     machineNames: ${{ parameters.msixAppAttachUNCServer }}
 #     adminUserName: $(UserUsername)
 #     adminPassword: $(UserPassword)
-#     targetPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixApplicationUNCShareName }}'
+#     targetPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixAppAttachShareName }}'
 

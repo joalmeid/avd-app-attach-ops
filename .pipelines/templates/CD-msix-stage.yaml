@@ -11,7 +11,7 @@ parameters:
   type: string
 - name: msixAppAttachUNCServer
   type: string
-- name: msixApplicationUNCShareName
+- name: msixAppAttachShareName
   type: string
 
 stages:
@@ -38,7 +38,7 @@ stages:
               msixAzureVMLocalPath: $(msixAzureVMLocalPath)
               msixImageFileName: ${{ parameters.msixImageFileName }}
               msixAppAttachUNCServer: ${{ parameters.msixAppAttachUNCServer }}
-              msixApplicationUNCShareName: ${{ parameters.msixApplicationUNCShareName }}
+              msixAppAttachShareName: ${{ parameters.msixAppAttachShareName }}
 
           # App (AVD MSIX Appattach) publishing process
           # Output the variable 'msixPackageFullName'
@@ -48,7 +48,7 @@ stages:
               resourceGroup: $(resourceGroup)
               hostPoolName: $(hostPoolName)
               msixVersion: ${{ parameters.msixVersion }}
-              msixApplicationUNCPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixApplicationUNCShareName }}'
+              msixApplicationUNCPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixAppAttachShareName }}'
               msixImageFileName: ${{ parameters.msixImageFileName }}
               applicationName: ${{ parameters.applicationName}}
               

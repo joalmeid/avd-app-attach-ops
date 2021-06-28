@@ -58,7 +58,7 @@ az pipelines variable-group variable create \
 ## Create DEV variable group
 az pipelines variable-group create \
   --name 'DEV-msix-appattach-vg' \
-  --variables azureSubscription=$ADO_SC_NAME hostPoolName=$DEV_HPOOL_NAME resourceGroup=$DEV_RG storageAccount=$AVD_STRG_NAME msixAppAttachUNCLocalPath='c:\avdmsix' msixAppAttachUNCServer=fileshare.domain.onmicrosoft.com msixApplicationUNCShareName=avdmsix \
+  --variables azureSubscription=$ADO_SC_NAME hostPoolName=$DEV_HPOOL_NAME resourceGroup=$DEV_RG storageAccount=$AVD_STRG_NAME msixAppAttachUNCLocalPath='c:\avdmsix' msixAppAttachUNCServer=fileshare.domain.onmicrosoft.com msixAppAttachShareName=avdmsix \
   --authorize true \
   --description 'MSIX Appattach Package specific environment variables' \
   --org $ADO_ORGANIZATION \
