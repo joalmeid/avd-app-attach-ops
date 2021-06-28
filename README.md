@@ -169,5 +169,3 @@ In this image we see an example with the `DemoApp` app registered in an applicat
 * [Building a Windows 10 Enterprise Multi Session Master Image with the Azure Image Builder DevOps Task](https://techcommunity.microsoft.com/t5/azure-virtual-desktop/building-a-windows-10-enterprise-multi-session-master-image-with/m-p/1503913)
 * [Azure Virtual Desktop](https://docs.microsoft.com/en-us/azure/virtual-desktop/faq)
 * [MSIX app attach FAQ](https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach-faq)
-=======
-recommended IaC : [ARM Template to Create and provision new Windows Virtual Desktop hostpool](https://github.com/Azure/RDS-Templates/tree/master/ARM-wvd-templates)
