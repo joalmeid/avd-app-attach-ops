@@ -13,6 +13,8 @@ parameters:
   type: string
 - name: msixAppAttachShareName
   type: string
+- name: msixAzureVMLocalPath
+  type: string
 
 stages:
 - stage: CD
@@ -35,7 +37,7 @@ stages:
               storageAccount: $(storageAccount)
               applicationName: ${{ parameters.applicationName}}
               msixVersion: ${{ parameters.msixVersion }}
-              msixAzureVMLocalPath: $(msixAzureVMLocalPath)
+              msixAzureVMLocalPath: ${{ parameters.msixAzureVMLocalPath}}
               msixImageFileName: ${{ parameters.msixImageFileName }}
               msixAppAttachUNCServer: ${{ parameters.msixAppAttachUNCServer }}
               msixAppAttachShareName: ${{ parameters.msixAppAttachShareName }}

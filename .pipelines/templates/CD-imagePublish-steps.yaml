@@ -18,7 +18,7 @@ parameters:
     default: app
   - name: msixAzureVMLocalPath
     type: string
-    default: 'c:\\Contoso\MSIX'
+    default: 'c:\Contoso\MSIX'
   - name: msixImageFileName
     type: string
   - name: msixAppAttachUNCServer

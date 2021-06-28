@@ -74,6 +74,9 @@ variables:
 # Password of the Azure VM/domain User
 # - name: UserPassword
 #   value: ******
+# The Azure VM local path, where the UNC Share is configured. The MSIX Image will be copied using local filesystem (PSSession) and made available through the configured file share.
+# - name: msixAzureVMLocalPath
+#   value: c:\Contoso\MSIX
 # The UNC Server FQDN used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixAppAttachShareName
 # - name: msixAppAttachUNCServer
 #   value: fileshare.domain.onmicrosoft.com
@@ -110,4 +113,5 @@ stages:
     msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx
     msixAppAttachUNCServer: $(msixAppAttachUNCServer)
     msixAppAttachShareName: $(msixAppAttachShareName)
+    msixAzureVMLocalPath: $(msixAzureVMLocalPath)
 
