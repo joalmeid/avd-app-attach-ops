@@ -1,5 +1,5 @@
 # Image Publish Steps Template
-# Requires $(VMAdminUsername), $(VMAdminPassword) from a variable group called
+# Requires $(UserUsername), $(UserPassword) from a variable group called
 
 parameters:
   - name: msixVersion
@@ -16,9 +16,15 @@ parameters:
   - name: applicationName
     type: string
     default: app
-  - name: msixApplicationUNCPath
+  - name: msixAzureVMLocalPath
     type: string
-    default: \\fileshare.domain.onmicrosoft.com\avd-apps\app-msix-image-0.0.0.0.vhdx
+    default: 'c:\Contoso\MSIX'
+  - name: msixImageFileName
+    type: string
+  - name: msixAppAttachUNCServer
+    type: string
+  - name: msixAppAttachShareName
+    type: string
 
 steps:
 # GET VHDX
@@ -49,16 +55,27 @@ steps:
 - task: AzureFileCopy@4
   displayName: 'COPY Msix Image to Fileshare (Azure VM)'
   inputs:
-    sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+    sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName }}
     azureSubscription: ${{ parameters.azureSubscription }}
     destination: azureVMs
     storage: ${{ parameters.storageAccount }}
     resourceGroup: ${{ parameters.resourceGroup }}
-    vmsAdminUserName: $(VMAdminUsername)
-    vmsAdminPassword: $(VMAdminPassword)
-    TargetPath: 'c:\\Contoso\MSIX'
+    vmsAdminUserName: $(UserUsername)
+    vmsAdminPassword: $(UserPassword)
+    TargetPath: ${{ parameters.msixAzureVMLocalPath }}
     enableCopyPrerequisites: true
+    #machineNames: # Optional. Must be used if there are more VMs in the referenced Resource Group.
     cleanTargetBeforeCopy: false # Optional
     skipCACheck: true 
     TestCertificate: true
+
+# Windows machine file copy
+# works for self-hosted agent in the V-Net to the file share 
+# - task: WindowsMachineFileCopy@2
+#   inputs:
+#     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName}}
+#     machineNames: ${{ parameters.msixAppAttachUNCServer }}
+#     adminUserName: $(UserUsername)
+#     adminPassword: $(UserPassword)
+#     targetPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixAppAttachShareName }}'
 

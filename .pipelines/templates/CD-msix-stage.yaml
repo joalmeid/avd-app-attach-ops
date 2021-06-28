@@ -7,7 +7,13 @@ parameters:
   type: string
 - name: msixVersion
   type: string
-- name: msixApplicationUNCPath
+- name: msixImageFileName
+  type: string
+- name: msixAppAttachUNCServer
+  type: string
+- name: msixAppAttachShareName
+  type: string
+- name: msixAzureVMLocalPath
   type: string
 
 stages:
@@ -16,7 +22,7 @@ stages:
   jobs:
   - deployment: PublishImage
     displayName: PublishImage
-    pool:
+    pool: 
       vmImage: windows-latest
     environment: ${{parameters.envId}}
     strategy:
@@ -31,7 +37,10 @@ stages:
               storageAccount: $(storageAccount)
               applicationName: ${{ parameters.applicationName}}
               msixVersion: ${{ parameters.msixVersion }}
-              msixApplicationUNCPath: ${{ parameters.msixApplicationUNCPath }}
+              msixAzureVMLocalPath: ${{ parameters.msixAzureVMLocalPath}}
+              msixImageFileName: ${{ parameters.msixImageFileName }}
+              msixAppAttachUNCServer: ${{ parameters.msixAppAttachUNCServer }}
+              msixAppAttachShareName: ${{ parameters.msixAppAttachShareName }}
 
           # App (AVD MSIX Appattach) publishing process
           # Output the variable 'msixPackageFullName'
@@ -41,9 +50,10 @@ stages:
               resourceGroup: $(resourceGroup)
               hostPoolName: $(hostPoolName)
               msixVersion: ${{ parameters.msixVersion }}
-              msixApplicationUNCPath: ${{ parameters.msixApplicationUNCPath }}
+              msixApplicationUNCPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixAppAttachShareName }}'
+              msixImageFileName: ${{ parameters.msixImageFileName }}
               applicationName: ${{ parameters.applicationName}}
-  
+              
   # Manual intervention Job for Release evaluation
   - job: waitForValidation
     displayName: Wait for external validation
@@ -60,7 +70,7 @@ stages:
 
   - job: activateMsixPackage
     displayName: Activate MSIX Package
-    condition: in(dependencies.waitForValidation.result, 'Succeeded', 'Skipped')
+    condition: and(eq(dependencies.PublishImage.result, 'Succeeded'),in(dependencies.waitForValidation.result, 'Succeeded', 'Skipped'))
     dependsOn: ['PublishImage', 'waitForValidation']
     pool:
       vmImage: windows-latest

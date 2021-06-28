@@ -58,7 +58,7 @@ az pipelines variable-group variable create \
 ## Create DEV variable group
 az pipelines variable-group create \
   --name 'DEV-msix-appattach-vg' \
-  --variables azureSubscription=$ADO_SC_NAME hostPoolName=$DEV_HPOOL_NAME resourceGroup=$DEV_RG storageAccount=$AVD_STRG_NAME VMAdminUsername=$VM_ADMIN \
+  --variables azureSubscription=$ADO_SC_NAME hostPoolName=$DEV_HPOOL_NAME resourceGroup=$DEV_RG storageAccount=$AVD_STRG_NAME msixAzureVMLocalPath='c:\avdmsix' msixAppAttachUNCServer=fileshare.domain.onmicrosoft.com msixAppAttachShareName=avdmsix \
   --authorize true \
   --description 'MSIX Appattach Package specific environment variables' \
   --org $ADO_ORGANIZATION \
@@ -75,7 +75,15 @@ DEVVariableGroupID=$(az pipelines variable-group list \
 ## Create secrets in DEV variable group
 az pipelines variable-group variable create \
   --group-id $DEVVariableGroupID \
-  --name VMAdminPassword \
+  --name UserUsername \
+  --secret true \
+  --value $VM_ADMIN \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT
+
+az pipelines variable-group variable create \
+  --group-id $DEVVariableGroupID \
+  --name UserPassword \
   --secret true \
   --value $VM_ADMIN_PASSWD \
   --org $ADO_ORGANIZATION \
