@@ -12,6 +12,8 @@ parameters:
   type: string
 - name: msixApplicationUNCPath
   type: string
+- name: msixImageFileName
+  type: string
 
 stages:
 - stage: CI
@@ -45,8 +47,9 @@ stages:
       parameters:
         CertificateName: $(CertificateName)
         CertificatePasswordVariable: $(CertificatePasswordVariable) # From variable group
-        imageMetadataFile: src/image_metadata.xml
+        imageMetadataFile: msix-appattach/image_metadata.xml
         msixVersion: ${{ parameters.msixVersion }}
-        msixApplicationUNCPath: ${{ parameters.msixApplicationUNCPath }}\${{ parameters.applicationName}}-msix-image-${{ parameters.msixVersion }}.vhdx
+        msixApplicationUNCPath: ${{ parameters.msixApplicationUNCPath }}
+        msixImageFileName: ${{ parameters.msixImageFileName }}
         msixImageSize: ${{ parameters.msixImageSize }}
         applicationName: ${{ parameters.applicationName}}

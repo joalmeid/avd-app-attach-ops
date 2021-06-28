@@ -30,35 +30,13 @@ steps:
     archiveFilePatterns: ${{parameters.fileName}}
     destinationFolder: AppConfigured
     cleanDestinationFolder: false 
-    #overwriteExistingFiles: false
-
-- script: |
-      echo Configure App according to environment and customer
-  displayName: CONFIGURE App (NOT IMPLEMENTED)
 
 - task: CopyFiles@2
   displayName: COPY Msix artifacts
   inputs:
-    sourceFolder: src/msix_application_artifacts
+    sourceFolder: msix-appattach/msix_application_artifacts
     targetFolder: AppConfigured
-    flattenFolders: false # Optional
-
-- task: CopyFiles@2
-  displayName: COPY Msix Certificates
-  inputs:
-    sourceFolder: src/msix_certs
-    targetFolder: AppConfigured
-    flattenFolders: false # Optional
-
-# Currently the PSF fixups are not being used. Set enabled to true, in order to use it.
-- task: CopyFiles@2
-  displayName: COPY Psf artifacts
-  enabled: false
-  inputs:
-    sourceFolder: src/psf_application_artifacts
-    targetFolder: AppConfigured
-    flattenFolders: false # Optional
-    overWrite: true
+    flattenFolders: false
 
 - task: PowerShell@2
   displayName: UPDATE appmanifest

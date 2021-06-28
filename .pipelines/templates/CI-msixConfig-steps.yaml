@@ -11,6 +11,6 @@ steps:
       $appWorkingFolder=(Get-Location).Path
       $appMsixSourceFolderName="."
       ## MakePri: Generate Config for Resources package 
-      & "..\src\Tools\windowskit\x64\makepri.exe" createconfig /cf ".\$appMsixSourceFolderName\priconfig.xml" /dq en-US /o
+      & "..\msix-appttach\tools\windowskit\x64\makepri.exe" createconfig /cf ".\$appMsixSourceFolderName\priconfig.xml" /dq en-US /o
       ## MakePri: Create the resources.pri file(s)
-      & "..\src\Tools\windowskit\x64\makepri.exe" new /pr ".\$appMsixSourceFolderName" /cf ".\$appMsixSourceFolderName\priconfig.xml" /of ".\$appMsixSourceFolderName\resources.pri" /mn ".\$appMsixSourceFolderName\appxmanifest.xml" /o
+      & "..\msix-appttach\tools\windowskit\x64\makepri.exe" new /pr ".\$appMsixSourceFolderName" /cf ".\$appMsixSourceFolderName\priconfig.xml" /of ".\$appMsixSourceFolderName\resources.pri" /mn ".\$appMsixSourceFolderName\appxmanifest.xml" /o
