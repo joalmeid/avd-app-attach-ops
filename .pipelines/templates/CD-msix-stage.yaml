@@ -9,7 +9,7 @@ parameters:
   type: string
 - name: msixImageFileName
   type: string
-- name: msixApplicationUNCServer
+- name: msixAppAttachUNCServer
   type: string
 - name: msixApplicationUNCShareName
   type: string
@@ -35,9 +35,9 @@ stages:
               storageAccount: $(storageAccount)
               applicationName: ${{ parameters.applicationName}}
               msixVersion: ${{ parameters.msixVersion }}
-              msixApplicationLocalPath: $(msixAppAttachUNCLocalPath)
+              msixAzureVMLocalPath: $(msixAzureVMLocalPath)
               msixImageFileName: ${{ parameters.msixImageFileName }}
-              msixApplicationUNCServer: ${{ parameters.msixApplicationUNCServer }}
+              msixAppAttachUNCServer: ${{ parameters.msixAppAttachUNCServer }}
               msixApplicationUNCShareName: ${{ parameters.msixApplicationUNCShareName }}
 
           # App (AVD MSIX Appattach) publishing process
@@ -48,7 +48,7 @@ stages:
               resourceGroup: $(resourceGroup)
               hostPoolName: $(hostPoolName)
               msixVersion: ${{ parameters.msixVersion }}
-              msixApplicationUNCPath: '\\${{ parameters.msixApplicationUNCServer }}\${{ parameters.msixApplicationUNCShareName }}'
+              msixApplicationUNCPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixApplicationUNCShareName }}'
               msixImageFileName: ${{ parameters.msixImageFileName }}
               applicationName: ${{ parameters.applicationName}}
               

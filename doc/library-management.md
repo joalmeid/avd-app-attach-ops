@@ -43,8 +43,8 @@ Here are the complete set of variables used in the pipeline:
 | **storageAccount** | Storage account where the CI_App_base will be copied from and used by the AzureCopyTask@4 |
 | **hostPoolName** | Session host pool resource name in the Azure Virtual Desktop infrastructure |
 
-| **VMAdminUsername** | Name of the Azure VM Admin User |
-| **VMAdminPassword** | Password of the Azure VM Admin User |
+| **UserUsername** | Name of the Azure VM Admin User |
+| **UserPassword** | Password of the Azure VM Admin User |
 
 ## Secure files
 

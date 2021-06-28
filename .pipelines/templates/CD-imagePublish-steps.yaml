@@ -1,5 +1,5 @@
 # Image Publish Steps Template
-# Requires $(VMAdminUsername), $(VMAdminPassword) from a variable group called
+# Requires $(UserUsername), $(UserPassword) from a variable group called
 
 parameters:
   - name: msixVersion
@@ -16,12 +16,12 @@ parameters:
   - name: applicationName
     type: string
     default: app
-  - name: msixApplicationLocalPath
+  - name: msixAzureVMLocalPath
     type: string
     default: 'c:\\Contoso\MSIX'
   - name: msixImageFileName
     type: string
-  - name: msixApplicationUNCServer
+  - name: msixAppAttachUNCServer
     type: string
   - name: msixApplicationUNCShareName
     type: string
@@ -62,7 +62,7 @@ steps:
     resourceGroup: ${{ parameters.resourceGroup }}
     vmsAdminUserName: $(UserUsername)
     vmsAdminPassword: $(UserPassword)
-    TargetPath: ${{ parameters.msixApplicationLocalPath }}
+    TargetPath: ${{ parameters.msixAzureVMLocalPath }}
     enableCopyPrerequisites: true
     #machineNames: # Optional. Must be used if there are more VMs in the referenced Resource Group.
     cleanTargetBeforeCopy: false # Optional
@@ -74,8 +74,8 @@ steps:
 # - task: WindowsMachineFileCopy@2
 #   inputs:
 #     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName}}
-#     machineNames: ${{ parameters.msixApplicationUNCServer }}
+#     machineNames: ${{ parameters.msixAppAttachUNCServer }}
 #     adminUserName: $(UserUsername)
 #     adminPassword: $(UserPassword)
-#     targetPath: '\\${{ parameters.msixApplicationUNCServer }}\${{ parameters.msixApplicationUNCShareName }}'
+#     targetPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixApplicationUNCShareName }}'
 
