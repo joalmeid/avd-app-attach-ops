@@ -4,17 +4,19 @@ In the context of MSIX App Attach feature in Azure Virtual Desktop (AVD), the lo
 
 Azure NetApp Files is a high-performance, metered file storage service from Azure. It supports several workload types and is highly available by default. It also offers service and performance levels as well as snapshot capabilities. Specifically for Azure Virtual Desktop, it is recommended for extremely large scale deployments, providing up to 450,000 IOPS and sub-millisecond latency.
 
+It is important to understand the Azure NetApp Files Service levels, in order to best suit your performance and/or cost needs. Check it [here](#azure-netapp-files-service-levels).
+
 ![MSIX_App_Attach_File_share](doc/images/../../images/msix_app_attach_file_share.jpg)
 
 > [FSLogix](https://docs.microsoft.com/en-us/fslogix/overview), another roaming profile technology can also beneficiate from Azure NetApp Files. You can check additional documentation in the article [Create a profile container with Azure NetApp Files and AD DS](https://docs.microsoft.com/en-us/azure/virtual-desktop/create-fslogix-profile-container).
 
-# Setting up Azure NetApp Files for MSIX App Attach
+## Setting up Azure NetApp Files for MSIX App Attach
 
 Here, the main goal is to add MSIX Packages on a AVD host pool relying on Azure NetApp Files, an enterprise-grade SMB volumes. We will guide you through the steps to set up Azure NetApp Files for MSIX App Attach.
 
 > At the time of writing, Azure NetApp Files usage required submiting a waitlist request. You can refer to [Register for Azure NetApp Files](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-register).
 
-## Prerequirements
+### Prerequirements
 
 We enumerate the ANF prerequisites accordingly to our scenario. Check additional initial [prerequisites](../README.md#prerequirements)
 
@@ -22,12 +24,9 @@ We enumerate the ANF prerequisites accordingly to our scenario. Check additional
 - Ensure the VNet or subnet where AADDS is deployed is in the same Azure region as the Azure NetApp Files deployment.
 - It will be required to delegate a subnet to Azure NetApp Files.
 
-## Walkthrough the Azure NetApp Files for AVD MSIX App Attach
+### Walkthrough the Azure NetApp Files for AVD MSIX App Attach
 
 > First things first: Confirm Azure NetApp Files is available in the region of your session hosts.
-
-### Process overview
-
 
 We've automated the Azure NetApp Files setup. By using Azure CLI and the `netappfiles` module In order to quickly start, let's configure the Azure DevOps project to run the pipline and deploy the sample application to your AVD infrastructure.
 
@@ -45,11 +44,41 @@ We've automated the Azure NetApp Files setup. By using Azure CLI and the `netapp
   >  - Join an Active Directory Connection
   >  - Create a delegated subnet
   >  - Create a new volume
-  >  - Verify connection to Azure NetApp Files Share
+  >  - Take a note of the mount path based on the provisioned NetApp volume
 
-**4. Upload MSIX Image to Azure NetApp Files Share**
+**4. Validate that all your AVD session hosts can reach the created volume and mount path**
 
 **5. Configure the Azure Devops pipeline to publish to the Azure NetApp Files Share**
+
+  >  The changes in the pipelines are the following:
+  > 
+  >  - **Comment** the `AzureFileCopy@4` task in [CD-ImagePublish-steps.yaml](https://github.com/joalmeid/avd-app-attach-ops/blob/b216427cd1056c0e7543e9c71e46062cbd981a25/.pipelines/templates/CD-imagePublish-steps.yaml#L55)
+  >  - **Uncomment** the `WindowsMachineFileCopy@2` task in [CD-ImagePublish-steps.yaml](https://github.com/joalmeid/avd-app-attach-ops/blob/b216427cd1056c0e7543e9c71e46062cbd981a25/.pipelines/templates/CD-imagePublish-steps.yaml#L74)
+  >  - Change the **msixAppAttachUNCServer** variable in the Environment specific variable group
+  >    - Use the FQDN in the NetApp Mount path
+  >  - Change the **msixAppAttachUNCShareName** variable in the Environment specific variable group
+  >    - Use the UNC share path in the NetApp Mount path
+  >  - Change the **UserUsername** variable in the Environment specific variable group
+  >    - Set a domain user with the format `domain\username`
+  >  - Change the **UserPassword** variable in the Environment specific variable group
+  >    - Set a domain user password
+
+**6. Run the pipeline (default name shoud be `env-CICD-AVD-msix-app-attach`);**
+
+## Azure NetApp Files Service Levels
+
+Azure NetApp Files Servic Level is a capacity pool attribute. During our provisioning we set it when creating the capacity pool. YOu can check it [here](https://github.com/joalmeid/avd-app-attach-ops/blob/b216427cd1056c0e7543e9c71e46062cbd981a25/setup/create-netapp.sh#L25).
+
+This service offers you performant throughput limit through a set of conditions:
+
+- Capacity pool service level (**Standard**, **Premium**, **Ultra**)
+  - Respectively **16 MiB/s**, **64 MiB/s** or **128 MiB/s** of throughput per 1 TiB
+- The quota assigned to the volume
+  - Scales linearly with the service level. Depending on quota defined compared with 1 TiB for that specific service level
+- The QoS type (auto or manual) of the capacity pool
+  - Manual QoS capacity pool allows you to assign the capacity and throughput for a volume independently
+
+For more information, check the [Service levels for Azure NetApp Files](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-service-levels) documentation article.
 
 ## References
 
@@ -58,4 +87,5 @@ We've automated the Azure NetApp Files setup. By using Azure CLI and the `netapp
 https://docs.microsoft.com/en-us/azure/azure-netapp-files/create-active-directory-connections#decide-which-domain-services-to-use
 - [Solution architectures using Azure NetApp Files](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-solution-architectures#virtual-desktop-infrastructure-solutions)
 - [Create and manage Active Directory connections for Azure NetApp Files](https://docs.microsoft.com/en-us/azure/azure-netapp-files/create-active-directory-connections#decide-which-domain-services-to-use)
+
 - [FAQs About Azure NetApp Files](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-faqs)
