@@ -54,6 +54,8 @@ We've automated the Azure NetApp Files setup. By using Azure CLI and the `netapp
   > 
   >  - **Comment** the `AzureFileCopy@4` task in [CD-ImagePublish-steps.yaml](https://github.com/joalmeid/avd-app-attach-ops/blob/b216427cd1056c0e7543e9c71e46062cbd981a25/.pipelines/templates/CD-imagePublish-steps.yaml#L55)
   >  - **Uncomment** the `WindowsMachineFileCopy@2` task in [CD-ImagePublish-steps.yaml](https://github.com/joalmeid/avd-app-attach-ops/blob/b216427cd1056c0e7543e9c71e46062cbd981a25/.pipelines/templates/CD-imagePublish-steps.yaml#L74)
+  >  - Use an Azure DevOps Self-hosted Agent in the same VNET as the ANF volume
+  >    - Set the agent pool where the Self-hosted agent is registered in the [CD-msix-stage.yaml](https://github.com/joalmeid/avd-app-attach-ops/blob/dfd966044e01b684396bd56a6fc8357e9e92f529/.pipelines/templates/CD-msix-stage.yaml#L25) template.
   >  - Change the **msixAppAttachUNCServer** variable in the Environment specific variable group
   >    - Use the FQDN in the NetApp Mount path
   >  - Change the **msixAppAttachUNCShareName** variable in the Environment specific variable group
