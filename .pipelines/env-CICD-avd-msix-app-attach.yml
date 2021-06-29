@@ -80,7 +80,7 @@ variables:
 # The UNC Server FQDN used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixAppAttachShareName
 # - name: msixAppAttachUNCServer
 #   value: fileshare.domain.onmicrosoft.com
-# The UNC Share name used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixAppAttachShareName
+# The UNC Share name used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixAppAttachUNCServer
 # - name: msixAppAttachShareName
 #   value: avdmsix
 

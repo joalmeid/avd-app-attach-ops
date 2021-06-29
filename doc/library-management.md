@@ -13,7 +13,6 @@ The pipeline allows to set parameters for each execution. The elected parameters
 | **fileLocation** | The SAC file location path Expected to be reachable through http/https protocol for direct download |
 | **fileName** | SAC file name for a particular release |
 | **version** | Application version (semantic version is recommended) to be used in the AVD deployment |
-| **msixAppAttachUNCPath** |The UNC share to be used to place the MSIX App Attach image. It will be used during the app registration in AVD |
 
 ## Variable Groups
 
@@ -42,9 +41,11 @@ Here are the complete set of variables used in the pipeline:
 | **resourceGroup** | Resource group where the Azure Virtual Desktop resource are created |
 | **storageAccount** | Storage account where the CI_App_base will be copied from and used by the AzureCopyTask@4 |
 | **hostPoolName** | Session host pool resource name in the Azure Virtual Desktop infrastructure |
-
-| **UserUsername** | Name of the Azure VM Admin User |
-| **UserPassword** | Password of the Azure VM Admin User |
+| **msixAppAttachUNCServer** | UNC Server FQDN to publish MSIX App Attach image. Used with variable msixAppAttachShareName |
+| **msixAppAttachShareName** | UNC Share name to publish MSIX App Attach image. Used with variable msixAppAttachUNCServer |
+| **msixAzureVMLocalPath** | The Azure VM local path, where the UNC Share is configured. Needed by the AzureFileCopy@4 task. Not used for the Azure NetApp files scenario.
+| **UserName** | Name of the Azure VM Admin User, valid Domain User for the Azure NetApp scenario|
+| **UserPassword** | Password of the Azure VM Admin User, valid Domain User for the Azure NetApp scenario |
 
 ## Secure files
 
