@@ -72,6 +72,7 @@ steps:
 # Windows machine file copy
 # works for self-hosted agent in the V-Net to the file share 
 # - task: WindowsMachineFileCopy@2
+#   displayName: 'COPY Msix Image to Fileshare (Azure NetApp Files)'
 #   inputs:
 #     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName}}
 #     machineNames: ${{ parameters.msixAppAttachUNCServer }}
