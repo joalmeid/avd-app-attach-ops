@@ -47,7 +47,7 @@ Pipeline workflow
 
 MSIX packaging, Image creation and MSIX App Attach
 - [MSIX App Attach Automation](doc/msix-appattach-automation.md) : Learn about the MSIX packaging, image creation and publishing process by the pipline and where to customize if needed.
-- [Azure NetApp Files for high performance and reliability](doc/netapp.md) : Learn about Azure NetApp Files as MSIX_AppAttach_File_share to leverage up to 450,000 IOPS and sub-millisecond latency.
+- [Azure NetApp Files for performance and reliability](doc/netapp.md) : Learn about Azure NetApp Files as MSIX_AppAttach_File_share to support your performance and reliability requirements.
 - [Package Support Framework](doc/psf.md) : Your legacy App is not MSIX compatible and you do not have access to code? Learn about the Package Support Framework and how it could be used in the pipeline to overcome legacy limitations by using PSF configuration.
 
 ## Prerequirements
