@@ -41,12 +41,11 @@ Here are the complete set of variables used in the pipeline:
 | **resourceGroup** | Resource group where the Azure Virtual Desktop resource are created |
 | **storageAccount** | Storage account where the CI_App_base will be copied from and used by the AzureCopyTask@4 |
 | **hostPoolName** | Session host pool resource name in the Azure Virtual Desktop infrastructure |
-
-| **msixAppAttachShareName** | # The UNC Share name used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixAppAttachUNCServer |
-| **msixAppAttachUNCServer** | The UNC Server FQDN used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixAppAttachShareName | 
-| **msixAzureVMLocalPath** | The Azure VM local path, where the UNC Share is configured. The MSIX Image will be copied using local filesystem (PSSession) and made available through the configured file share. |
-| **UserUsername** | Name of the Azure VM Admin User |
-| **UserPassword** | Password of the Azure VM Admin User |
+| **msixAppAttachUNCServer** | UNC Server FQDN to publish MSIX App Attach image. Used with variable msixAppAttachShareName |
+| **msixAppAttachShareName** | UNC Share name to publish MSIX App Attach image. Used with variable msixAppAttachUNCServer |
+| **msixAzureVMLocalPath** | The Azure VM local path, where the UNC Share is configured. Needed by the AzureFileCopy@4 task. Not used for the Azure NetApp files scenario.
+| **UserName** | Name of the Azure VM Admin User, valid Domain User for the Azure NetApp scenario|
+| **UserPassword** | Password of the Azure VM Admin User, valid Domain User for the Azure NetApp scenario |
 
 ## Secure files
 
