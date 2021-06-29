@@ -75,7 +75,7 @@ DEVVariableGroupID=$(az pipelines variable-group list \
 ## Create secrets in DEV variable group
 az pipelines variable-group variable create \
   --group-id $DEVVariableGroupID \
-  --name UserUsername \
+  --name UserName \
   --secret true \
   --value $VM_ADMIN \
   --org $ADO_ORGANIZATION \
