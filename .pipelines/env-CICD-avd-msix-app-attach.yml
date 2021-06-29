@@ -1,7 +1,7 @@
 # root MSIX AppAttach Multi-stage pipeline (CI & CD)
 # Requires resources: Storage, AVD Session Pool, Variable group named Secrets with containing the CertificatePassword variable
 # Required parameters to set: fileLocation, fileName, version
-# Required variables (or variable group): msixAppAttachUNCLocalPath, msixAppAttachUNCServer, msixAppAttachShareName, UserUsername, UserPassword
+# Required variables (or variable group): msixAppAttachUNCLocalPath, msixAppAttachUNCServer, msixAppAttachShareName, UserName, UserPassword
 
 trigger:
 - none
@@ -69,7 +69,7 @@ variables:
 # - name: hostPoolName 
 #   value: <azure virtual desktop session host pool name>
 # Name of the Azure VM admin/domain User
-# - name: UserUsername
+# - name: UserName
 #   value: ******
 # Password of the Azure VM/domain User
 # - name: UserPassword

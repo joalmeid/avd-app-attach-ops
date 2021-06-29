@@ -1,5 +1,5 @@
 # Image Publish Steps Template
-# Requires $(UserUsername), $(UserPassword) from a variable group called
+# Requires $(UserName), $(UserPassword) from a variable group called
 
 parameters:
   - name: msixVersion
@@ -60,7 +60,7 @@ steps:
     destination: azureVMs
     storage: ${{ parameters.storageAccount }}
     resourceGroup: ${{ parameters.resourceGroup }}
-    vmsAdminUserName: $(UserUsername)
+    vmsAdminUserName: $(UserName)
     vmsAdminPassword: $(UserPassword)
     TargetPath: ${{ parameters.msixAzureVMLocalPath }}
     enableCopyPrerequisites: true
@@ -75,7 +75,7 @@ steps:
 #   inputs:
 #     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName}}
 #     machineNames: ${{ parameters.msixAppAttachUNCServer }}
-#     adminUserName: $(UserUsername)
+#     adminUserName: $(UserName)
 #     adminPassword: $(UserPassword)
 #     targetPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixAppAttachShareName }}'
 
