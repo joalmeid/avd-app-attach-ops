@@ -10,7 +10,7 @@ The pipeline will support the scenario where the team is getting App binaries fo
 
 If the Team is owning the code and is building the Application as well as packaging the MSIX in an automated way before deploying to AVD. The pipeline could be easily adopted for this scenario by changing the CI stage of the pipeline to integrate with your existing automation.
 
-The following graphic is showing an overview of the key components involved by our scenario. Please note that we are using an Azure VM as MSIX_AppAttach_File_share. For high performance and reliability we recommend to use Azure NetApp Files. 
+The following graphic is showing an overview of the key components involved by our scenario. Please note that we are using an Azure VM as MSIX_AppAttach_File_share. For high performance and reliability we recommend to use Azure NetApp Files, which the pipeline is supporting as well.
 
 The pipeline implements a CI and CD stage. The CI stage is getting the App binaries from a Azure Blob. The CD stage deploys the image to the MSIX _AppAttach_File_share (1) and deploys it to the AVD infrastructure (2):
 
