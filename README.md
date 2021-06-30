@@ -140,7 +140,7 @@ Now you're aready to run the pipeline using a Windows based Hosted Agent. The pi
 
 **9. Fill all the parameters accordingly to your environment;**
 
-![Pipeline parameters](doc/images/pipeline-parameters.jpg)
+<img src="doc/images/pipeline-parameters.jpg" alt="Pipeline parameters" width="300" height="600">
 
   > **NOTE:** you can directly change and commit the main YAML pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` and change the parameters default values.
 
