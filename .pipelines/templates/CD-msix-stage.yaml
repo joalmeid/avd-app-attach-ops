@@ -22,8 +22,8 @@ stages:
   jobs:
   - deployment: PublishImage
     displayName: PublishImage
-    pool: 
-      vmImage: windows-latest
+    pool: joalmeid-pool
+      # vmImage: windows-latest
     environment: ${{parameters.envId}}
     strategy:
       runOnce:
