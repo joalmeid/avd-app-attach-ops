@@ -2,7 +2,6 @@
 parameters:
 - name: envId
   type: string
-  default: DEV
 - name: applicationName
   type: string
 - name: msixVersion

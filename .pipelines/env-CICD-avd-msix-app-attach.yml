@@ -107,7 +107,8 @@ stages:
     msixApplicationUNCPath: '\\$(msixAppAttachUNCServer)\$(msixAppAttachShareName)'
 
 - template: templates/CD-msix-stage.yaml
-  parameters: 
+  parameters:
+    envId: $(environmentId)
     applicationName: $(applicationName)
     msixVersion: ${{ parameters.version }}
     msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx

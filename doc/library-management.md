@@ -37,6 +37,7 @@ Here are the complete set of variables used in the pipeline:
 
 | Name | Description |
 |------|-------------|
+| **environmentId** | An ID provided to identify the environment. Typically 'Dev, Qa, Staging, Prod'. |
 | **azureSubscription** | The name of a Service Connection of type Azure Resource Manager in the ADO organization |
 | **resourceGroup** | Resource group where the Azure Virtual Desktop resource are created |
 | **storageAccount** | Storage account where the CI_App_base will be copied from and used by the AzureCopyTask@4 |
