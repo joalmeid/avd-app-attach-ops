@@ -56,6 +56,9 @@ variables:
 
 ## Environment specific variables
 - group: DEV-msix-appattach-vg
+# An ID provided to identify the environment. Typically 'Dev, Qa, Staging, Prod'.
+# - name: environmentId
+#   value: DEV
 # The name of a Service Connection of type Azure Resource Manager in the Azure Devops organization. It will provide access to storage accounts, Virtual Machines, AVD or any other azure resource.
 # - name: azureSubscription
 #   value: <ado-azure-rm-connection-service>
