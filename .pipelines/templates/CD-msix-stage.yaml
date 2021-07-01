@@ -21,8 +21,8 @@ stages:
   jobs:
   - deployment: PublishImage
     displayName: PublishImage
-    pool: joalmeid-pool
-      # vmImage: windows-latest
+    pool: # <name of an agent pool for Self-hosted agents>
+      vmImage: windows-latest
     environment: ${{parameters.envId}}
     strategy:
       runOnce:
