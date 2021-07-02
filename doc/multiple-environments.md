@@ -1,6 +1,6 @@
 # Rollout Orchestration multiple environments
 
-This repo includes a single pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` executing both a Continuous Integration (CI) stage and a Continuous Delivery (CD) stage to a single **environment**. The default **environment** name used is `DEV`.
+This repo includes a single pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` executing both a Continuous Integration (CI) stage and a Continuous Delivery (CD) stage to a single **environment**. The default **environment** name used is `DEV`. The environment name is defined in through the variable `name: environmentId` , which is defined in the enviroment specific Variable Group.
 The pipeline uses [Deployment Jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/deployment-jobs?view=azure-devops) hence ADO environments will be used and automatically created as configured.
 
 <img src="images/variable_groups_multiple_environments.jpg" alt="Multiple Environments with Variable Groups">
@@ -21,12 +21,7 @@ With this pipeline and while aiming for simplicity a way to support multiple env
   - Variable group were created for each envirnment
   - In the variable group name, the invironment is identified
   - The referece to the environment specific variable groups can be found [here](https://github.com/joalmeid/avd-app-attach-ops/blob/mvp1/.pipelines/env-CICD-avd-msix-app-attach.yml#L61).****
-
-**3. Customize each YAML pipeline with the specific environment name**
-
-  - Default environment name can be changed [here](https://github.com/joalmeid/avd-app-attach-ops/blob/mvp1/.pipelines/templates/CD-msix-stage.yaml#L5)
-  - A parameter can be set when calling the [CD-msix-stage](https://github.com/joalmeid/avd-app-attach-ops/blob/mvp1/.pipelines/env-CICD-avd-msix-app-attach.yml#L103). Ex: Adding the line `envId: PROD` in the root YAML pipeline.
-
+  
 ## Variable Groups
 
 In a multi environment setup, the variable group usage becomes trivial. In each environment specific YAML pipeline, it is recommended to link the pipeline by referencing an environment specific variable group.
