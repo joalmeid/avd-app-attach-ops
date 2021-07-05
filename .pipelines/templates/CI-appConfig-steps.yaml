@@ -38,6 +38,14 @@ steps:
     targetFolder: AppConfigured
     flattenFolders: false
 
+- task: CopyFiles@2
+  displayName: COPY Psf artifacts
+  inputs:
+    sourceFolder: msix-appattach/psf_application_artifacts
+    targetFolder: AppConfigured
+    flattenFolders: false
+    overWrite: true
+
 - task: PowerShell@2
   displayName: UPDATE appmanifest
   inputs:
