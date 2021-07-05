@@ -1,6 +1,21 @@
 # MSIX Config Steps
 
+parameters:
+  - name: applicationName
+    type: string
+  - name: applicationExecutable
+    type: string
+  - name: applicationEntryPoint
+    type: string
+  - name: applicationWorkingDirectory
+    type: string
+    default: /
+  - name: applicationProcessFileRedirectionFixupBase
+    type: string
+    default: /
+    
 steps:
+
 # MAKEPRI: GENERATE PRICONFIG.XML and create the pri files
 - task: PowerShell@2
   displayName: 'RUN PriConfig'
@@ -14,3 +29,21 @@ steps:
       & "..\msix-appttach\tools\windowskit\x64\makepri.exe" createconfig /cf ".\$appMsixSourceFolderName\priconfig.xml" /dq en-US /o
       ## MakePri: Create the resources.pri file(s)
       & "..\msix-appttach\tools\windowskit\x64\makepri.exe" new /pr ".\$appMsixSourceFolderName" /cf ".\$appMsixSourceFolderName\priconfig.xml" /of ".\$appMsixSourceFolderName\resources.pri" /mn ".\$appMsixSourceFolderName\appxmanifest.xml" /o
+
+# CREATE/CHANGE THE CONFIG.JSON ?
+- task: PowerShell@2
+  displayName: 'UPDATE Psf Configuration'
+  enabled: false
+  inputs:
+    targetType: inline
+    workingDirectory: AppConfigured
+    script: |
+
+      $psfConfig = Get-Content "config.json" -raw | ConvertFrom-Json
+      $psfConfig.applications[0].id = "${{ parameters.applicationName}}"
+      $psfConfig.applications[0].executable = "${{ parameters.applicationEntryPoint}}"
+      $psfConfig.applications[0].workingDirectory = "${{ parameters.applicationWorkingDirectory}}"
+      $psfConfig.processes[0].executable = "${{ parameters.applicationExecutable}}"
+      $psfConfig.processes[0].fixups[0].config.redirectedPaths.packageRelative[0].base = "${{ parameters.applicationProcessFileRedirectionFixupBase}}"
+      $psfConfig | ConvertTo-Json -depth 32 | % { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Out-File "config.json"
+

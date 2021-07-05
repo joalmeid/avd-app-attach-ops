@@ -14,7 +14,7 @@ parameters:
 - name: fileName # The app file name for a particular app release
   displayName: Configured App File Name
   type: string
-  default: appbin.zip
+  default: psf-appbin.zip
 - name: version # The application version (semantic version is recommended) to be used in the AVD deployment
   displayName: Application Version
   type: string
@@ -22,19 +22,19 @@ parameters:
 
 variables:
 # Application specific variable group
-- group: APP-msix-appattach-vg 
+- group: PSF-APP-msix-appattach-vg 
 # The application name to be used in the AVD deployment
 # - name: applicationName
-#   value: SimpleApp
+#   value: PsfSimpleApp
 # The application display name to be used in the MSIX package to be deployed in the AVD environment.
 # - name: applicationDisplayName
-#   value: Simple App
+#   value: Psf Simple App
 # The application description to be used in the MSIX package to be deployed in the AVD environment.
 # - name: applicationDescription 
-#   value: SimpleApp
+#   value: PsfSimpleApp
 # The application full executable path in the in the MSIX package. Corresponds to the main application entrypoint.
 # - name: applicationExecutable 
-#   value: simple-app.exe
+#   value: psf-simple-app.exe
 # The MSIX Package certificate publisher. Typically follows the syntax "CN=Contoso Software, O=Contoso Corporation, C=US".
 # - name: publisher 
 #   value: CN=Contoso
@@ -104,6 +104,7 @@ stages:
     fileLocation: ${{ parameters.fileLocation }}
     fileName: ${{ parameters.fileName }}
     applicationName: $(applicationName)
+    applicationExecutable: $(applicationExecutable)
     msixVersion: ${{ parameters.version }}
     msixImageSize:  ($(msixImageSize))
     msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx

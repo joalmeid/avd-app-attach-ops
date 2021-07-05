@@ -54,6 +54,32 @@ az pipelines variable-group variable create \
   --org $ADO_ORGANIZATION \
   --project $ADO_PROJECT
 
+## Create PSF APP variable group
+az pipelines variable-group create \
+  --name 'PSF-APP-msix-appattach-vg' \
+  --variables applicationDescription=PsfSimpleApp applicationDisplayName='Psf Simple App' applicationExecutable=psf-simple-app.exe applicationName=PsfSimpleApp CertificateName=$CERTIFICATE_NAME CertificatePasswordVariable=CertificatePassword msixImageSize=100 publisher=CN=Contoso publisherDisplayName=Contoso \
+  --authorize true \
+  --description 'Application specific variable group for AVD and MSIX Appattach automation' \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT
+
+## get PSF APP variable group ID
+PsfAppVariableGroupID=$(az pipelines variable-group list \
+  --detect true \
+  --group-name 'APP*' \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT \
+  --query '[].id'\
+  -o tsv)
+## Create secrets in PSF APP variable group
+az pipelines variable-group variable create \
+  --group-id $PsfAppVariableGroupID \
+  --name CertificatePassword \
+  --secret true \
+  --value $CERTIFICATE_PASSWD \
+  --org $ADO_ORGANIZATION \
+  --project $ADO_PROJECT
+
 # Environment specific variable group
 ## Create DEV variable group
 az pipelines variable-group create \

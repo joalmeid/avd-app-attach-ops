@@ -6,6 +6,8 @@ parameters:
   type: string
 - name: applicationName
   type: string
+- name: applicationExecutable
+  type: string
 - name: msixVersion
   type: string
 - name: msixImageSize
@@ -41,6 +43,12 @@ stages:
 
     # MSIX configuration process
     - template: ./CI-msixConfig-steps.yaml
+      parameters:
+        applicationName: ${{ parameters.applicationName}}
+        applicationEntryPoint: ${{ parameters.applicationName}}
+        applicationExecutable: ${{ parameters.applicationExecutable}}
+        applicationWorkingDirectory: /
+        applicationProcessFileRedirectionFixupBase: /
 
     # MSIX packaging process
     - template: ./CI-msixPackaging-steps.yaml
