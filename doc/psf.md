@@ -11,7 +11,7 @@ Most common use cases to use PSF are:
 
 PSF can be applied on a existing MSIX package and/or being included in the MSIX package from the beginning.
 
-The process to use PSF while building an MSIX package is:
+The manual process to use PSF while building an MSIX package is:
 
 1. **Identify the runtime fix** that solves the detected issue in the msix package.
    * Find available fixups in [PSF github](https://github.com/Microsoft/MSIX-PackageSupportFramework)
@@ -50,7 +50,7 @@ The process to use PSF while building an MSIX package is:
       ],
       "processes": [
           {
-              "executable": "simpleapp",
+              "executable": "SimpleApp",
               "fixups": [
                   {
                       "dll": "FileRedirectionFixup.dll",
