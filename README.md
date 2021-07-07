@@ -1,6 +1,6 @@
 # Azure Virtual Desktop MSIX App Attach operations
 
-## Introduction
+![Azure Virtual Desktop MSIX App Attach delivery](doc/images/AVD_MSIX_App_Attach_delivery.gif)
 
 [Fast forward -  jump directly to the *Getting started* section](#getting-started)
 
