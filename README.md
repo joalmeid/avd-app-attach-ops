@@ -1,4 +1,4 @@
-# Azure Virtual Desktop MSIX App Attach operations
+# Azure Virtual Desktop MSIX App Attach delivery
 
 ![Azure Virtual Desktop MSIX App Attach delivery](doc/images/AVD_MSIX_App_Attach_delivery.gif)
 
