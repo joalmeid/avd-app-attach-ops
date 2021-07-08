@@ -33,23 +33,18 @@ stages:
       parameters:
         fileLocation: ${{ parameters.fileLocation }}
         fileName: ${{ parameters.fileName }}
-        msixVersion: ${{ parameters.msixVersion }}
-        publisher: $(publisher)
-        publisherDisplayName: $(publisherDisplayName)
-        applicationName: ${{ parameters.applicationName }}
-        applicationDisplayName: $(applicationDisplayName)
-        applicationDescription: $(applicationDescription)
-        applicationExecutable: $(applicationExecutable)
-        psfExecutable: $(psfExecutable)
 
     # MSIX configuration process
     - template: ./CI-msixConfig-steps.yaml
       parameters:
         applicationName: ${{ parameters.applicationName}}
-        applicationEntryPoint: ${{ parameters.applicationName}}
         applicationExecutable: ${{ parameters.applicationExecutable}}
-        applicationWorkingDirectory: /
-        applicationProcessFileRedirectionFixupBase: /
+        applicationDisplayName: $(applicationDisplayName)
+        applicationDescription: $(applicationDescription)
+        msixVersion: ${{ parameters.msixVersion }}
+        publisher: $(publisher)
+        publisherDisplayName: $(publisherDisplayName)
+        psfExecutable: $(psfExecutable)
 
     # MSIX packaging process
     - template: ./CI-msixPackaging-steps.yaml

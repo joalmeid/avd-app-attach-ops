@@ -2,13 +2,13 @@
   "applications": [
     {
       "id": "APP_ID_NAME",
-      "executable": "APP_EXECUTABLE_PATH",
-      "workingDirectory": "APP_EXECUTABLE_WORK_DIR"
+      "executable": "psf-simple-app.exe",
+      "workingDirectory": "/"
     }
   ],
   "processes": [
     {
-      "executable": "APP_EXECUTABLE",
+      "executable": "psf-simple-app",
       "fixups": [
         {
           "dll": "FileRedirectionFixup.dll",
@@ -16,7 +16,7 @@
             "redirectedPaths": {
               "packageRelative": [
                 {
-                  "base": "FILE_REDIRECTION_BASE",
+                  "base": "/",
                   "patterns": [
                     "*.config",
                     ".*\\.log"
