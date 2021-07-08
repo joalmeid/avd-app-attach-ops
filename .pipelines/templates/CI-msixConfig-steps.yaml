@@ -33,7 +33,7 @@ steps:
 # CREATE/CHANGE THE CONFIG.JSON ?
 - task: PowerShell@2
   displayName: 'UPDATE Psf Configuration'
-  enabled: false
+  condition: eq(variables.psfEnabled, true)
   inputs:
     targetType: inline
     workingDirectory: AppConfigured

@@ -21,8 +21,13 @@ parameters:
   default: "0.0.0.0"
 
 variables:
-# Application specific variable group
-- group: PSF-APP-msix-appattach-vg 
+- name: psfEnabled
+  value: false
+  # Application specific variable group
+- group: APP-msix-appattach-vg 
+# For PSF Enabled use the following variable group
+# - group: PSF-APP-msix-appattach-vg 
+
 # The application name to be used in the AVD deployment
 # - name: applicationName
 #   value: PsfSimpleApp

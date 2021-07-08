@@ -40,6 +40,7 @@ stages:
         applicationDisplayName: $(applicationDisplayName)
         applicationDescription: $(applicationDescription)
         applicationExecutable: $(applicationExecutable)
+        psfExecutable: $(psfExecutable)
 
     # MSIX configuration process
     - template: ./CI-msixConfig-steps.yaml
