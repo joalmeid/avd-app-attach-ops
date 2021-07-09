@@ -23,6 +23,9 @@ parameters:
 
 steps:
 
+- script: dir /B /S
+  displayName: Test (TOREMOVE)
+
 # MAKEPRI: GENERATE PRICONFIG.XML and create the pri files
 - task: PowerShell@2
   displayName: 'RUN PriConfig'
