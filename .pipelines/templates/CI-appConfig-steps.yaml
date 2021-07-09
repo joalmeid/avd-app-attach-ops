@@ -4,7 +4,10 @@ parameters:
   type: string
 - name: fileName
   type: string
-  
+- name: psfEnabled
+  default: false
+  type: boolean
+
 steps:
 - script: |
     curl -o ${{parameters.fileName}} ${{parameters.fileLocation}}/${{parameters.fileName}}
@@ -26,7 +29,7 @@ steps:
 
 - task: CopyFiles@2
   displayName: COPY Psf artifacts
-  condition: eq(variables.psfEnabled, true)
+  condition: eq('${{ parameters.psfEnabled }}', true)
   inputs:
     sourceFolder: msix-appattach/psf_application_artifacts
     targetFolder: AppConfigured
