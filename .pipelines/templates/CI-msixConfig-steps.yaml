@@ -1,23 +1,26 @@
 # MSIX Config Steps
 
 parameters:
-  - name: applicationName
-    type: string
-  - name: applicationExecutable
-    type: string
-  - name: applicationDisplayName
-    type: string
-  - name: applicationDescription
-    type: string
-  - name: msixVersion
-    type: string
-  - name: publisher
-    type: string
-  - name: publisherDisplayName
-    type: string
-  - name: psfExecutable
-    type: string
-    
+- name: applicationName
+  type: string
+- name: applicationExecutable
+  type: string
+- name: applicationDisplayName
+  type: string
+- name: applicationDescription
+  type: string
+- name: msixVersion
+  type: string
+- name: publisher
+  type: string
+- name: publisherDisplayName
+  type: string
+- name: psfExecutable
+  type: string
+- name: psfEnabled
+  default: false
+  type: boolean
+
 steps:
 
 # MAKEPRI: GENERATE PRICONFIG.XML and create the pri files
@@ -38,7 +41,7 @@ steps:
 # This task will only run if psfEnabled equals true
 - task: PowerShell@2
   displayName: 'UPDATE Psf Configuration'
-  condition: eq(variables.psfEnabled, true)
+  condition: eq('${{ parameters.psfEnabled }}', true)
   inputs:
     targetType: inline
     workingDirectory: AppConfigured
