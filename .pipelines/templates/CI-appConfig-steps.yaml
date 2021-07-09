@@ -6,7 +6,7 @@ parameters:
   type: string
 - name: psfEnabled
   default: false
-  type: boolean
+  type: string
 
 steps:
 - script: |
