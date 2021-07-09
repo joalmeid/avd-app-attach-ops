@@ -6,6 +6,8 @@ parameters:
   type: string
 - name: applicationName
   type: string
+- name: applicationExecutable
+  type: string
 - name: msixVersion
   type: string
 - name: msixImageSize
@@ -13,6 +15,20 @@ parameters:
 - name: msixApplicationUNCPath
   type: string
 - name: msixImageFileName
+  type: string
+- name: applicationDisplayName
+  type: string
+- name: applicationDescription
+  type: string
+- name: publisher
+  type: string
+- name: publisherDisplayName
+  type: string
+- name: psfExecutable
+  type: string
+- name: CertificateName
+  type: string
+- name: CertificatePasswordVariable
   type: string
 
 stages:
@@ -31,22 +47,24 @@ stages:
       parameters:
         fileLocation: ${{ parameters.fileLocation }}
         fileName: ${{ parameters.fileName }}
-        msixVersion: ${{ parameters.msixVersion }}
-        publisher: $(publisher)
-        publisherDisplayName: $(publisherDisplayName)
-        applicationName: ${{ parameters.applicationName }}
-        applicationDisplayName: $(applicationDisplayName)
-        applicationDescription: $(applicationDescription)
-        applicationExecutable: $(applicationExecutable)
 
     # MSIX configuration process
     - template: ./CI-msixConfig-steps.yaml
+      parameters:
+        applicationName: ${{ parameters.applicationName}}
+        applicationExecutable: ${{ parameters.applicationExecutable}}
+        applicationDisplayName: ${{ parameters.applicationDisplayName }}
+        applicationDescription: ${{ parameters.applicationDescription }}
+        msixVersion: ${{ parameters.msixVersion }}
+        publisher: ${{ parameters.publisher }}
+        publisherDisplayName: ${{ parameters.publisherDisplayName }}
+        psfExecutable: ${{ parameters.psfExecutable }}
 
     # MSIX packaging process
     - template: ./CI-msixPackaging-steps.yaml
       parameters:
-        CertificateName: $(CertificateName)
-        CertificatePasswordVariable: $(CertificatePasswordVariable) # From variable group
+        CertificateName: ${{ parameters.CertificateName }}
+        CertificatePasswordVariable: ${{ parameters.CertificatePasswordVariable }}
         imageMetadataFile: msix-appattach/image_metadata.xml
         msixVersion: ${{ parameters.msixVersion }}
         msixApplicationUNCPath: ${{ parameters.msixApplicationUNCPath }}

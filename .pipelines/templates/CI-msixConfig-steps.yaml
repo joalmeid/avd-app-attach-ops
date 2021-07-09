@@ -1,6 +1,25 @@
 # MSIX Config Steps
 
+parameters:
+  - name: applicationName
+    type: string
+  - name: applicationExecutable
+    type: string
+  - name: applicationDisplayName
+    type: string
+  - name: applicationDescription
+    type: string
+  - name: msixVersion
+    type: string
+  - name: publisher
+    type: string
+  - name: publisherDisplayName
+    type: string
+  - name: psfExecutable
+    type: string
+    
 steps:
+
 # MAKEPRI: GENERATE PRICONFIG.XML and create the pri files
 - task: PowerShell@2
   displayName: 'RUN PriConfig'
@@ -14,3 +33,56 @@ steps:
       & "..\msix-appttach\tools\windowskit\x64\makepri.exe" createconfig /cf ".\$appMsixSourceFolderName\priconfig.xml" /dq en-US /o
       ## MakePri: Create the resources.pri file(s)
       & "..\msix-appttach\tools\windowskit\x64\makepri.exe" new /pr ".\$appMsixSourceFolderName" /cf ".\$appMsixSourceFolderName\priconfig.xml" /of ".\$appMsixSourceFolderName\resources.pri" /mn ".\$appMsixSourceFolderName\appxmanifest.xml" /o
+
+# UPDATE PSF CONFIG.JSON
+# This task will only run if psfEnabled equals true
+- task: PowerShell@2
+  displayName: 'UPDATE Psf Configuration'
+  condition: eq(variables.psfEnabled, true)
+  inputs:
+    targetType: inline
+    workingDirectory: AppConfigured
+    script: |
+      $psfConfig = Get-Content "config.json" -raw | ConvertFrom-Json
+      $psfConfig.applications[0].id = "${{ parameters.applicationName}}"
+      $psfConfig | ConvertTo-Json -depth 32 | % { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Out-File "config.json"
+
+# UPDATE APPXMANIFEST
+- task: PowerShell@2
+  displayName: UPDATE AppXmanifest
+  inputs:
+    targetType: inline
+    workingDirectory: AppConfigured
+    script: |
+      [xml]$manifest= get-content "appxmanifest.xml"
+      $manifest.Package.Identity.Name = "${{ parameters.applicationName }}"
+      $manifest.Package.Identity.Version = "${{ parameters.msixVersion }}"
+      $manifest.Package.Identity.Publisher = "${{ parameters.publisher }}"
+
+      $manifest.Package.Properties.DisplayName = "${{ parameters.applicationDisplayName }}" 
+      $manifest.Package.Properties.PublisherDisplayName = "${{ parameters.publisherDisplayName }}"
+      $manifest.Package.Properties.Description = "${{ parameters.applicationDescription }}"
+      
+      $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
+      
+      if($(psfEnabled)) {
+        $manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"
+      } else {
+        $manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"
+      }
+
+      $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ parameters.applicationDisplayName }}"
+      $manifest.Package.Applications.Application.VisualElements.Description = "${{ parameters.applicationDescription }}"
+      $manifest.save("appxmanifest.xml")
+
+      Write-Host "##[debug] `tMSIX Package Identity Version: $($manifest.Package.Identity.Version)"
+      Write-Host "##[debug] `tMSIX Package Identity Name: $($manifest.Package.Identity.Name)"
+      Write-Host "##[debug] `tMSIX Package Identity Publisher: $($manifest.Package.Identity.Publisher)"
+      Write-Host "##[debug] `tMSIX Package Properties App DisplayName: $($manifest.Package.Properties.DisplayName)"
+      Write-Host "##[debug] `tMSIX Package Properties Publisher DisplayName: $($manifest.Package.Properties.PublisherDisplayName)"
+      Write-Host "##[debug] `tMSIX Package Properties Description: $($manifest.Package.Properties.Description)"
+      Write-Host "##[debug] `tMSIX Application Id: $($manifest.Package.Applications.Application.Id)"
+      Write-Host "##[debug] `tMSIX Application Executable: $($manifest.Package.Applications.Application.Executable)"
+      Write-Host "##[debug] `tMSIX Application VisualElements DisplayName: $($manifest.Package.Applications.Application.VisualElements.DisplayName)"
+      Write-Host "##[debug] `tMSIX Application VisualElements Description: $($manifest.Package.Applications.Application.VisualElements.Description)"
+      Write-Host "##[debug] `t$($manifest.InnerXml)"
