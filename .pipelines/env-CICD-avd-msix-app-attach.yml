@@ -7,18 +7,18 @@ trigger:
 - none
 
 parameters:
-- name: fileLocation # The file location path. Expected to be reachacble through http/https protocol for direct download.
+- name: fileLocation # The SAC file location path. Expected to be reachacble through http/https protocol for direct download.
   displayName: Configured App Path
   type: string
-  default: https://inputstorage.blob.core.windows.net/releases
-- name: fileName # The app file name for a particular app release
+  default: https://wvdsdevstrg.blob.core.windows.net/syncier-sac
+- name: fileName # The SAC file name for a particular release
   displayName: Configured App File Name
   type: string
-  default: psf-appbin.zip
+  default: syncier-abscs-configured.zip
 - name: version # The application version (semantic version is recommended) to be used in the AVD deployment
   displayName: Application Version
   type: string
-  default: "0.0.0.0"
+  default: "0.0.6.0"
 
 variables:
 # Use the psf* variables to active the PSF scenario - default is disabled
