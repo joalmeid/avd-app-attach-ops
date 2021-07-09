@@ -63,7 +63,8 @@ stages:
     - task: ManualValidation@0
       timeoutInMinutes: 1440 # task times out in 1 day
       inputs:
-        notifyUsers: $(notifyManualValidationEmails)
+        # If you want to notify users for the gate is optional. NotifyUsers defines the list of users that will be notified that the task has been activated.
+        # notifyUsers: general@contoso.com
         instructions: 'MSIX package has been registered and currently inactive. Make sure this package exists in any application group so it can be activated and made available to end-users.'
         onTimeout: 'resume'
 

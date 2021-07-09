@@ -32,16 +32,16 @@ variables:
 
 # The application name to be used in the AVD deployment
 # - name: applicationName
-#   value: PsfSimpleApp
+#   value: SimpleApp
 # The application display name to be used in the MSIX package to be deployed in the AVD environment.
 # - name: applicationDisplayName
-#   value: Psf Simple App
+#   value: Simple App
 # The application description to be used in the MSIX package to be deployed in the AVD environment.
 # - name: applicationDescription 
-#   value: PsfSimpleApp
+#   value: SimpleApp
 # The application full executable path in the in the MSIX package. Corresponds to the main application entrypoint.
 # - name: applicationExecutable 
-#   value: psf-simple-app.exe
+#   value: simple-app.exe
 # The MSIX Package certificate publisher. Typically follows the syntax "CN=Contoso Software, O=Contoso Corporation, C=US".
 # - name: publisher 
 #   value: CN=Contoso
@@ -97,13 +97,6 @@ variables:
 
 # Secrets variable group (if you chose to bind to Keyvault)
 #- group: Secrets-msix-appattach-vg 
-
-# NOtificationUsers for Manual Intervention use a multiline field, not supported by Variable Groups
-# Alternative is to use Environment Validation or use pipeline variables (implemented here)
-- name: notifyManualValidationEmails
-  value: |
-    general@contoso.com
-    app@contoso.com
 
 stages:
 

@@ -33,3 +33,5 @@ steps:
     flattenFolders: false
     overWrite: true
 
+# Add tasks here if you need to change the App binaries like adding an SDK
+# Target folder would be "AppConfigured" as root
