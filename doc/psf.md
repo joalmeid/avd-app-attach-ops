@@ -1,6 +1,6 @@
 # Package Support Framework
 
-The [Package Support Framework (PSF)](https://github.com/microsoft/MSIX-PackageSupportFramework) is an open source kit that helps applying fixes to an existing desktop application, specially when there is no  access to the source code. End goal is to run in an MSIX container.
+The [Package Support Framework (PSF)](https://github.com/microsoft/MSIX-PackageSupportFramework) is an open source kit that helps applying fixes to an existing desktop application, specially when there is no  access to the source code. End goal is to run the application in an MSIX container.
 
 Most common use cases to use PSF are:
 
@@ -9,9 +9,20 @@ Most common use cases to use PSF are:
 - Having `ACCESS DENIED` due to appplication writes to the install folder.
 - Your app needs to pass arguments to the executable when launched.
 
+To get you started with PSF we have added an app which requires PSF integration in the pipeline. The sample is available in the [PSF-Scenario](https://github.com/joalmeid/avd-app-attach-ops/tree/psf-scenario) branch of the repo. Key additions are:
+
+- we added the `src/psf-simple-app`
+- we added `msix-appattach/psf_application_artifacts` which contains the binarires required for PSF
+- adpoted the CI stage template  
+`.pipelines/templates/CI-appConfig-steps.yaml` to copy PSF binaries
+- adpoted the CI stage template  `.pipelines/templates/CI-msixConfig-steps.yaml` to update the PSF configuration required by the App 
+
+
+If you prefer extending our Main sample yourself here are the basic steps to do so:
+
 PSF can be applied on a existing MSIX package and/or being included in the MSIX package from the beginning.
 
-The manual process to use PSF while building an MSIX package is:
+The process to use PSF while building an MSIX package is:
 
 1. **Identify the runtime fix** that solves the detected issue in the msix package.
    * Find available fixups in [PSF github](https://github.com/Microsoft/MSIX-PackageSupportFramework)
@@ -50,7 +61,7 @@ The manual process to use PSF while building an MSIX package is:
       ],
       "processes": [
           {
-              "executable": "SimpleApp",
+              "executable": "simpleapp",
               "fixups": [
                   {
                       "dll": "FileRedirectionFixup.dll",
