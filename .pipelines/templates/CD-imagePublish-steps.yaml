@@ -1,5 +1,4 @@
 # Image Publish Steps Template
-# Requires $(UserName), $(UserPassword) from a variable group called
 
 parameters:
   - name: msixVersion
@@ -24,6 +23,10 @@ parameters:
   - name: msixAppAttachUNCServer
     type: string
   - name: msixAppAttachShareName
+    type: string
+  - name: UserName
+    type: string
+  - name: UserPassword
     type: string
 
 steps:
@@ -60,8 +63,8 @@ steps:
     destination: azureVMs
     storage: ${{ parameters.storageAccount }}
     resourceGroup: ${{ parameters.resourceGroup }}
-    vmsAdminUserName: $(UserName)
-    vmsAdminPassword: $(UserPassword)
+    vmsAdminUserName: ${{ parameters.UserName }}
+    vmsAdminPassword: ${{ parameters.UserPassword }}
     TargetPath: ${{ parameters.msixAzureVMLocalPath }}
     enableCopyPrerequisites: true
     #machineNames: # Optional. Must be used if there are more VMs in the referenced Resource Group.

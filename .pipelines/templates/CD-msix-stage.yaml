@@ -22,6 +22,10 @@ parameters:
   type: string
 - name: hostPoolName
   type: string
+- name: UserName
+  type: string
+- name: UserPassword
+  type: string
 
 stages:
 - stage: CD
@@ -48,7 +52,9 @@ stages:
               msixImageFileName: ${{ parameters.msixImageFileName }}
               msixAppAttachUNCServer: ${{ parameters.msixAppAttachUNCServer }}
               msixAppAttachShareName: ${{ parameters.msixAppAttachShareName }}
-
+              UserName: ${{ parameters.UserName }}
+              UserPassword: ${{ parameters.UserPassword }}
+  
           # App (AVD MSIX Appattach) publishing process
           # Output the variable 'msixPackageFullName'
           - template: ./CD-appPublish-steps.yaml
