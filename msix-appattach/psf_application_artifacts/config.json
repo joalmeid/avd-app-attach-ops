@@ -1,0 +1,32 @@
+{
+  "applications": [
+    {
+      "id": "APP_ID_NAME",
+      "executable": "psf-simple-app.exe",
+      "workingDirectory": "/"
+    }
+  ],
+  "processes": [
+    {
+      "executable": "psf-simple-app",
+      "fixups": [
+        {
+          "dll": "FileRedirectionFixup.dll",
+          "config": {
+            "redirectedPaths": {
+              "packageRelative": [
+                {
+                  "base": "/",
+                  "patterns": [
+                    "*.config",
+                    ".*\\.log"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

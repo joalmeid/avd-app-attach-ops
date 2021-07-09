@@ -4,20 +4,6 @@ parameters:
   type: string
 - name: fileName
   type: string
-- name: msixVersion
-  type: string
-- name: publisher
-  type: string
-- name: publisherDisplayName
-  type: string
-- name: applicationName
-  type: string
-- name: applicationDisplayName
-  type: string
-- name: applicationDescription
-  type: string
-- name: applicationExecutable
-  type: string
   
 steps:
 - script: |
@@ -38,35 +24,14 @@ steps:
     targetFolder: AppConfigured
     flattenFolders: false
 
-- task: PowerShell@2
-  displayName: UPDATE appmanifest
+- task: CopyFiles@2
+  displayName: COPY Psf artifacts
+  condition: eq(variables.psfEnabled, true)
   inputs:
-    targetType: inline
-    workingDirectory: AppConfigured
-    script: |
-      [xml]$manifest= get-content "appxmanifest.xml"
-      $manifest.Package.Identity.Name = "${{ parameters.applicationName }}"
-      $manifest.Package.Identity.Version = "${{ parameters.msixVersion }}"
-      $manifest.Package.Identity.Publisher = "${{ parameters.publisher }}"
+    sourceFolder: msix-appattach/psf_application_artifacts
+    targetFolder: AppConfigured
+    flattenFolders: false
+    overWrite: true
 
-      $manifest.Package.Properties.DisplayName = "${{ parameters.applicationDisplayName }}" 
-      $manifest.Package.Properties.PublisherDisplayName = "${{ parameters.publisherDisplayName }}"
-      $manifest.Package.Properties.Description = "${{ parameters.applicationDescription }}"
-
-      $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
-      $manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"
-      $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ parameters.applicationDisplayName }}"
-      $manifest.Package.Applications.Application.VisualElements.Description = "${{ parameters.applicationDescription }}"
-      $manifest.save("appxmanifest.xml")
-
-      Write-Host "##[debug] `tMSIX Package Identity Version: $($manifest.Package.Identity.Version)"
-      Write-Host "##[debug] `tMSIX Package Identity Name: $($manifest.Package.Identity.Name)"
-      Write-Host "##[debug] `tMSIX Package Identity Publisher: $($manifest.Package.Identity.Publisher)"
-      Write-Host "##[debug] `tMSIX Package Properties App DisplayName: $($manifest.Package.Properties.DisplayName)"
-      Write-Host "##[debug] `tMSIX Package Properties Publisher DisplayName: $($manifest.Package.Properties.PublisherDisplayName)"
-      Write-Host "##[debug] `tMSIX Package Properties Description: $($manifest.Package.Properties.Description)"
-      Write-Host "##[debug] `tMSIX Application Id: $($manifest.Package.Applications.Application.Id)"
-      Write-Host "##[debug] `tMSIX Application Executable: $($manifest.Package.Applications.Application.Executable)"
-      Write-Host "##[debug] `tMSIX Application VisualElements DisplayName: $($manifest.Package.Applications.Application.VisualElements.DisplayName)"
-      Write-Host "##[debug] `tMSIX Application VisualElements Description: $($manifest.Package.Applications.Application.VisualElements.Description)"
-      Write-Host "##[debug] `t$($manifest.InnerXml)"
+# Add tasks here if you need to change the App binaries like adding an SDK
+# Target folder would be "AppConfigured" as root
