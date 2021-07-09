@@ -110,10 +110,21 @@ stages:
     msixImageSize:  ($(msixImageSize))
     msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx
     msixApplicationUNCPath: '\\$(msixAppAttachUNCServer)\$(msixAppAttachShareName)'
+    applicationDisplayName: $(applicationDisplayName)
+    applicationDescription: $(applicationDescription)
+    publisher: $(publisher)
+    publisherDisplayName: $(publisherDisplayName)
+    psfExecutable: $(psfExecutable)
+    CertificateName: $(CertificateName)
+    CertificatePasswordVariable: $(CertificatePasswordVariable) # From variable group
 
 - template: templates/CD-msix-stage.yaml
   parameters:
     envId: $(environmentId)
+    azureSubscription: $(azureSubscription)
+    resourceGroup: $(resourceGroup)
+    storageAccount: $(storageAccount)
+    hostPoolName: $(hostPoolName)
     applicationName: $(applicationName)
     msixVersion: ${{ parameters.version }}
     msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx

@@ -14,6 +14,14 @@ parameters:
   type: string
 - name: msixAzureVMLocalPath
   type: string
+- name: azureSubscription
+  type: string
+- name: resourceGroup
+  type: string
+- name: storageAccount
+  type: string
+- name: hostPoolName
+  type: string
 
 stages:
 - stage: CD
@@ -31,9 +39,9 @@ stages:
           # Image (VHDX) publishing process
           - template: ./CD-imagePublish-steps.yaml
             parameters:
-              azureSubscription: $(azureSubscription)
-              resourceGroup: $(resourceGroup)
-              storageAccount: $(storageAccount)
+              azureSubscription: ${{ parameters.azureSubscription}}
+              resourceGroup: ${{ parameters.resourceGroup }}
+              storageAccount: ${{ parameters.storageAccount }}
               applicationName: ${{ parameters.applicationName}}
               msixVersion: ${{ parameters.msixVersion }}
               msixAzureVMLocalPath: ${{ parameters.msixAzureVMLocalPath}}
@@ -45,9 +53,9 @@ stages:
           # Output the variable 'msixPackageFullName'
           - template: ./CD-appPublish-steps.yaml
             parameters:
-              azureSubscription: $(azureSubscription)
-              resourceGroup: $(resourceGroup)
-              hostPoolName: $(hostPoolName)
+              azureSubscription: ${{ parameters.azureSubscription }}
+              resourceGroup: ${{ parameters.resourceGroup }}
+              hostPoolName: ${{ parameters.hostPoolName }}
               msixVersion: ${{ parameters.msixVersion }}
               msixApplicationUNCPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixAppAttachShareName }}'
               msixImageFileName: ${{ parameters.msixImageFileName }}
@@ -80,8 +88,8 @@ stages:
 
     - template: ./CD-appAVDApprovalActive-steps.yaml
       parameters:
-        azureSubscription: $(azureSubscription)
-        resourceGroup: $(resourceGroup)
-        hostPoolName: $(hostPoolName)
+        azureSubscription: ${{ parameters.azureSubscription }}
+        resourceGroup: ${{ parameters.resourceGroup }}
+        hostPoolName: ${{ parameters.hostPoolName }}
         applicationFullName: $(msixPackageFullName)
         applicationName: ${{ parameters.applicationName}}
