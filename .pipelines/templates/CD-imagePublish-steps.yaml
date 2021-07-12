@@ -55,31 +55,31 @@ steps:
 
 # Copy MSIX App Attach image to AVD file share (Azure VM)
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-file-copy?view=azure-devops
-- task: AzureFileCopy@4
-  displayName: 'COPY Msix Image to Fileshare (Azure VM)'
-  inputs:
-    sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName }}
-    azureSubscription: ${{ parameters.azureSubscription }}
-    destination: azureVMs
-    storage: ${{ parameters.storageAccount }}
-    resourceGroup: ${{ parameters.resourceGroup }}
-    vmsAdminUserName: ${{ parameters.UserName }}
-    vmsAdminPassword: ${{ parameters.UserPassword }}
-    TargetPath: ${{ parameters.msixAzureVMLocalPath }}
-    enableCopyPrerequisites: true
-    #machineNames: # Optional. Must be used if there are more VMs in the referenced Resource Group.
-    cleanTargetBeforeCopy: false # Optional
-    skipCACheck: true 
-    TestCertificate: true
+# - task: AzureFileCopy@4
+#   displayName: 'COPY Msix Image to Fileshare (Azure VM)'
+#   inputs:
+#     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName }}
+#     azureSubscription: ${{ parameters.azureSubscription }}
+#     destination: azureVMs
+#     storage: ${{ parameters.storageAccount }}
+#     resourceGroup: ${{ parameters.resourceGroup }}
+#     vmsAdminUserName: ${{ parameters.UserName }}
+#     vmsAdminPassword: ${{ parameters.UserPassword }}
+#     TargetPath: ${{ parameters.msixAzureVMLocalPath }}
+#     enableCopyPrerequisites: true
+#     #machineNames: # Optional. Must be used if there are more VMs in the referenced Resource Group.
+#     cleanTargetBeforeCopy: false # Optional
+#     skipCACheck: true 
+#     TestCertificate: true
 
 # Windows machine file copy
 # works for self-hosted agent in the V-Net to the file share 
-# - task: WindowsMachineFileCopy@2
-#   displayName: 'COPY Msix Image to Fileshare (Azure NetApp Files)'
-#   inputs:
-#     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName}}
-#     machineNames: ${{ parameters.msixAppAttachUNCServer }}
-#     adminUserName: $(UserName)
-#     adminPassword: $(UserPassword)
-#     targetPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixAppAttachShareName }}'
+- task: WindowsMachineFileCopy@2
+  displayName: 'COPY Msix Image to Fileshare (Azure NetApp Files)'
+  inputs:
+    sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName}}
+    machineNames: ${{ parameters.msixAppAttachUNCServer }}
+    adminUserName: $(UserName)
+    adminPassword: $(UserPassword)
+    targetPath: '\\${{ parameters.msixAppAttachUNCServer }}\${{ parameters.msixAppAttachShareName }}'
 
