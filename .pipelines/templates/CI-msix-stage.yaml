@@ -49,7 +49,7 @@ stages:
       parameters:
         fileLocation: ${{ parameters.fileLocation }}
         fileName: ${{ parameters.fileName }}
-        psfEnabled : ${{ parameters.psfEnabled }}
+        psfEnabled: ${{ parameters.psfEnabled }}
 
     # MSIX configuration process
     - template: ./CI-msixConfig-steps.yaml
@@ -61,8 +61,8 @@ stages:
         msixVersion: ${{ parameters.msixVersion }}
         publisher: ${{ parameters.publisher }}
         publisherDisplayName: ${{ parameters.publisherDisplayName }}
-        psfExecutable: ${{ parameters.psfExecutable }}
         psfEnabled : ${{ parameters.psfEnabled }}
+        psfExecutable: ${{ parameters.psfExecutable }}
 
     # MSIX packaging process
     - template: ./CI-msixPackaging-steps.yaml

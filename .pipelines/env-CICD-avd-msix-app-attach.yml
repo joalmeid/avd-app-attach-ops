@@ -10,7 +10,7 @@ parameters:
 - name: fileLocation # The file location path. Expected to be reachacble through http/https protocol for direct download.
   displayName: Configured App Path
   type: string
-  default: https://wvdsdevstrg.blob.core.windows.net/syncier-sac
+  default: https://inputstorage.blob.core.windows.net/releases
 - name: fileName # The app file name for a particular app release
   displayName: Configured App File Name
   type: string
@@ -18,7 +18,7 @@ parameters:
 - name: version # The application version (semantic version is recommended) to be used in the AVD deployment
   displayName: Application Version
   type: string
-  default: "0.0.1.0"
+  default: "0.0.0.0"
 
 variables:
 # Use the psf* variables to active the PSF scenario - default is disabled
