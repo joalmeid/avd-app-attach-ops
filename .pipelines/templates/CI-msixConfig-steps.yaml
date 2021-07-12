@@ -40,13 +40,7 @@ steps:
       $manifest.Package.Properties.Description = "${{ parameters.applicationDescription }}"
       
       $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
-      
-      if($(psfEnabled)) {
-        $manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"
-      } else {
-        $manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"
-      }
-
+      $manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable  }}"
       $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ parameters.applicationDisplayName }}"
       $manifest.Package.Applications.Application.VisualElements.Description = "${{ parameters.applicationDescription }}"
       $manifest.save("appxmanifest.xml")
