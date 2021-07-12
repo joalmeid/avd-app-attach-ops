@@ -18,7 +18,7 @@ parameters:
 - name: psfExecutable
   type: string
 - name: psfEnabled
-  type: boolean
+  type: string
 
 steps:
 
@@ -39,7 +39,7 @@ steps:
       $manifest.Package.Properties.Description = "${{ parameters.applicationDescription }}"
       
       $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
-      if($(psfEnabled)) 
+      if("$(psfEnabled)" -eq "true") 
         {$manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"} 
       else 
         {$manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"}
