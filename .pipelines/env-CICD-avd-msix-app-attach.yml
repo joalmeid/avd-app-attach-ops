@@ -14,7 +14,7 @@ parameters:
 - name: fileName # The app file name for a particular app release
   displayName: Configured App File Name
   type: string
-  default: psf-appbin.zip
+  default: appbin.zip
 - name: version # The application version (semantic version is recommended) to be used in the AVD deployment
   displayName: Application Version
   type: string
@@ -107,7 +107,7 @@ stages:
     applicationName: $(applicationName)
     applicationExecutable: $(applicationExecutable)
     msixVersion: ${{ parameters.version }}
-    msixImageSize:  ($(msixImageSize))
+    msixImageSize: $(msixImageSize)
     msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx
     msixApplicationUNCPath: '\\$(msixAppAttachUNCServer)\$(msixAppAttachShareName)'
     applicationDisplayName: $(applicationDisplayName)
@@ -117,7 +117,7 @@ stages:
     psfEnabled: $(psfEnabled)
     psfExecutable: $(psfExecutable)
     CertificateName: $(CertificateName)
-    CertificatePasswordVariable: $(CertificatePasswordVariable) # From variable group
+    CertificatePasswordVariable: $(CertificatePasswordVariable)
 
 - template: templates/CD-msix-stage.yaml
   parameters:
@@ -133,5 +133,5 @@ stages:
     msixAppAttachShareName: $(msixAppAttachShareName)
     msixAzureVMLocalPath: $(msixAzureVMLocalPath)
     UserName: $(UserName)
-    UserPassword: (UserPassword)
+    UserPassword: $(UserPassword)
 

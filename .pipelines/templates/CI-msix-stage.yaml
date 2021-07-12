@@ -31,7 +31,6 @@ parameters:
 - name: CertificatePasswordVariable
   type: string
 - name: psfEnabled
-  default: false
   type: string
 
 stages:
