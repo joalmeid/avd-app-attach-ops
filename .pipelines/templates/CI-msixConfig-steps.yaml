@@ -87,4 +87,4 @@ steps:
       ## MakePri: Generate Config for Resources package 
       & "..\msix-appattach\tools\windowskit\x64\makepri.exe" createconfig /cf "$appWorkingFolder\priconfig.xml" /dq en-US /o
       ## MakePri: Create the resources.pri file(s)
-      & "..\msix-appattach\tools\windowskit\x64\makepri.exe" new /pr "$appWorkingFolder" /cf "$appWorkingFolder\priconfig.xml" /of "$appWorkingFolder\resources.pri" /mn "$appWorkingFolder\appxmanifest.xml" /o
+      & "..\msix-appattach\tools\windowskit\x64\makepri.exe" new /pr "$appWorkingFolder" /cf "$appWorkingFolder\priconfig.xml" /of "$appWorkingFolder\resources.pri" /mn "$appWorkingFolder\appxmanifest.xml" /o /v
