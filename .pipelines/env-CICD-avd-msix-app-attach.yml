@@ -103,24 +103,54 @@ stages:
 
 - template: templates/CI-msix-stage.yaml
   parameters: 
-    fileLocation: ${{ parameters.fileLocation }}
-    fileName: ${{ parameters.fileName }}
-    applicationName: $(applicationName)
-    applicationExecutable: $(applicationExecutable)
-    msixVersion: ${{ parameters.version }}
-    msixImageSize: $(msixImageSize)
-    msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx
-    msixApplicationUNCPath: '\\$(msixAppAttachUNCServer)\$(msixAppAttachShareName)'
-    applicationDisplayName: $(applicationDisplayName)
-    applicationDescription: $(applicationDescription)
-    publisher: $(publisher)
-    publisherDisplayName: $(publisherDisplayName)
-    CertificateName: $(CertificateName)
-    CertificatePasswordVariable: $(CertificatePasswordVariable) # From variable group
-    psfExecutable: $(psfExecutable)
-    - name: psfEnabled 
-      type: boolean 
-      default: $(psfEnabled)
+  - name: fileLocation
+    type: string
+    default: ${{ parameters.fileLocation }}
+  - name: fileName
+    type: string
+    default: ${{ parameters.fileName }}
+  - name: applicationName
+    type: string
+    default: $(applicationName)
+  - name: applicationExecutable
+    type: string
+    default: $(applicationExecutable)
+  - name: msixVersion
+    type: string
+    default: ${{ parameters.version }}
+  - name: msixImageSize
+    type: string
+    default: ($(msixImageSize))
+  - name: msixImageFileName
+    type: string
+    default: $(applicationName)-msix-image-${{ parameters.version }}.vhdx
+  - name: msixApplicationUNCPath
+    type: string
+    default: '\\$(msixAppAttachUNCServer)\$(msixAppAttachShareName)'
+  - name: applicationDisplayName
+    type: string
+    default: $(applicationDisplayName)
+  - name: applicationDescription
+    type: string
+    default: $(applicationDescription)
+  - name: publisher
+    type: string
+    default: $(publisher)
+  - name: publisherDisplayName
+    type: string
+    default: $(publisherDisplayName)
+  - name: psfEnabled 
+    type: boolean 
+    default: $(psfEnabled)
+  - name: psfExecutable
+    type: string
+    default: $(psfExecutable)
+  - name: CertificateName
+    type: string
+    default: $(CertificateName)
+  - name: CertificatePasswordVariable
+    type: string
+    default: $(CertificatePasswordVariable)
      
 
 - template: templates/CD-msix-stage.yaml
