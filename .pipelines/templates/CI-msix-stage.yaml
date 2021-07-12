@@ -47,47 +47,22 @@ stages:
     # Application configuration process
     - template: ./CI-appConfig-steps.yaml
       parameters:
-      - name: fileLocation
-        type: string
-        default: ${{ parameters.fileLocation }}
-      - name: fileName
-        type: string
-        default: ${{ parameters.fileName }}
-      - name: psfEnabled 
-        type: boolean 
-        default: ${{ parameters.psfEnabled }}
-
+        fileLocation: ${{ parameters.fileLocation }}
+        fileName: ${{ parameters.fileName }}
+        psfEnabled : ${{ parameters.psfEnabled }}
 
     # MSIX configuration process
     - template: ./CI-msixConfig-steps.yaml
       parameters:
-      - name: applicationName
-        type: string
-        default: ${{ parameters.applicationName}}
-      - name: applicationExecutable
-        type: string
-        default: ${{ parameters.applicationExecutable}}
-      - name: applicationDisplayName
-        type: string
-        default: ${{ parameters.applicationDisplayName }}
-      - name: applicationDescription
-        type: string
-        default: ${{ parameters.applicationDescription }}
-      - name: msixVersion
-        type: string
-        default: ${{ parameters.msixVersion }}
-      - name: publisher
-        type: string
-        default: ${{ parameters.publisher }}
-      - name: publisherDisplayName
-        type: string
-        default: ${{ parameters.publisherDisplayName }}
-      - name: psfExecutable
-        type: string
-        default: ${{ parameters.psfExecutable }}
-      - name: psfEnabled 
-        type: boolean 
-        default: ${{ parameters.psfEnabled }}
+        applicationName: ${{ parameters.applicationName}}
+        applicationExecutable: ${{ parameters.applicationExecutable}}
+        applicationDisplayName: ${{ parameters.applicationDisplayName }}
+        applicationDescription: ${{ parameters.applicationDescription }}
+        msixVersion: ${{ parameters.msixVersion }}
+        publisher: ${{ parameters.publisher }}
+        publisherDisplayName: ${{ parameters.publisherDisplayName }}
+        psfExecutable: ${{ parameters.psfExecutable }}
+        psfEnabled : ${{ parameters.psfEnabled }}
 
     # MSIX packaging process
     - template: ./CI-msixPackaging-steps.yaml
