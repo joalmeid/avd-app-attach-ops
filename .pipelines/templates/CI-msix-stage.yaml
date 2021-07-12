@@ -31,8 +31,7 @@ parameters:
 - name: CertificatePasswordVariable
   type: string
 - name: psfEnabled
-  default: false
-  type: string
+  type: boolean
 
 stages:
 - stage: CI
@@ -62,8 +61,8 @@ stages:
         msixVersion: ${{ parameters.msixVersion }}
         publisher: ${{ parameters.publisher }}
         publisherDisplayName: ${{ parameters.publisherDisplayName }}
-        psfEnabled: ${{ parameters.psfEnabled }}
         psfExecutable: ${{ parameters.psfExecutable }}
+        psfEnabled: ${{ parameters.psfEnabled }}
 
     # MSIX packaging process
     - template: ./CI-msixPackaging-steps.yaml

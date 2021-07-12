@@ -5,8 +5,7 @@ parameters:
 - name: fileName
   type: string
 - name: psfEnabled
-  default: false
-  type: string
+  type: boolean
 
 steps:
 - script: |

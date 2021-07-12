@@ -23,6 +23,7 @@ parameters:
 variables:
 # Use the psf* variables to active the PSF scenario - default is disabled
 - name: psfEnabled # Set to true to enable the PSF support sample
+  type: boolean
   value: false
 - name: psfExecutable # Change this if you need a 32Bit PSF launcher
   value: PSFLauncher64.exe
@@ -107,17 +108,20 @@ stages:
     applicationName: $(applicationName)
     applicationExecutable: $(applicationExecutable)
     msixVersion: ${{ parameters.version }}
-    msixImageSize:  ($(msixImageSize))
+    msixImageSize: $(msixImageSize)
     msixImageFileName: $(applicationName)-msix-image-${{ parameters.version }}.vhdx
     msixApplicationUNCPath: '\\$(msixAppAttachUNCServer)\$(msixAppAttachShareName)'
     applicationDisplayName: $(applicationDisplayName)
     applicationDescription: $(applicationDescription)
     publisher: $(publisher)
     publisherDisplayName: $(publisherDisplayName)
-    psfEnabled: $(psfEnabled)
-    psfExecutable: $(psfExecutable)
     CertificateName: $(CertificateName)
     CertificatePasswordVariable: $(CertificatePasswordVariable) # From variable group
+    psfExecutable: $(psfExecutable)
+    - name: psfEnabled 
+      type: boolean 
+      default: $(psfEnabled)
+     
 
 - template: templates/CD-msix-stage.yaml
   parameters:
