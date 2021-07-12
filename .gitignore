@@ -351,3 +351,4 @@ MigrationBackup/
 
 # Exception for windowskit
 !msix-appattach/**/x64/
+!msix-appattach/msix_certs/**/*.pfx

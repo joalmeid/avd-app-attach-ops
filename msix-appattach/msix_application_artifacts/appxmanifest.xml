@@ -6,7 +6,7 @@
 <Properties>
     <DisplayName>APP_DISPLAY_NAME</DisplayName>
     <PublisherDisplayName>PUBLISHER_DISPLAY_NAME</PublisherDisplayName>
-    <Description>None</Description>
+    <Description>APP_DESCRIPTION</Description>
     <Logo>images\StoreLogo.png</Logo>
     <uap10:PackageIntegrity>
       <uap10:Content Enforcement="on" />

@@ -18,37 +18,9 @@ parameters:
 - name: psfExecutable
   type: string
 - name: psfEnabled
-  default: false
   type: string
 
 steps:
-
-# MAKEPRI: GENERATE PRICONFIG.XML and create the pri files
-- task: PowerShell@2
-  displayName: 'RUN PriConfig'
-  inputs:
-    targetType: inline
-    workingDirectory: AppConfigured
-    script: |
-      $appWorkingFolder=(Get-Location).Path
-      $appMsixSourceFolderName="."
-      ## MakePri: Generate Config for Resources package 
-      & "..\msix-appattach\tools\windowskit\x64\makepri.exe" createconfig /cf ".\$appMsixSourceFolderName\priconfig.xml" /dq en-US /o
-      ## MakePri: Create the resources.pri file(s)
-      & "..\msix-appattach\tools\windowskit\x64\makepri.exe" new /pr ".\$appMsixSourceFolderName" /cf ".\$appMsixSourceFolderName\priconfig.xml" /of ".\$appMsixSourceFolderName\resources.pri" /mn ".\$appMsixSourceFolderName\appxmanifest.xml" /o
-
-# UPDATE PSF CONFIG.JSON
-# This task will only run if psfEnabled equals true
-- task: PowerShell@2
-  displayName: 'UPDATE Psf Configuration'
-  condition: eq('${{ parameters.psfEnabled }}', true)
-  inputs:
-    targetType: inline
-    workingDirectory: AppConfigured
-    script: |
-      $psfConfig = Get-Content "config.json" -raw | ConvertFrom-Json
-      $psfConfig.applications[0].id = "${{ parameters.applicationName}}"
-      $psfConfig | ConvertTo-Json -depth 32 | % { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Out-File "config.json"
 
 # UPDATE APPXMANIFEST
 - task: PowerShell@2
@@ -67,13 +39,10 @@ steps:
       $manifest.Package.Properties.Description = "${{ parameters.applicationDescription }}"
       
       $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
-      
-      if($(psfEnabled)) {
-        $manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"
-      } else {
-        $manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"
-      }
-
+      if("$(psfEnabled)" -eq "true") 
+        {$manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"} 
+      else 
+        {$manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"}
       $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ parameters.applicationDisplayName }}"
       $manifest.Package.Applications.Application.VisualElements.Description = "${{ parameters.applicationDescription }}"
       $manifest.save("appxmanifest.xml")
@@ -88,4 +57,29 @@ steps:
       Write-Host "##[debug] `tMSIX Application Executable: $($manifest.Package.Applications.Application.Executable)"
       Write-Host "##[debug] `tMSIX Application VisualElements DisplayName: $($manifest.Package.Applications.Application.VisualElements.DisplayName)"
       Write-Host "##[debug] `tMSIX Application VisualElements Description: $($manifest.Package.Applications.Application.VisualElements.Description)"
-      Write-Host "##[debug] `t$($manifest.InnerXml)"
+
+# UPDATE PSF CONFIG.JSON
+# This task will only run if psfEnabled equals true
+- task: PowerShell@2
+  displayName: 'UPDATE Psf Configuration'
+  condition: eq('${{ parameters.psfEnabled }}', true)
+  inputs:
+    targetType: inline
+    workingDirectory: AppConfigured
+    script: |
+      $psfConfig = Get-Content "config.json" -raw | ConvertFrom-Json
+      $psfConfig.applications[0].id = "${{ parameters.applicationName}}"
+      $psfConfig | ConvertTo-Json -depth 32 | % { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Out-File "config.json"
+
+# MAKEPRI: GENERATE PRICONFIG.XML and create the pri files
+- task: PowerShell@2
+  displayName: 'RUN PriConfig'
+  inputs:
+    targetType: inline
+    workingDirectory: AppConfigured
+    script: |
+      $appWorkingFolder=(Get-Location).Path
+      ## MakePri: Generate Config for Resources package 
+      & "..\msix-appattach\tools\windowskit\x64\makepri.exe" createconfig /cf "$appWorkingFolder\priconfig.xml" /dq en-US /o
+      ## MakePri: Create the resources.pri file(s)
+      & "..\msix-appattach\tools\windowskit\x64\makepri.exe" new /pr "$appWorkingFolder" /cf "$appWorkingFolder\priconfig.xml" /of "$appWorkingFolder\resources.pri" /mn "$appWorkingFolder\appxmanifest.xml" /o /v

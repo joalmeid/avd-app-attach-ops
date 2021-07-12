@@ -5,7 +5,6 @@ parameters:
 - name: fileName
   type: string
 - name: psfEnabled
-  default: false
   type: string
 
 steps:
