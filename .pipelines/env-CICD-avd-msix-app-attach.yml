@@ -14,11 +14,11 @@ parameters:
 - name: fileName # The app file name for a particular app release
   displayName: Configured App File Name
   type: string
-  default: syncier-abscs-configured.zip
+  default: appbin.zip
 - name: version # The application version (semantic version is recommended) to be used in the AVD deployment
   displayName: Application Version
   type: string
-  default: "0.0.6.0"
+  default: "0.0.1.0"
 
 variables:
 # Use the psf* variables to active the PSF scenario - default is disabled
