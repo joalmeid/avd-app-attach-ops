@@ -61,7 +61,7 @@ stages:
         msixVersion: ${{ parameters.msixVersion }}
         publisher: ${{ parameters.publisher }}
         publisherDisplayName: ${{ parameters.publisherDisplayName }}
-        psfEnabled : ${{ parameters.psfEnabled }}
+        psfEnabled: ${{ parameters.psfEnabled }}
         psfExecutable: ${{ parameters.psfExecutable }}
 
     # MSIX packaging process
