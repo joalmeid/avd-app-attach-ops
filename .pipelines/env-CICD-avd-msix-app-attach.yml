@@ -134,5 +134,5 @@ stages:
     msixAppAttachShareName: $(msixAppAttachShareName)
     msixAzureVMLocalPath: $(msixAzureVMLocalPath)
     UserName: $(UserName)
-    UserPassword: (UserPassword)
+    UserPassword: $(UserPassword)
 
