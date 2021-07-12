@@ -57,7 +57,6 @@ steps:
       Write-Host "##[debug] `tMSIX Application Executable: $($manifest.Package.Applications.Application.Executable)"
       Write-Host "##[debug] `tMSIX Application VisualElements DisplayName: $($manifest.Package.Applications.Application.VisualElements.DisplayName)"
       Write-Host "##[debug] `tMSIX Application VisualElements Description: $($manifest.Package.Applications.Application.VisualElements.Description)"
-      Write-Host "##[debug] `t$($manifest.InnerXml)"
 
 # UPDATE PSF CONFIG.JSON
 # This task will only run if psfEnabled equals true
