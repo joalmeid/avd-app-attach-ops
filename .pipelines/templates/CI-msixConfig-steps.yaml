@@ -40,11 +40,12 @@ steps:
       $manifest.Package.Properties.Description = "${{ parameters.applicationDescription }}"
       
       $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
-      if($(psfEnabled)) {
-        $manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"
-      } else {
-        $manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"
-      }
+      $manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"
+      # if($(psfEnabled)) {
+      #   $manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"
+      # } else {
+      #   $manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"
+      # }
       $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ parameters.applicationDisplayName }}"
       $manifest.Package.Applications.Application.VisualElements.Description = "${{ parameters.applicationDescription }}"
       $manifest.save("appxmanifest.xml")
@@ -86,4 +87,4 @@ steps:
       ## MakePri: Generate Config for Resources package 
       & "..\msix-appattach\tools\windowskit\x64\makepri.exe" createconfig /cf ".\$appMsixSourceFolderName\priconfig.xml" /dq en-US /o
       ## MakePri: Create the resources.pri file(s)
-      & "..\msix-appattach\tools\windowskit\x64\makepri.exe" new /pr ".\$appMsixSourceFolderName" /cf ".\$appMsixSourceFolderName\priconfig.xml" /of ".\$appMsixSourceFolderName\resources.pri" /mn ".\$appMsixSourceFolderName\appxmanifest.xml" /o
+      & "..\msix-appattach\tools\windowskit\x64\makepri.exe" new /pr "$appMsixSourceFolderName" /cf ".\$appMsixSourceFolderName\priconfig.xml" /of ".\$appMsixSourceFolderName\resources.pri" /mn ".\$appMsixSourceFolderName\appxmanifest.xml" /o
