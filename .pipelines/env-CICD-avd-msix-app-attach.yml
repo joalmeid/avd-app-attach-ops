@@ -61,7 +61,7 @@ variables:
 #   value: *******
 
 ## Environment specific variables
-- group: DEV-msix-appattach-vg
+- group: DEV-netapp-msix-appattach-vg
 
 # An ID provided to identify the environment. Typically 'Dev, Qa, Staging, Prod'.
 # - name: environmentId
