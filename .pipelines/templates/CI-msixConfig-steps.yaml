@@ -39,7 +39,7 @@ steps:
       $manifest.Package.Properties.Description = "${{ parameters.applicationDescription }}"
       
       $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
-      if("$(psfEnabled)" -eq "enabled") 
+      if("$(psfEnabled)" -eq "true") 
         {$manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"} 
       else 
         {$manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"}
@@ -62,7 +62,7 @@ steps:
 # This task will only run if psfEnabled equals enabled
 - task: PowerShell@2
   displayName: 'UPDATE Psf Configuration'
-  condition: eq('${{ variables.psfEnabled }}', 'enabled')
+  condition: eq(variables.psfEnabled, 'true')
   inputs:
     targetType: inline
     workingDirectory: AppConfigured
