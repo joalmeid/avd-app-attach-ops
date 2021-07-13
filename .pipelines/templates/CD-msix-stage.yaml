@@ -79,7 +79,7 @@ stages:
       inputs:
         # If you want to notify users for the gate is optional. NotifyUsers defines the list of users that will be notified that the task has been activated.
         # notifyUsers: general@contoso.com
-        instructions: 'MSIX package has been registered and currently inactive. Make sure this package exists in any application group so it can be activated and made available to end-users.'
+        instructions: 'MSIX package has been registered and currently inactive. Make sure after the first activation that this package exists in any application group to make it available to end-users.'
         onTimeout: 'resume'
 
   - job: activateMsixPackage
