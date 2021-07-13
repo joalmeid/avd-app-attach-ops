@@ -21,9 +21,9 @@ parameters:
   default: "0.0.0.0"
 
 variables:
-# Use the psf* variables to active the PSF scenario - default is disabled
-- name: psfEnabled # Set to true to enable the PSF support sample
-  value: true
+# Use the psf* variables to activate the PSF scenario - default is disabled
+- name: psfEnabled # Set to enabled to activate the PSF support sample
+  value: enabled
 - name: psfExecutable # Change this if you need a 32Bit PSF launcher
   value: PSFLauncher64.exe
 
