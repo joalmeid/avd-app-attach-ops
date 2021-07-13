@@ -38,7 +38,7 @@ steps:
       
       $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
       if("$(psfEnabled)" -eq "true") 
-        {$manifest.Package.Applications.Application.Executable = "$(psfExecutable)" 
+        {$manifest.Package.Applications.Application.Executable = "$(psfExecutable)"} 
       else 
         {$manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"}
       $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ parameters.applicationDisplayName }}"
