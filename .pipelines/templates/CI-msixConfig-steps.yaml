@@ -62,7 +62,7 @@ steps:
 # This task will only run if psfEnabled equals enabled
 - task: PowerShell@2
   displayName: 'UPDATE Psf Configuration'
-  condition: eq('${{ parameters.psfEnabled }}', 'enabled')
+  condition: eq('${{ variables.psfEnabled }}', 'enabled')
   inputs:
     targetType: inline
     workingDirectory: AppConfigured
