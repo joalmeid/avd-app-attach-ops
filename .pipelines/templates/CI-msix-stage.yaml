@@ -30,8 +30,6 @@ parameters:
   type: string
 - name: CertificatePasswordVariable
   type: string
-- name: psfEnabled
-  type: boolean
 
 stages:
 - stage: CI
@@ -61,7 +59,6 @@ stages:
         msixVersion: ${{ parameters.msixVersion }}
         publisher: ${{ parameters.publisher }}
         publisherDisplayName: ${{ parameters.publisherDisplayName }}
-        psfEnabled: ${{ parameters.psfEnabled }}
         psfExecutable: ${{ parameters.psfExecutable }}
 
     # MSIX packaging process

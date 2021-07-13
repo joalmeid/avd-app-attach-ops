@@ -115,7 +115,6 @@ stages:
     applicationDescription: $(applicationDescription)
     publisher: $(publisher)
     publisherDisplayName: $(publisherDisplayName)
-    psfEnabled: $(psfEnabled)
     psfExecutable: $(psfExecutable)
     CertificateName: $(CertificateName)
     CertificatePasswordVariable: $(CertificatePasswordVariable)

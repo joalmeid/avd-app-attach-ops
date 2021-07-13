@@ -4,8 +4,6 @@ parameters:
   type: string
 - name: fileName
   type: string
-- name: psfEnabled
-  type: boolean
 
 steps:
 - script: |
@@ -28,7 +26,7 @@ steps:
 
 - task: CopyFiles@2
   displayName: COPY Psf artifacts
-  condition: eq(parameters.psfEnabled, true)
+  condition: eq(variables.psfEnabled, true)
   inputs:
     sourceFolder: msix-appattach/psf_application_artifacts
     targetFolder: AppConfigured
