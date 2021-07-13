@@ -1,7 +1,5 @@
 # root MSIX AppAttach Multi-stage pipeline (CI & CD)
 # Requires resources: Storage, AVD Session Pool, Variable group named Secrets with containing the CertificatePassword variable
-# Required parameters to set: fileLocation, fileName, version
-# Required variables (or variable group): msixAppAttachUNCLocalPath, msixAppAttachUNCServer, msixAppAttachShareName, UserName, UserPassword
 
 trigger:
 - none
@@ -21,15 +19,17 @@ parameters:
   default: "0.0.0.0"
 
 variables:
+# Application specific variable group
+# - group: APP-msix-appattach-vg
+- group: APP-PSF-msix-appattach-vg
+
 # Use the psf* variables to activate the PSF scenario - default is false
-# The psf scenario is a cornercase, so we use a global variable in code to activate it
+# The psf scenario is a cornercase, so we use the global variable psfEnabled and psfExecutable in code to activate it 
+
 - name: psfEnabled # Set to true to activate PSF support
   value: true
 - name: psfExecutable # Change this if you need a 32Bit PSF launcher
   value: PSFLauncher64.exe
-
-# Application specific variable group
-- group: APP-PSF-msix-appattach-vg
 
 # The application name to be used in the AVD deployment
 # - name: applicationName
@@ -115,7 +115,6 @@ stages:
     applicationDescription: $(applicationDescription)
     publisher: $(publisher)
     publisherDisplayName: $(publisherDisplayName)
-    psfExecutable: $(psfExecutable)
     CertificateName: $(CertificateName)
     CertificatePasswordVariable: $(CertificatePasswordVariable)
 

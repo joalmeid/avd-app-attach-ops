@@ -15,8 +15,6 @@ parameters:
   type: string
 - name: publisherDisplayName
   type: string
-- name: psfExecutable
-  type: string
 
 steps:
 

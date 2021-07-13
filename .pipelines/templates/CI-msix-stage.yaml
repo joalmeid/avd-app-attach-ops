@@ -24,8 +24,6 @@ parameters:
   type: string
 - name: publisherDisplayName
   type: string
-- name: psfExecutable
-  type: string
 - name: CertificateName
   type: string
 - name: CertificatePasswordVariable
@@ -58,7 +56,6 @@ stages:
         msixVersion: ${{ parameters.msixVersion }}
         publisher: ${{ parameters.publisher }}
         publisherDisplayName: ${{ parameters.publisherDisplayName }}
-        psfExecutable: ${{ parameters.psfExecutable }}
 
     # MSIX packaging process
     - template: ./CI-msixPackaging-steps.yaml
