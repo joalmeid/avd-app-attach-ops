@@ -28,7 +28,7 @@ steps:
 
 - task: CopyFiles@2
   displayName: COPY Psf artifacts
-  condition: $[eq('variables.psfEnabled', 'enabled')]
+  condition: eq(variables.psfEnabled, 'enabled')
   inputs:
     sourceFolder: msix-appattach/psf_application_artifacts
     targetFolder: AppConfigured
