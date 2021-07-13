@@ -24,13 +24,9 @@ parameters:
   type: string
 - name: publisherDisplayName
   type: string
-- name: psfExecutable
-  type: string
 - name: CertificateName
   type: string
 - name: CertificatePasswordVariable
-  type: string
-- name: psfEnabled
   type: string
 
 stages:
@@ -49,7 +45,6 @@ stages:
       parameters:
         fileLocation: ${{ parameters.fileLocation }}
         fileName: ${{ parameters.fileName }}
-        psfEnabled: ${{ parameters.psfEnabled }}
 
     # MSIX configuration process
     - template: ./CI-msixConfig-steps.yaml
@@ -61,8 +56,6 @@ stages:
         msixVersion: ${{ parameters.msixVersion }}
         publisher: ${{ parameters.publisher }}
         publisherDisplayName: ${{ parameters.publisherDisplayName }}
-        psfEnabled: ${{ parameters.psfEnabled }}
-        psfExecutable: ${{ parameters.psfExecutable }}
 
     # MSIX packaging process
     - template: ./CI-msixPackaging-steps.yaml

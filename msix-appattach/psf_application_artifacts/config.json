@@ -1,9 +1,9 @@
 {
   "applications": [
     {
-      "id": "APP_ID_NAME",
-      "executable": "psf-simple-app.exe",
-      "workingDirectory": "/"
+      "id": "PsfSimpleApp",
+      "executable": "app/psf-simple-app.exe",
+      "workingDirectory": "app/"
     }
   ],
   "processes": [
@@ -16,9 +16,9 @@
             "redirectedPaths": {
               "packageRelative": [
                 {
-                  "base": "/",
+                  "base": "app/",
                   "patterns": [
-                    "*.config",
+                    "psf-simple-app.config",
                     ".*\\.log"
                   ]
                 }

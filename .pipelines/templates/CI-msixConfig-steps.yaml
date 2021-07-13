@@ -15,10 +15,6 @@ parameters:
   type: string
 - name: publisherDisplayName
   type: string
-- name: psfExecutable
-  type: string
-- name: psfEnabled
-  type: string
 
 steps:
 
@@ -40,7 +36,7 @@ steps:
       
       $manifest.Package.Applications.Application.Id = "${{ parameters.applicationName }}"
       if("$(psfEnabled)" -eq "true") 
-        {$manifest.Package.Applications.Application.Executable = "${{ parameters.psfExecutable }}"} 
+        {$manifest.Package.Applications.Application.Executable = "$(psfExecutable)"} 
       else 
         {$manifest.Package.Applications.Application.Executable = "${{ parameters.applicationExecutable }}"}
       $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ parameters.applicationDisplayName }}"
@@ -57,19 +53,6 @@ steps:
       Write-Host "##[debug] `tMSIX Application Executable: $($manifest.Package.Applications.Application.Executable)"
       Write-Host "##[debug] `tMSIX Application VisualElements DisplayName: $($manifest.Package.Applications.Application.VisualElements.DisplayName)"
       Write-Host "##[debug] `tMSIX Application VisualElements Description: $($manifest.Package.Applications.Application.VisualElements.Description)"
-
-# UPDATE PSF CONFIG.JSON
-# This task will only run if psfEnabled equals true
-- task: PowerShell@2
-  displayName: 'UPDATE Psf Configuration'
-  condition: eq('${{ parameters.psfEnabled }}', true)
-  inputs:
-    targetType: inline
-    workingDirectory: AppConfigured
-    script: |
-      $psfConfig = Get-Content "config.json" -raw | ConvertFrom-Json
-      $psfConfig.applications[0].id = "${{ parameters.applicationName}}"
-      $psfConfig | ConvertTo-Json -depth 32 | % { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Out-File "config.json"
 
 # MAKEPRI: GENERATE PRICONFIG.XML and create the pri files
 - task: PowerShell@2
