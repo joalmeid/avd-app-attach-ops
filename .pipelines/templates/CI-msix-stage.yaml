@@ -47,7 +47,6 @@ stages:
       parameters:
         fileLocation: ${{ parameters.fileLocation }}
         fileName: ${{ parameters.fileName }}
-        psfEnabled: ${{ parameters.psfEnabled }}
 
     # MSIX configuration process
     - template: ./CI-msixConfig-steps.yaml
