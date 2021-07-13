@@ -1,7 +1,7 @@
 {
   "applications": [
     {
-      "id": "APP_ID_NAME",
+      "id": "PsfSimpleApp",
       "executable": "app/psf-simple-app.exe",
       "workingDirectory": "app/"
     }
