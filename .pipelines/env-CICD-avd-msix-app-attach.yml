@@ -19,6 +19,9 @@ parameters:
   default: "0.0.1.0"
 
 variables:
+# Application specific variable group
+# - group: APP-msix-appattach-vg
+- group: APP-PSF-msix-appattach-vg
 # Use the psf* variables to activate the PSF scenario - default is false
 # The psf scenario is a cornercase, so we use a global variable in code to activate it
 - name: psfEnabled # Set to true to activate PSF support
