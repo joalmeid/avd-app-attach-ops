@@ -23,12 +23,12 @@ parameters:
 variables:
 # Use the psf* variables to active the PSF scenario - default is disabled
 - name: psfEnabled # Set to true to enable the PSF support sample
-  value: false
+  value: true
 - name: psfExecutable # Change this if you need a 32Bit PSF launcher
   value: PSFLauncher64.exe
 
 # Application specific variable group
-- group: APP-msix-appattach-vg
+- group: APP-PSF-msix-appattach-vg
 
 # The application name to be used in the AVD deployment
 # - name: applicationName
