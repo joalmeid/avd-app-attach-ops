@@ -19,7 +19,7 @@ parameters:
   default: "0.0.1.0"
 - name: netApp
   type: string
-  value: active
+  default: active
 
 variables:
 # Application specific variable group
