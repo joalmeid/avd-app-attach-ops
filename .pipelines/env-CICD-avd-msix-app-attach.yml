@@ -68,7 +68,7 @@ variables:
 - name: devOpsAgentPool
   value: joalmeid-pool
 - name: devOpsAgentImage
-  value: ''
+  value: active
 - name: msixShareOnNetApp
   value: true
 
