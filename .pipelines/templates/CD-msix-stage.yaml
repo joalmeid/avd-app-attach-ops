@@ -39,7 +39,7 @@ stages:
     displayName: PublishImage
     pool: ${{parameters.devOpsAgentPool}}
       ${{ if eq(variables.msixShareOnNetApp), 'false') }}:
-      vmImage: windows-latest
+        vmImage: windows-latest
       
     environment: ${{parameters.envId}}
     strategy:
