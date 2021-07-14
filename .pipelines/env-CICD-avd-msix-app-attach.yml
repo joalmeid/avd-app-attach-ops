@@ -17,6 +17,9 @@ parameters:
   displayName: Application Version
   type: string
   default: "0.0.1.0"
+- name: netApp
+  type: string
+  value: active
 
 variables:
 # Application specific variable group
@@ -67,8 +70,6 @@ variables:
 # devOpsAgentPool defines the AgentPool only for the CD-stage of the pipeline. 
 - name: devOpsAgentPool
   value: joalmeid-pool
-- name: devOpsAgentImage
-  value: active
 - name: msixShareOnNetApp
   value: true
 
@@ -131,7 +132,7 @@ stages:
     envId: $(environmentId)
     azureSubscription: $(azureSubscription)
     devOpsAgentPool: $(devOpsAgentPool)
-    devOpsAgentImage: $(devOpsAgentImage)
+    devOpsAgentImage: ${{ parameters.netApp }}
     resourceGroup: $(resourceGroup)
     storageAccount: $(storageAccount)
     hostPoolName: $(hostPoolName)
