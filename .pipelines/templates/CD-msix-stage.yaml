@@ -37,9 +37,12 @@ stages:
   jobs:
   - deployment: PublishImage
     displayName: PublishImage
-    pool:
-      ${{ if eq(variables['msixShareOnNetApp'], 'false') }}:
-        vmImage: windows-latest     
+    ${{ if eq(variables['msixShareOnNetApp'], 'false') }}:
+      pool:
+    ${{ if eq(variables['msixShareOnNetApp'], 'true') }}:
+      pool: $(variables.devOpsAgentPool)
+        ${{ if eq(variables['msixShareOnNetApp'], 'false') }}:
+          vmImage: windows-latest     
     environment: ${{parameters.envId}}
     strategy:
       runOnce:
