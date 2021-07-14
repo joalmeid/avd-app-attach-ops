@@ -61,8 +61,8 @@ variables:
 #   value: *******
 
 ## Environment specific variables
-# - group: DEV-msix-appattach-vg
-- group: DEV-netapp-msix-appattach-vg
+- group: DEV-msix-appattach-vg
+# - group: DEV-netapp-msix-appattach-vg
 # MSIX-App-Attach share - default is AzureVM switch to Azure NetAppFiles by setting msixShareOnNetApp to true and the devOpsAgentPool to self-hosted ADO agent pool
 # devOpsAgentPool defines the AgentPool only for the CD-stage of the pipeline. 
 - name: devOpsAgentPool
@@ -70,7 +70,7 @@ variables:
 - name: devOpsAgentImage
   value: ''
 - name: msixShareOnNetApp
-  value: true
+  value: false
 
 ## Variables defined by the Environment variable group
 # An ID provided to identify the environment. Typically 'Dev, Qa, Staging, Prod'.
