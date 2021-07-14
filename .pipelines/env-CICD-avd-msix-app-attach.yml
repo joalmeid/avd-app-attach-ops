@@ -63,11 +63,12 @@ variables:
 ## Environment specific variables
 # - group: DEV-msix-appattach-vg
 - group: DEV-netapp-msix-appattach-vg
-# MSIX-App-Attach share - default is AzureVM switch to Azure NetAppFiles by setting msixShareOnNetApp to true and the devOpsAgentPoolImage to self-hosted ADO agent pool
-# devOpsAgentPoolImage defines the AgentPool only for the CD-stage of the pipeline. For msixShareOnNetApp = true it must be a self-hosted agent pool
-- name: devOpsAgentPoolImage 
- # value: windows-latest
+# MSIX-App-Attach share - default is AzureVM switch to Azure NetAppFiles by setting msixShareOnNetApp to true and the devOpsAgentPool to self-hosted ADO agent pool
+# devOpsAgentPool defines the AgentPool only for the CD-stage of the pipeline. 
+- name: devOpsAgentPool
   value: joalmeid-pool
+- name: devOpsAgentImage
+  value: ''
 - name: msixShareOnNetApp
   value: true
 
@@ -129,7 +130,8 @@ stages:
   parameters:
     envId: $(environmentId)
     azureSubscription: $(azureSubscription)
-    devOpsAgentPoolImage: $(devOpsAgentPoolImage)
+    devOpsAgentPool: $(devOpsAgentPool)
+    devOpsAgentImage: $(devOpsAgentImage)
     resourceGroup: $(resourceGroup)
     storageAccount: $(storageAccount)
     hostPoolName: $(hostPoolName)
