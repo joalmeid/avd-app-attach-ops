@@ -39,8 +39,8 @@ stages:
     displayName: PublishImage
     pool:
       #${{ if eq(variables['msixShareOnNetApp'] , 'true') }}:
-       # name: $(variables.devOpsAgentPool)
-      name: $(variables.devOpsAgentPool)
+       # name: $(devOpsAgentPool)
+      name: $(devOpsAgentPool)
       #${{ if eq(variables['msixShareOnNetApp'] , 'false') }}:
         #vmImage: windows-latest     
     environment: ${{parameters.envId}}
