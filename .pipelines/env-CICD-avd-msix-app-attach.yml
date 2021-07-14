@@ -1,5 +1,4 @@
 # root MSIX AppAttach Multi-stage pipeline (CI & CD)
-# Requires resources: Storage, AVD Session Pool, Variable group named Secrets with containing the CertificatePassword variable
 
 trigger:
 - none
