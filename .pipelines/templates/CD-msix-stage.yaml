@@ -2,6 +2,8 @@
 parameters:
 - name: envId
   type: string
+- name: devOpsAgentPoolImage
+  type: string
 - name: applicationName
   type: string
 - name: msixVersion
@@ -34,7 +36,7 @@ stages:
   - deployment: PublishImage
     displayName: PublishImage
     pool: # <name of an agent pool for Self-hosted agents>
-      vmImage: windows-latest
+      vmImage: ${{parameters.devOpsAgentPoolImage}}
     environment: ${{parameters.envId}}
     strategy:
       runOnce:

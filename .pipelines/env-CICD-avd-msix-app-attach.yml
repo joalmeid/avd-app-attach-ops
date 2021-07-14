@@ -28,6 +28,7 @@ variables:
 - name: psfExecutable # Change this if you need a 32Bit PSF launcher
   value: PSFLauncher64.exe
 
+## Variables defined by the Application variable group
 # The application name to be used in the AVD deployment
 # - name: applicationName
 #   value: SimpleApp
@@ -61,7 +62,14 @@ variables:
 
 ## Environment specific variables
 - group: DEV-msix-appattach-vg
+# MSIX-App-Attach share - default is AzureVM switch to Azure NetAppFiles by setting msixShareOnNetApp to true and the devOpsAgentPoolImage to self-hosted ADO agent pool
+# devOpsAgentPoolImage defines the AgentPool only for the CD-stage of the pipeline. For msixShareOnNetApp = true it must be a self-hosted agent pool
+- name: devOpsAgentPoolImage 
+  value: windows-latest
+- name: msixShareOnNetApp
+  value: false
 
+## Variables defined by the Environment variable group
 # An ID provided to identify the environment. Typically 'Dev, Qa, Staging, Prod'.
 # - name: environmentId
 #   value: DEV
@@ -119,6 +127,7 @@ stages:
   parameters:
     envId: $(environmentId)
     azureSubscription: $(azureSubscription)
+    devOpsAgentPoolImage: $(devOpsAgentPoolImage)
     resourceGroup: $(resourceGroup)
     storageAccount: $(storageAccount)
     hostPoolName: $(hostPoolName)
