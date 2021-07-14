@@ -4,8 +4,8 @@ parameters:
   type: string
 - name: devOpsAgentPool
   type: string
-- name: devOpsAgentImage
-  type: string
+- name: msixShareOnNetAppFiles
+  type: boolean
 - name: applicationName
   type: string
 - name: msixVersion
@@ -38,10 +38,10 @@ stages:
   - deployment: PublishImage
     displayName: PublishImage
     pool:
-      ${{ if eq(parameters.devOpsAgentImage, 'active') }}:
+      ${{ if eq(parameters.msixShareOnNetAppFiles, true) }}:
         name: $(devOpsAgentPool)
 
-      ${{ if ne(parameters.devOpsAgentImage, 'active') }}:
+      ${{ if eq(parameters.msixShareOnNetAppFiles, false) }}:
         vmImage: windows-latest
 
     environment: ${{parameters.envId}}
@@ -61,6 +61,7 @@ stages:
               msixImageFileName: ${{ parameters.msixImageFileName }}
               msixAppAttachUNCServer: ${{ parameters.msixAppAttachUNCServer }}
               msixAppAttachShareName: ${{ parameters.msixAppAttachShareName }}
+              msixShareOnNetAppFiles: ${{ parameters.msixShareOnNetAppFiles }}
               UserName: ${{ parameters.UserName }}
               UserPassword: ${{ parameters.UserPassword }}
   

@@ -17,9 +17,10 @@ parameters:
   displayName: Application Version
   type: string
   default: "0.0.1.0"
-- name: netApp
-  type: string
-  default: active
+- name: msixShareOnNetAppFiles
+  displayName: MSIXShare is on Azure NetApp Files
+  type: boolean
+  default: false
 
 variables:
 # Application specific variable group
@@ -70,8 +71,6 @@ variables:
 # devOpsAgentPool defines the AgentPool only for the CD-stage of the pipeline. 
 - name: devOpsAgentPool
   value: joalmeid-pool
-- name: msixShareOnNetApp
-  value: true
 
 ## Variables defined by the Environment variable group
 # An ID provided to identify the environment. Typically 'Dev, Qa, Staging, Prod'.
@@ -132,7 +131,7 @@ stages:
     envId: $(environmentId)
     azureSubscription: $(azureSubscription)
     devOpsAgentPool: $(devOpsAgentPool)
-    devOpsAgentImage: ${{ parameters.netApp }}
+    msixShareOnNetAppFiles: ${{ parameters.msixShareOnNetAppFiles }}
     resourceGroup: $(resourceGroup)
     storageAccount: $(storageAccount)
     hostPoolName: $(hostPoolName)
