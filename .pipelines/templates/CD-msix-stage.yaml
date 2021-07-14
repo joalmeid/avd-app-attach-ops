@@ -38,10 +38,10 @@ stages:
   - deployment: PublishImage
     displayName: PublishImage
     pool:
-      ${{ if eq(variables.devOpsAgentImage, 'active') }}:
+      ${{ if eq(parameters.devOpsAgentImage, 'active') }}:
         name: $(devOpsAgentPool)
 
-      ${{ if ne(variables.devOpsAgentImage, 'active') }}:
+      ${{ if ne(parameters.devOpsAgentImage, 'active') }}:
         vmImage: windows-latest
 
     environment: ${{parameters.envId}}
