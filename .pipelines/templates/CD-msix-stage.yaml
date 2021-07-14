@@ -38,7 +38,7 @@ stages:
   - deployment: PublishImage
     displayName: PublishImage
     pool: ${{parameters.devOpsAgentPool}}
-      vmImage: ${{parameters.devOpsAgentImage}}
+      vmImage: windows-latest
     environment: ${{parameters.envId}}
     strategy:
       runOnce:
