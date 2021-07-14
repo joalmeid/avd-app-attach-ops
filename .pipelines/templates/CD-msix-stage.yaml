@@ -2,7 +2,9 @@
 parameters:
 - name: envId
   type: string
-- name: devOpsAgentPoolImage
+- name: devOpsAgentPool
+  type: string
+- name: devOpsAgentImage
   type: string
 - name: applicationName
   type: string
@@ -35,8 +37,8 @@ stages:
   jobs:
   - deployment: PublishImage
     displayName: PublishImage
-    pool: # <name of an agent pool for Self-hosted agents>
-      vmImage: ${{parameters.devOpsAgentPoolImage}}
+    pool: ${{parameters.devOpsAgentPool}}
+      vmImage: ${{parameters.devOpsAgentImage}}
     environment: ${{parameters.envId}}
     strategy:
       runOnce:
