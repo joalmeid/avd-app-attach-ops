@@ -18,7 +18,7 @@ parameters:
   type: string
   default: "0.0.1.0"
 - name: msixShareOnNetAppFiles
-  displayName: MSIXShare is on Azure NetApp Files
+  displayName: Using Azure NetApp Files(MSIXShare)
   type: boolean
   default: false
 
@@ -65,8 +65,8 @@ variables:
 #   value: *******
 
 ## Environment specific variables
-# - group: DEV-msix-appattach-vg
-- group: DEV-netapp-msix-appattach-vg
+- group: DEV-msix-appattach-vg
+# - group: DEV-netapp-msix-appattach-vg
 # MSIX-App-Attach share - default is AzureVM switch to Azure NetAppFiles by setting msixShareOnNetApp to true and the devOpsAgentPool to self-hosted ADO agent pool
 # devOpsAgentPool defines the AgentPool only for the CD-stage of the pipeline. 
 - name: devOpsAgentPool
