@@ -68,7 +68,7 @@ variables:
 #   value: *******
 
 ## Environment specific variables
-- group: DEV-msix-appattach-vg
+- group: DEV-netapp-msix-appattach-vg
 
 #######################################################
 # Variables defined by the Environment variable group
