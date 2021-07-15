@@ -132,7 +132,6 @@ stages:
   parameters:
     envId: $(environmentId)
     azureSubscription: $(azureSubscription)
-    devOpsAgentPool: $(devOpsAgentPool)
     msixShareOnNetAppFiles: ${{ parameters.msixShareOnNetAppFiles }}
     resourceGroup: $(resourceGroup)
     storageAccount: $(storageAccount)

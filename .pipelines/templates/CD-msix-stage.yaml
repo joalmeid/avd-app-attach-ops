@@ -2,8 +2,6 @@
 parameters:
 - name: envId
   type: string
-- name: devOpsAgentPool
-  type: string
 - name: msixShareOnNetAppFiles
   type: boolean
 - name: applicationName
