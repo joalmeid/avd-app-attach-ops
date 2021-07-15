@@ -1,5 +1,4 @@
 # root MSIX AppAttach Multi-stage pipeline (CI & CD)
-# Requires resources: Storage, AVD Session Pool, Variable group named Secrets with containing the CertificatePassword variable
 
 trigger:
 - none
@@ -17,17 +16,26 @@ parameters:
   displayName: Application Version
   type: string
   default: "0.0.1.0"
+- name: msixShareOnNetAppFiles
+  displayName: Enable Azure NetApp Files logic (Please review the docs for details)
+  type: boolean
+  default: false
 
 variables:
 # Application specific variable group
 - group: APP-msix-appattach-vg
-# Use the psf* variables to activate the PSF scenario - default is false
-# The psf scenario is a cornercase, so we use a global variable in code to activate it
-- name: psfEnabled # Set to true to activate PSF support
+
+# Configure psf* variables to activate the PSF scenario - default is false
+# The psf scenario is a cornercase, so we use a global variable in code to activate it. Please review the psf section in the docs for details.
+- name: psfEnabled # Set to true to activate PSF support for the psf-sample-app
   value: false
 - name: psfExecutable # Change this if you need a 32Bit PSF launcher
   value: PSFLauncher64.exe
 
+#######################################################
+# Variables defined by the Application variable group
+#######################################################
+#
 # The application name to be used in the AVD deployment
 # - name: applicationName
 #   value: SimpleApp
@@ -62,6 +70,10 @@ variables:
 ## Environment specific variables
 - group: DEV-msix-appattach-vg
 
+#######################################################
+# Variables defined by the Environment variable group
+#######################################################
+#
 # An ID provided to identify the environment. Typically 'Dev, Qa, Staging, Prod'.
 # - name: environmentId
 #   value: DEV
@@ -83,7 +95,8 @@ variables:
 # Password of the Azure VM/domain User
 # - name: UserPassword
 #   value: ******
-# The Azure VM local path, where the UNC Share is configured. The MSIX Image will be copied using local filesystem (PSSession) and made available through the configured file share.
+# The Azure VM local path, where the UNC Share is configured. Required for the default scenario using and AzureVM as MSIX-App-Attach share. 
+# The MSIX Image will be copied using local filesystem (PSSession) and made available through the configured file share. 
 # - name: msixAzureVMLocalPath
 #   value: c:\Contoso\MSIX
 # The UNC Server FQDN used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixAppAttachShareName
@@ -92,9 +105,9 @@ variables:
 # The UNC Share name used to place the MSIX App Attach image and execute AVD app registration. It is used with variable msixAppAttachUNCServer
 # - name: msixAppAttachShareName
 #   value: avdmsix
-
-# Secrets variable group (if you chose to bind to Keyvault)
-#- group: Secrets-msix-appattach-vg 
+# ADO Self-hosted-AgentPool Name, required for the scenario using Azure NetApp Files as MSIX-App-Attach share. Please review the docs for details.
+# - name: devOpsAgentPool
+#   value: my-pool
 
 stages:
 
@@ -119,6 +132,8 @@ stages:
   parameters:
     envId: $(environmentId)
     azureSubscription: $(azureSubscription)
+    devOpsAgentPool: $(devOpsAgentPool)
+    msixShareOnNetAppFiles: ${{ parameters.msixShareOnNetAppFiles }}
     resourceGroup: $(resourceGroup)
     storageAccount: $(storageAccount)
     hostPoolName: $(hostPoolName)
