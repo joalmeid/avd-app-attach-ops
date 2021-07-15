@@ -9,20 +9,31 @@ Most common use cases to use PSF are:
 - Having `ACCESS DENIED` due to appplication writes to the install folder.
 - Your app needs to pass arguments to the executable when launched.
 
-To get you started with PSF we have added an app which requires PSF integration in the pipeline. The sample is available in the [PSF-Scenario](https://github.com/joalmeid/avd-app-attach-ops/tree/psf-scenario) branch of the repo. Key additions are:
+To get you started with PSF we have added an app which requires PSF integration to work properly in an MSIX container. The app is writing a logfile to the rootfolder which is not working in the MSIX container. The required PSF artifacts are part of the repo:
 
-- we added the `src/psf-simple-app`
-- we added `msix-appattach/psf_application_artifacts` which contains the binarires required for PSF
-- adpoted the CI stage template  
-`.pipelines/templates/CI-appConfig-steps.yaml` to copy PSF binaries
-- adpoted the CI stage template  `.pipelines/templates/CI-msixConfig-steps.yaml` to update the PSF configuration required by the App 
+-  `src/psf-simple-app` contains the psf-sample source for review
+-  `application/psf-appbin.zip` is the compiled psf-simple-app.exe to use as pipeline input
+-  `msix-appattach/psf_application_artifacts`  contains the binarires required for PSF and the `config.json` defining the PSF configuration for the psf-simple-app.exe
 
+## Enable the PSF sample in the pipeline
+- in  `env-CICD-avd-msix-app-attach.yml` toggle the global variable `psfEnabled = true`
+- update values in the `APP-msix-appattch-vg` variable group: 
 
-If you prefer extending our Main sample yourself here are the basic steps to do so:
+| Name | Value |
+|------|-------------|
+| **applicationName** | PsfSimpleApp |
+| **applicationDisplayName** |PSF Simple App |
+| **applicationDescription** |PsfSimpleApp|
+| **applicationExecutable** | app\psf-simple-app.exe
+    
+- use as input for the pipeline `application/psf-appbin.zip`
+- run the pipeline and run PSF Simple App on the remote desktop:
 
-PSF can be applied on a existing MSIX package and/or being included in the MSIX package from the beginning.
+<img src="images/psf_remote_run.jpg" alt="PSF Remote Desktop" width="600" height="500">
 
-The process to use PSF while building an MSIX package is:
+## Understanding the PSF sample configuration
+
+The process to use PSF while building an MSIX package is as follows. We included this all steps in pipeline. For your Application you need to customize the PSF `config.json` as needed.
 
 1. **Identify the runtime fix** that solves the detected issue in the msix package.
    * Find available fixups in [PSF github](https://github.com/Microsoft/MSIX-PackageSupportFramework)
@@ -36,11 +47,12 @@ The process to use PSF while building an MSIX package is:
      * FileRedirectionFixup64.dll / FileRedirectionFixup32.dll (if used)
      * TraceFixup64 / TraceFixup32 (if used)
      * WaitForDebuggerFixup64 / WaitForDebuggerFixup32 (if used)
-3. Modify the package manifest so the entrypoint is the `PSFLaucher64.exe` or `PSFLaucher32.exe` depending on app processor architecture.
+3. Modify the package manifest so the entrypoint is the `PSFLaucher64.exe` or `PSFLaucher32.exe` depending on app processor architecture. 
+   >**Note:** the pipeline is doing this for you defined in  `env-CICD-avd-msix-app-attach.yml` by the global variable `psfExecutable = PSFLaucher64.exe` 
 
    ```xml
     <Applications>
-      <Application Id="SimpleApp" Executable="PSFLauncher64.exe" EntryPoint="Windows.FullTrustApplication">
+      <Application Id="PsfSimpleApp" Executable="PSFLauncher64.exe" EntryPoint="Windows.FullTrustApplication">
       ...
       </Application>
     </Applications>
@@ -54,14 +66,14 @@ The process to use PSF while building an MSIX package is:
     {
       "applications": [
           {
-              "id": "SimpleApp",
-              "executable": "simple-app.exe",
-              "workingDirectory": "/"
+              "id": "PsfSimpleApp",
+              "executable": "app/psf-simple-app.exe",
+              "workingDirectory": "app/"
           }
       ],
       "processes": [
           {
-              "executable": "simpleapp",
+              "executable": "psf-simple-app",
               "fixups": [
                   {
                       "dll": "FileRedirectionFixup.dll",
@@ -69,9 +81,9 @@ The process to use PSF while building an MSIX package is:
                           "redirectedPaths": {
                               "packageRelative": [
                                   {
-                                      "base": "/",
+                                      "base": "app/",
                                       "patterns": [
-                                          "*.config",
+                                          "psf-simple-app.config",
                                           ".*\\.log"
                                       ]
                                   }  

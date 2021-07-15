@@ -2,7 +2,7 @@
 
 In the context of MSIX App Attach feature in Azure Virtual Desktop (AVD), the location for the MSIX images requires a UNC Share. Specially for enterprise-grade organizations, aiming for higher performance, [Azure NetApp Files (ANF)](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-introduction) is a great option. This integrates seamleslly with AVD MSIX App Attach, while leveraging ANF beneficies.
 
-Azure NetApp Files is a high-performance, metered file storage service from Azure. It supports several workload types and is highly available by default. It also offers service and performance levels as well as snapshot capabilities. Specifically for Azure Virtual Desktop, it is recommended for extremely large scale deployments, providing up to 450,000 IOPS and sub-millisecond latency.
+Azure NetApp Files is a high-performance, metered file storage service from Azure. It supports several workload types and is highly available by default. It also offers service and performance levels as well as snapshot capabilities. Specifically for Azure Virtual Desktop, it is recommended for large scale deployments.
 
 It is important to understand the Azure NetApp Files Service levels, in order to best suit your performance and/or cost needs. Check it [here](#azure-netapp-files-service-levels).
 
@@ -50,22 +50,26 @@ We've automated the Azure NetApp Files setup. By using Azure CLI and the `netapp
 
 **5. Configure the Azure Devops pipeline to publish to the Azure NetApp Files Share**
 
-  >  The changes in the pipelines are the following:
-  > 
-  >  - **Comment** the `AzureFileCopy@4` task in [CD-ImagePublish-steps.yaml](https://github.com/joalmeid/avd-app-attach-ops/blob/b216427cd1056c0e7543e9c71e46062cbd981a25/.pipelines/templates/CD-imagePublish-steps.yaml#L55)
-  >  - **Uncomment** the `WindowsMachineFileCopy@2` task in [CD-ImagePublish-steps.yaml](https://github.com/joalmeid/avd-app-attach-ops/blob/b216427cd1056c0e7543e9c71e46062cbd981a25/.pipelines/templates/CD-imagePublish-steps.yaml#L74)
-  >  - Use an Azure DevOps Self-hosted Agent in the same VNET as the ANF volume
-  >    - Set the agent pool where the Self-hosted agent is registered in the [CD-msix-stage.yaml](https://github.com/joalmeid/avd-app-attach-ops/blob/dfd966044e01b684396bd56a6fc8357e9e92f529/.pipelines/templates/CD-msix-stage.yaml#L25) template.
-  >  - Change the **msixAppAttachUNCServer** variable in the Environment specific variable group
-  >    - Use the FQDN in the NetApp Mount path
-  >  - Change the **msixAppAttachUNCShareName** variable in the Environment specific variable group
-  >    - Use the UNC share path in the NetApp Mount path
-  >  - Change the **UserUsername** variable in the Environment specific variable group
-  >    - Set a domain user with the format `domain\username`
-  >  - Change the **UserPassword** variable in the Environment specific variable group
-  >    - Set a domain user password
+- Configure an Azure DevOps Self-hosted Agent in the same VNET as the ANF volume
+- Update variables in the Environment specific variable group:
 
-**6. Run the pipeline (default name shoud be `env-CICD-AVD-msix-app-attach`);**
+| Action | Name | Description |
+|--------|------|-------------|
+|add| **devOpsAgentPool** | Azure DevOps Self-hosted agent pool name  |
+|update| **msixAppAttachUNCServer** | Use the FQDN in the NetApp Mount path  |
+|update| **msixAppAttachShareName** | Use the UNC share path in the NetApp Mount path |
+|update| **UserName** | Set a domain user with the format `domain\username`|
+|uddate| **UserPassword** | Set a domain user password |
+
+> **Tip:** If you switch between the AzureVM and the Azure Net App Files scenario it could be handy to create a second Environment specific variable group. The Variable group name is defined in `env-CICD-avd-msix-app-attach.yml`
+
+**6. Run the pipeline** 
+
+the pipeline can switch between the AzureVM and the Azure Net App Files scenario by setting the parameter `Enable Azure NetApp Files logic = true`
+
+<img src="images/pipeline_parameters_anf.jpg" alt="Pipeline parameters ANF" width="300" height="600">
+
+> **Tip:** If only the Azure Net App Files scenario is used. The default value of `Enable Azure NetApp Files logic` can changed in `env-CICD-avd-msix-app-attach.yml`
 
 ## Azure NetApp Files Service Levels
 

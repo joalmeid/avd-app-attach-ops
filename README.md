@@ -81,8 +81,6 @@ As this project fosters a full MSIX Appattach CI/CD pipeline to Azure Virtual De
 
 Once you have all the requirements checked, there will be a an Azure Virtual Desktop infrastructure already setup. This infrastructure also includes some additional Azure resources, hence being a full cloud native setup.
 
-<img src="doc/images/variable_groups_schematic.jpg" alt="Pipeline used Libraries">
-
 1. If you're familiar with Azure Devops you may prefer to do some of the steps manually. The following tasks are required in order to run this pipeline:
 
     - Create an Azure Devops project pointing to the repo;
@@ -91,6 +89,8 @@ Once you have all the requirements checked, there will be a an Azure Virtual Des
     - Create Application Variable Group (review and update Variables including secrets)
     - Create Environment Variable Group (review and update Variables including secrets)
     - Create Secure File (certificate)
+  
+  <img src="doc/images/variable_groups_schematic.jpg" alt="Pipeline used Libraries">
 
 2. We've also automated part of the initial setup. In order to quickly start, let's configure the Azure DevOps project to run the pipline and deploy the sample application to your AVD infrastructure.
 
@@ -100,7 +100,7 @@ Once you have all the requirements checked, there will be a an Azure Virtual Des
     - Update secrets in Variable Groups (manual)
     - Create Secure File (certificate) (manual)
 
-Let us help you wit a complete walkthrough:
+Let us help you with a complete walkthrough:
 
 ### Setup Azure Devops
 
@@ -136,38 +136,54 @@ In your Azure Devops project, go to **Azure Pipelines > Library**. You should ha
   > Add the sample self-signed certificate available in `/msix-appattach/msix_certs/sscert.pfx` as a secure file;
   > You can read how to do it in [Use secure files](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops).
 
+**7. Install the self-signed certificate in the AVD Session hosts**
+  
+  > Copy the sample self-signed certificate available in `/msix-appattach/msix_certs/sscert.pfx` to the session hosts. Install the certificate in the `Local Machine` store using the password `Q1w2e3r4t5y6.` Select the `Trusted Root Certification Authorities` store:
+
+  <img src="doc/images/cert_wizard_trusted_root.jpg" alt="Certificate Wizard" width="400" height="400">
+
 ### Configure and run the CI/CD pipeline
 
 The pipeline is expecting an app zip file in a Blob Storage.
 
-**7. Copy the `/application/appbin.zip` to a reachable blob container in the Blob storage account.**
+**8. Copy the `/application/appbin.zip` to a reachable blob container in the Blob storage account.** 
 
-Now you're aready to run the pipeline using a Windows based Hosted Agent. The pipeline accepts parameters that must match you environment.
+> **Please note** that the blob container needs to be a trusted location. Instead of anoymous read access we recommend to configure SAS token to access the blob. You can read how to do it [here](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview). Customize the first step in `CI-appConfig-steps.yaml` to use the SAS token.
 
-**8. Run the created pipeline (default name shoud be `env-CICD-AVD-msix-app-attach`);**
+Now you're aready to run the pipeline using a Windows based Hosted Agent. The pipeline accepts parameters that must match your environment.
 
-**9. Fill all the parameters accordingly to your environment;**
+**9. Run the created pipeline (default name shoud be `env-CICD-AVD-msix-app-attach`)**
 
-<img src="doc/images/pipeline-parameters.jpg" alt="Pipeline parameters" width="400" height="800">
+**10. Fill all the parameters accordingly to your environment;**
+
+<img src="doc/images/pipeline_parameters.jpg" alt="Pipeline parameters" width="300" height="600">
 
   > **NOTE:** you can directly change and commit the main YAML pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` and change the parameters default values.
 
-**9. Once the pipeline is successfully executed, check your AVD environment;**
+**11. Once the pipeline has been started it will pause in the CD stage for manual confirmation to activate the package.** After approval the pipeline looks like this:
 
-  >  Check your MSIX Pachages in the AVD host pool resource
+<img src="doc/images/pipeline_run.jpg" alt="Pipeline Run" width="700" height="270">
 
-**10. Add the new app in an existing Application Group with respective assingments;**
+  >  Check your MSIX Pachages in the AVD host pool resource. There should be an active package for `SimpleApp`:
+
+  <img src="doc/images/msix_packages.jpg" alt="MSIX packages" width="600" height="150">
+
+**12. Add the new app in an existing Application Group with respective assingments**
 
   > Go to your AVD Host pool resource and open `Application Groups` and select a application group;
-  > Click in `Applications (manage)` and add a new Application;
+  > Click in `Applications (manage)` and add a new Application.
   > Specify recently deployed `MSIX Package` and optionally fulfill the `Display Name` and `Description`
-  > Documentation is available in article [Manage app groups with the Azure portal](https://docs.microsoft.com/en-us/azure/virtual-desktop/manage-app-groups).
+  > Documentation is available in article [Manage app groups with the Azure portal](https://docs.microsoft.com/en-us/azure/virtual-desktop/manage-app-groups)
 
-![AVD Application Group](doc/images/avd_app_group.jpg)
+ <img src="doc/images/avd_app_group.jpg" alt="AVD Application Group" width="500" height="200">
 
-In this image we see an example with the `DemoApp` app registered in an application group.
+In this image we see an example with the `SimpleApp` app registered in an application group.
 
-**11. Sign-in into one of the session hosts and run the deployed application**
+**13. Sign-in into one of the session hosts and run the deployed application**
+
+**14. Re-run the pipline with new Version 0.0.2.0.** After AVD registration of the new package. Wait some time after the RD-agent finished polling. Sign-out in the remote session and sign-in again. Run the new version of the SimpleApp 0.0.2.0
+
+<img src="doc/images/remote_desktop_app.jpg" alt="Remote Desktop" width="600" height="400">
 
 ## References
 

@@ -17,7 +17,7 @@ parameters:
   type: string
   default: "0.0.1.0"
 - name: msixShareOnNetAppFiles
-  displayName: Enable Azure NetApp Files logic (requires devOpsAgentPool variable)
+  displayName: Enable Azure NetApp Files logic*
   type: boolean
   default: false
 
