@@ -86,8 +86,8 @@ Once you have all the requirements checked, there will be a an Azure Virtual Des
     - Create an Azure Devops project pointing to the repo;
     - Create azure Service connection;
     - Create Azure Devops pipeline pointing to yaml
-    - Create Application Variable Group (review and update Variables including secrets)
-    - Create Environment Variable Group (review and update Variables including secrets)
+    - Create Application Variable Group (**review and update Variables including secrets**)
+    - Create Environment Variable Group (**review and update Variables including secrets**)
     - Create Secure File (certificate)
   
   <img src="doc/images/variable_groups_schematic.jpg" alt="Pipeline used Libraries">
