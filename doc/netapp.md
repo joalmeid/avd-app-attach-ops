@@ -23,6 +23,7 @@ We enumerate the ANF prerequisites accordingly to our scenario. Check additional
 - Azure account with contributor or administrator privileges on the subscription
 - Ensure the VNet or subnet where AADDS is deployed is in the same Azure region as the Azure NetApp Files deployment.
 - It will be required to delegate a subnet to Azure NetApp Files.
+- A Azure DevOps Self-hosted agent is required to run the CD-stage. [Instructions to install a Self-hosted agent](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-windows?view=azure-devops)
 
 ### Walkthrough the Azure NetApp Files for AVD MSIX App Attach
 
@@ -65,11 +66,13 @@ We've automated the Azure NetApp Files setup. By using Azure CLI and the `netapp
 
 **6. Run the pipeline** 
 
-the pipeline can switch between the AzureVM and the Azure Net App Files scenario by setting the parameter `Enable Azure NetApp Files logic = true`
+the pipeline can switch between the AzureVM and the Azure Net App Files scenario by setting the parameter `enableSelfHostedAgentLogic = true`. This setting is changing the CD stage to run on an DevOps Self-hosted agent, which you have to deploy and register in ADO.
 
 <img src="images/pipeline_parameters_anf.jpg" alt="Pipeline parameters ANF" width="300" height="600">
 
-> **Tip:** If only the Azure Net App Files scenario is used. The default value of `Enable Azure NetApp Files logic` can changed in `env-CICD-avd-msix-app-attach.yml`
+> **Tip:** 
+> 1. If only the Azure Net App Files scenario is used. The default value of `enableSelfHostedAgentLogic` can changed in `env-CICD-avd-msix-app-attach.yml`.
+> 1. Running the CD-stage on a Self-hosted agent could be used as well if a AzureVM is used as MSIX AppAttach share.
 
 ## Azure NetApp Files Service Levels
 

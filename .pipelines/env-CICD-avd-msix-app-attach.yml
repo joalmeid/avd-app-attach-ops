@@ -16,8 +16,8 @@ parameters:
   displayName: Application Version
   type: string
   default: "0.0.1.0"
-- name: msixShareOnNetAppFiles
-  displayName: Enable Azure NetApp Files logic*
+- name: enableSelfHostedAgentLogic
+  displayName: Enable Self-hosted agent logic for CD (NetAppFiles)
   type: boolean
   default: false
 
@@ -132,7 +132,7 @@ stages:
   parameters:
     envId: $(environmentId)
     azureSubscription: $(azureSubscription)
-    msixShareOnNetAppFiles: ${{ parameters.msixShareOnNetAppFiles }}
+    enableSelfHostedAgentLogic: ${{ parameters.enableSelfHostedAgentLogic }}
     resourceGroup: $(resourceGroup)
     storageAccount: $(storageAccount)
     hostPoolName: $(hostPoolName)

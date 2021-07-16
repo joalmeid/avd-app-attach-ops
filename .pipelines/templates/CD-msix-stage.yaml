@@ -2,7 +2,7 @@
 parameters:
 - name: envId
   type: string
-- name: msixShareOnNetAppFiles
+- name: enableSelfHostedAgentLogic
   type: boolean
 - name: applicationName
   type: string
@@ -36,10 +36,10 @@ stages:
   - deployment: PublishImage
     displayName: PublishImage
     pool:
-      ${{ if eq(parameters.msixShareOnNetAppFiles, true) }}:
+      ${{ if eq(parameters.enableSelfHostedAgentLogic, true) }}:
         name: $(devOpsAgentPool)
 
-      ${{ if eq(parameters.msixShareOnNetAppFiles, false) }}:
+      ${{ if eq(parameters.enableSelfHostedAgentLogic, false) }}:
         vmImage: windows-latest
 
     environment: ${{parameters.envId}}
@@ -59,7 +59,7 @@ stages:
               msixImageFileName: ${{ parameters.msixImageFileName }}
               msixAppAttachUNCServer: ${{ parameters.msixAppAttachUNCServer }}
               msixAppAttachShareName: ${{ parameters.msixAppAttachShareName }}
-              msixShareOnNetAppFiles: ${{ parameters.msixShareOnNetAppFiles }}
+              enableSelfHostedAgentLogic: ${{ parameters.enableSelfHostedAgentLogic }}
               UserName: ${{ parameters.UserName }}
               UserPassword: ${{ parameters.UserPassword }}
   

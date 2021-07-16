@@ -24,7 +24,7 @@ parameters:
     type: string
   - name: msixAppAttachShareName
     type: string
-  - name: msixShareOnNetAppFiles
+  - name: enableSelfHostedAgentLogic
     type: boolean
   - name: UserName
     type: string
@@ -59,7 +59,7 @@ steps:
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-file-copy?view=azure-devops
 - task: AzureFileCopy@4
   displayName: 'COPY Msix Image to Fileshare (Azure VM)'
-  condition: eq('${{ parameters.msixShareOnNetAppFiles }}', false)
+  condition: eq('${{ parameters.enableSelfHostedAgentLogic }}', false)
   inputs:
     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName }}
     azureSubscription: ${{ parameters.azureSubscription }}
@@ -79,7 +79,7 @@ steps:
 # works for self-hosted agent in the V-Net to the file share 
 - task: WindowsMachineFileCopy@2
   displayName: 'COPY Msix Image to Fileshare (Azure NetApp Files)'
-  condition: eq('${{ parameters.msixShareOnNetAppFiles }}', true)
+  condition: eq('${{ parameters.enableSelfHostedAgentLogic }}', true)
   inputs:
     sourcePath: $(Pipeline.Workspace)/Image/${{ parameters.msixImageFileName}}
     machineNames: ${{ parameters.msixAppAttachUNCServer }}
