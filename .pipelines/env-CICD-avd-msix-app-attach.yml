@@ -17,7 +17,7 @@ parameters:
   type: string
   default: "0.0.1.0"
 - name: enableSelfHostedAgentLogic
-  displayName: Enable Self-hosted agent logic for CD (NetAppFiles)
+  displayName: NetAppFiles - Enable Self-hosted agent logic for CD 
   type: boolean
   default: false
 

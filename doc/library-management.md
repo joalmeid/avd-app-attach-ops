@@ -13,6 +13,7 @@ The pipeline allows to set parameters for each execution. The elected parameters
 | **fileLocation** | The SAC file location path Expected to be reachable through http/https protocol for direct download |
 | **fileName** | SAC file name for a particular release |
 | **version** | Application version (semantic version is recommended) to be used in the AVD deployment |
+| **enableSelfHostedAgentLogic** | Enable Self-hosted agent logic for CD - **requires** a configured Self-hosted ADO agent. Prerequisit for the NetAppFiles scenario  (default is false) |
 
 ## Variable Groups
 
