@@ -160,7 +160,7 @@ Now you're aready to run the pipeline using a Windows based Hosted Agent. The pi
 
   > **NOTE:** you can directly change and commit the main YAML pipeline `/.pipelines/env-CICD-avd-msix-app-attach.yaml` and change the parameters default values.
 
-**11. Once the pipeline has been started it will pause in the CD stage for manual confirmation to activate the package.** After approval the pipeline looks like this:
+**11. Once the pipeline has been started it will pause in the CD stage for manual validation to activate the package.** After approval the pipeline looks like this:
 
 <img src="doc/images/pipeline_run.jpg" alt="Pipeline Run" width="700" height="270">
 
