@@ -123,7 +123,7 @@ In your Azure Devops project, go to **Azure Pipelines > Library**. You should ha
 - `APP-msix-appattach-vg` : This is an application specific variable group. It should contain information to be used during the MSIX packaging steps.
 - `DEV-msix-appattach-vg` : This is an environment (DEV) specific variable group. Contains information about the environment, namelly azure service connection, AVD Session pool name and others. Should be simillar to other environment variable groups.
 
-> **NOTE:** For more information about parameters, variable groups or secure files, check the [Library Management](/doc/images/library-management.md) document.
+> **NOTE:** For more information about parameters, variable groups or secure files, check the [Library Management](/doc/library-management.md) document.
 
 **4. Review variable values in `APP-msix-appattach-vg`;**
 
